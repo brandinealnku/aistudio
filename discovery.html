@@ -2,36 +2,37 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>AI Studio Project Discovery</title>
+  <title>NKU AI Studio | CMC Project Discovery</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     :root{
-      --bg: #f5f7fb;
+      --bg: #f5f5f2;
       --surface: #ffffff;
-      --surface-soft: #f8f9ff;
-      --text: #1f2430;
-      --muted: #667085;
-      --border: #d8deea;
-      --primary: #243b7a;
-      --primary-2: #3a3b78;
-      --accent: #ff66c4;
-      --success: #127c56;
-      --danger: #b42318;
-      --shadow: 0 8px 28px rgba(36,59,122,0.08);
-      --radius: 16px;
+      --surface-soft: #faf8ef;
+      --text: #1f1f1f;
+      --muted: #616161;
+      --border: #ddd6b8;
+      --primary: #111111;
+      --primary-2: #2a2a2a;
+      --gold: #c7a64a;
+      --gold-deep: #a8892f;
+      --accent: #7c5cff;
+      --success: #116149;
+      --danger: #a12622;
+      --shadow: 0 10px 28px rgba(17,17,17,0.08);
+      --radius: 18px;
       --radius-sm: 12px;
-      --focus: 0 0 0 4px rgba(58,59,120,0.18);
-      --maxw: 980px;
+      --focus: 0 0 0 4px rgba(199,166,74,0.28);
+      --maxw: 1080px;
     }
 
     * { box-sizing: border-box; }
-
     html { scroll-behavior: smooth; }
 
     body{
       margin:0;
       font-family: Arial, Helvetica, sans-serif;
-      background: linear-gradient(180deg, #f7f9ff 0%, #f3f5fa 100%);
+      background: linear-gradient(180deg, #fbfbf8 0%, #f2f0e7 100%);
       color: var(--text);
       line-height: 1.5;
     }
@@ -42,7 +43,7 @@
       z-index: 1000;
       background: rgba(255,255,255,0.94);
       backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(216,222,234,0.9);
+      border-bottom: 1px solid rgba(221,214,184,0.95);
     }
 
     .topbar-inner{
@@ -57,11 +58,32 @@
     }
 
     .brand{
-      min-width: 240px;
+      min-width: 260px;
+    }
+
+    .brand-kicker{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      font-size:12px;
+      font-weight:700;
+      color: var(--gold-deep);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .brand-kicker::before{
+      content:"";
+      width:9px;
+      height:9px;
+      border-radius:50%;
+      background: var(--gold);
+      display:inline-block;
     }
 
     .brand-title{
-      font-size: 15px;
+      font-size: 16px;
       font-weight: 700;
       color: var(--primary);
       margin: 0;
@@ -97,49 +119,76 @@
       width: 150px;
       height: 8px;
       border-radius: 999px;
-      background: #e8ecf5;
+      background: #ece7d1;
       overflow: hidden;
     }
 
     .progress-fill{
       height: 100%;
       width: 0%;
-      background: linear-gradient(90deg, var(--primary), var(--accent));
+      background: linear-gradient(90deg, var(--gold-deep), var(--gold));
       transition: width 0.25s ease;
     }
 
     .page{
       max-width: var(--maxw);
       margin: 0 auto;
-      padding: 26px 18px 40px;
+      padding: 28px 18px 42px;
     }
 
     .hero{
-      background: linear-gradient(135deg, #243b7a 0%, #3a3b78 55%, #6a3ea1 100%);
+      background: linear-gradient(135deg, #111111 0%, #232323 58%, #3a3425 100%);
       color: white;
       border-radius: 24px;
-      padding: 26px 22px;
+      padding: 28px 22px;
       box-shadow: var(--shadow);
       margin-bottom: 18px;
+      overflow:hidden;
+      position:relative;
+    }
+
+    .hero::after{
+      content:"";
+      position:absolute;
+      right:-80px;
+      top:-80px;
+      width:240px;
+      height:240px;
+      border-radius:50%;
+      background: radial-gradient(circle, rgba(199,166,74,0.32) 0%, rgba(199,166,74,0.02) 68%, transparent 70%);
+      pointer-events:none;
     }
 
     .hero h1{
-      margin: 0 0 6px;
-      font-size: clamp(1.7rem, 2.2vw, 2.35rem);
-      line-height: 1.1;
+      margin: 0 0 8px;
+      font-size: clamp(1.8rem, 2.6vw, 2.6rem);
+      line-height: 1.08;
+      max-width: 760px;
     }
 
     .hero p{
       margin: 0;
       color: rgba(255,255,255,0.9);
-      max-width: 720px;
+      max-width: 760px;
     }
 
-    .intro-grid{
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 16px;
-      margin-bottom: 18px;
+    .pill-row{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 16px 0 0;
+    }
+
+    .pill{
+      display: inline-flex;
+      align-items: center;
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      background: rgba(255,255,255,0.09);
+      border: 1px solid rgba(255,255,255,0.16);
+      color: white;
     }
 
     .card{
@@ -150,135 +199,100 @@
       padding: 18px;
     }
 
-    .card h2,
-    .card h3{
-      margin-top: 0;
-    }
-
-    .meta-grid{
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 14px;
+    .grid-2{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:16px;
     }
 
     .field{
       margin-bottom: 14px;
     }
 
-    .field:last-child{
-      margin-bottom: 0;
-    }
+    .field:last-child{ margin-bottom: 0; }
 
     label{
-      display: block;
+      display:block;
       margin-bottom: 6px;
-      font-weight: 700;
-      color: #273043;
-      font-size: 14px;
+      font-size:14px;
+      font-weight:700;
+      color:#222;
     }
 
     .help-text{
-      display: block;
+      display:block;
       margin-top: 6px;
       color: var(--muted);
       font-size: 12px;
     }
 
-    input[type="text"],
-    textarea,
-    select{
-      width: 100%;
-      border: 1px solid #cbd5e1;
+    input[type="text"], textarea, select{
+      width:100%;
+      border:1px solid #cfc7a7;
       border-radius: 12px;
       padding: 12px 14px;
       font-size: 15px;
       color: var(--text);
-      background: white;
+      background:white;
       font-family: inherit;
-      transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
+      transition: border-color .2s ease, box-shadow .2s ease;
     }
 
-    input[type="text"]:focus,
-    textarea:focus,
-    select:focus,
-    button:focus{
-      outline: none;
-      border-color: var(--primary);
+    input[type="text"]:focus, textarea:focus, select:focus, button:focus{
+      outline:none;
+      border-color: var(--gold-deep);
       box-shadow: var(--focus);
     }
 
     textarea{
       resize: vertical;
-      min-height: 120px;
+      min-height: 118px;
     }
 
     .compact textarea{
       min-height: 88px;
     }
 
-    .checkbox-stack{
-      display: grid;
-      gap: 10px;
-      margin-top: 4px;
-    }
-
-    .check-item{
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      padding: 12px 14px;
-      background: var(--surface-soft);
-      border: 1px solid #e4e9f4;
-      border-radius: 12px;
-    }
-
-    .check-item input{
-      margin-top: 2px;
-      transform: scale(1.15);
-    }
-
     .section{
-      margin-bottom: 14px;
+      margin-top: 14px;
     }
 
     .section-toggle{
-      width: 100%;
-      border: 1px solid var(--border);
-      background: white;
+      width:100%;
+      border:1px solid var(--border);
+      background:white;
       border-radius: 16px;
       padding: 16px 18px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      cursor: pointer;
-      font-size: 18px;
-      font-weight: 700;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      cursor:pointer;
+      font-size:18px;
+      font-weight:700;
       color: var(--primary);
       box-shadow: var(--shadow);
-      text-align: left;
+      text-align:left;
     }
 
-    .section-toggle:hover{
-      background: #fbfcff;
-    }
+    .section-toggle:hover{ background:#fffdf6; }
 
     .section-toggle .toggle-copy{
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
+      display:flex;
+      flex-direction:column;
+      gap:4px;
     }
 
     .section-toggle .toggle-sub{
-      font-size: 12px;
-      font-weight: 400;
+      font-size:12px;
+      font-weight:400;
       color: var(--muted);
     }
 
     .chevron{
-      font-size: 20px;
-      color: var(--muted);
-      flex-shrink: 0;
+      font-size:20px;
+      color: var(--gold-deep);
+      flex-shrink:0;
     }
 
     .section-panel{
@@ -290,60 +304,56 @@
       padding: 18px;
     }
 
-    .section-panel[hidden]{
-      display: none !important;
+    .section-panel[hidden]{ display:none !important; }
+
+    .checkbox-stack{
+      display:grid;
+      gap: 10px;
+      margin-top: 4px;
     }
 
-    .button-row{
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 18px;
+    .check-item{
+      display:flex;
+      align-items:flex-start;
+      gap:10px;
+      padding: 12px 14px;
+      background: var(--surface-soft);
+      border: 1px solid #ece3c1;
+      border-radius: 12px;
+    }
+
+    .check-item input{
+      margin-top: 2px;
+      transform: scale(1.15);
+      accent-color: var(--gold-deep);
+    }
+
+    .btn-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:18px;
     }
 
     .btn{
-      border: none;
+      border:none;
       border-radius: 12px;
       padding: 12px 16px;
       font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: transform .08s ease, opacity .2s ease, box-shadow .2s ease;
+      font-weight:700;
+      cursor:pointer;
+      transition: transform .08s ease, opacity .2s ease;
       box-shadow: 0 4px 14px rgba(0,0,0,0.08);
     }
 
-    .btn:hover{
-      opacity: 0.95;
-    }
+    .btn:hover{ opacity: .95; }
+    .btn:active{ transform: translateY(1px); }
 
-    .btn:active{
-      transform: translateY(1px);
-    }
-
-    .btn-primary{
-      background: var(--primary);
-      color: white;
-    }
-
-    .btn-accent{
-      background: var(--accent);
-      color: white;
-    }
-
-    .btn-soft{
-      background: #eef2ff;
-      color: var(--primary);
-    }
-
-    .btn-dark{
-      background: #525f7a;
-      color: white;
-    }
-
-    .btn-danger{
-      background: var(--danger);
-      color: white;
-    }
+    .btn-primary{ background: var(--primary); color:white; }
+    .btn-gold{ background: var(--gold); color:#111; }
+    .btn-soft{ background: #f3eed8; color:#3d3521; }
+    .btn-dark{ background: #4a4a4a; color:white; }
+    .btn-danger{ background: var(--danger); color:white; }
 
     .toolbar{
       position: sticky;
@@ -353,22 +363,22 @@
     }
 
     .toolbar-inner{
-      background: rgba(255,255,255,0.94);
+      background: rgba(255,255,255,0.95);
       border: 1px solid var(--border);
       border-radius: 18px;
-      box-shadow: 0 12px 30px rgba(31,36,48,0.14);
+      box-shadow: 0 12px 30px rgba(31,31,31,0.14);
       padding: 12px;
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content: center;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      justify-content:center;
       backdrop-filter: blur(8px);
     }
 
     .generated-box{
       white-space: pre-wrap;
-      background: #fcfcff;
-      border: 1px solid #d8deea;
+      background: #fffef8;
+      border: 1px solid #ddd6b8;
       border-radius: 14px;
       padding: 16px;
       min-height: 200px;
@@ -382,70 +392,48 @@
       margin-top: 10px;
     }
 
-    .pill-row{
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin: 14px 0 0;
+    .callout{
+      background: linear-gradient(180deg, #fffef9 0%, #fbf7e7 100%);
+      border: 1px solid #e5dcba;
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 16px;
     }
 
-    .pill{
-      display: inline-flex;
-      align-items: center;
-      padding: 7px 10px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 700;
-      background: rgba(255,255,255,0.12);
-      border: 1px solid rgba(255,255,255,0.18);
-      color: white;
+    .callout h2{
+      margin: 0 0 8px;
+      font-size: 18px;
+      color: #272727;
     }
 
-    .meeting-mode .section-panel{
-      box-shadow: none;
+    .callout ul{
+      margin: 8px 0 0 18px;
+      padding:0;
+    }
+
+    .callout li{
+      margin-bottom: 6px;
     }
 
     .meeting-mode .section{
-      margin-bottom: 10px;
+      margin-top:10px;
     }
 
-    .sr-only{
-      position:absolute;
-      width:1px;
-      height:1px;
-      padding:0;
-      margin:-1px;
-      overflow:hidden;
-      clip:rect(0,0,0,0);
-      white-space:nowrap;
-      border:0;
+    .footer-space{
+      height: 18px;
     }
 
-    @media (min-width: 760px){
-      .meta-grid{
-        grid-template-columns: 1fr 1fr;
-      }
+    @media (max-width: 860px){
+      .grid-2{ grid-template-columns: 1fr; }
+      .status-wrap{ align-items:flex-start; }
+      .topbar-inner{ align-items:flex-start; }
     }
 
     @media print{
-      .topbar,
-      .toolbar{
-        display: none !important;
-      }
-      body{
-        background: white;
-      }
-      .hero{
-        box-shadow: none;
-      }
-      .card,
-      .section-panel,
-      .section-toggle{
-        box-shadow: none;
-      }
-      .section-panel{
-        display: block !important;
-      }
+      .topbar,.toolbar{ display:none !important; }
+      body{ background:white; }
+      .card,.section-panel,.section-toggle{ box-shadow:none; }
+      .section-panel{ display:block !important; }
     }
   </style>
 </head>
@@ -453,10 +441,10 @@
   <div class="topbar">
     <div class="topbar-inner">
       <div class="brand">
-        <div class="brand-title">AI Studio Project Discovery</div>
-        <div class="brand-sub">Cincinnati Museum Center × Northern Kentucky University</div>
+        <div class="brand-kicker">Northern Kentucky University</div>
+        <div class="brand-title">AI Studio Discovery Workspace</div>
+        <div class="brand-sub">Prepared for Cincinnati Museum Center project exploration</div>
       </div>
-
       <div class="status-wrap">
         <div class="status" id="saveStatus" aria-live="polite">Auto-save ready.</div>
         <div class="progress-wrap" aria-label="Form completion progress">
@@ -469,79 +457,90 @@
     </div>
   </div>
 
-  <main class="page" id="appContainer">
+  <main class="page">
     <section class="hero">
-      <h1>AI Studio Partnership Discovery</h1>
-      <p>Capture the conversation live, keep the meeting structured, and generate a draft project scope before you leave the room.</p>
+      <h1>CMC × NKU AI Studio Project Discovery</h1>
+      <p>Use this live in the meeting to guide the conversation, capture notes in real time, and generate a draft project scope before the call ends.</p>
       <div class="pill-row">
-        <span class="pill">Live Notes</span>
+        <span class="pill">Pilot Course</span>
+        <span class="pill">16-Week Timeline</span>
+        <span class="pill">Right-Fit Project</span>
         <span class="pill">Autosave</span>
-        <span class="pill">Meeting Mode</span>
         <span class="pill">Scope Generator</span>
       </div>
     </section>
 
-    <section class="intro-grid">
-      <div class="card">
-        <h2 style="margin-bottom:14px;">Meeting Details</h2>
-        <div class="meta-grid">
-          <div class="field">
-            <label for="meetingDate">Date</label>
-            <input type="text" id="meetingDate" placeholder="April 6, 2026" />
-          </div>
+    <section class="callout">
+      <h2>CMC-specific setup from the email thread</h2>
+      <ul>
+        <li>CMC said <strong>yes, they would like to participate</strong>.</li>
+        <li>They want to make sure the project is <strong>the right fit for the program</strong>.</li>
+        <li>They already have <strong>several AI projects in the mix</strong>.</li>
+        <li>They were planning to <strong>review their AI project list internally</strong>.</li>
+        <li>They are open to discussing whether the initial call should include <strong>only sponsor-level leadership or more of the tech team</strong>.</li>
+        <li>NKU framed this as a <strong>selective pilot</strong> with handpicked students and partners.</li>
+      </ul>
+    </section>
 
-          <div class="field">
-            <label for="organization">Organization</label>
-            <input type="text" id="organization" value="Cincinnati Museum Center" />
-          </div>
-
-          <div class="field">
-            <label for="primaryContact">Primary Contact</label>
-            <input type="text" id="primaryContact" placeholder="Name / role" />
-          </div>
-
-          <div class="field">
-            <label for="meetingGoal">Working Goal for This Meeting</label>
-            <input type="text" id="meetingGoal" value="Identify a feasible, high-impact AI Studio project for a 16-week fall semester." />
-          </div>
+    <section class="card">
+      <div class="grid-2">
+        <div class="field">
+          <label for="meetingDate">Date</label>
+          <input type="text" id="meetingDate" value="April 6, 2026" />
         </div>
-        <span class="help-text">This header stays simple on purpose so you can start typing quickly.</span>
+        <div class="field">
+          <label for="organization">Organization</label>
+          <input type="text" id="organization" value="Cincinnati Museum Center" />
+        </div>
+        <div class="field">
+          <label for="primaryContact">Primary Contact</label>
+          <input type="text" id="primaryContact" value="Jason Perkins, Vice President, Technology" />
+        </div>
+        <div class="field">
+          <label for="meetingGoal">Working Goal for This Meeting</label>
+          <input type="text" id="meetingGoal" value="Identify a right-fit AI Studio project from CMC’s current AI opportunities or adjacent needs that can be scoped to a 16-week pilot semester." />
+        </div>
+      </div>
+      <span class="help-text">This page is preloaded based on the email thread, but everything is editable live.</span>
+    </section>
+
+    <section class="section">
+      <button class="section-toggle" type="button" id="toggle-context" aria-expanded="true" aria-controls="panel-context">
+        <span class="toggle-copy">
+          <span>📌 Partnership Context</span>
+          <span class="toggle-sub">Anchor the meeting in what was already discussed over email</span>
+        </span>
+        <span class="chevron" aria-hidden="true">▾</span>
+      </button>
+      <div class="section-panel compact" id="panel-context" role="region" aria-labelledby="toggle-context">
+        <div class="field">
+          <label for="contextSummary">Pre-meeting context summary</label>
+          <textarea id="contextSummary">CMC expressed interest in participating, wants to ensure strong fit, has several AI projects already in the mix, and is open to reviewing whether the best next discussion should involve sponsor-level leadership only or additional technical team members. NKU is treating this as a selective pilot with a controlled number of high-value projects.</textarea>
+        </div>
       </div>
     </section>
 
     <section class="section">
-      <button
-        class="section-toggle"
-        type="button"
-        id="toggle-strategic"
-        aria-expanded="true"
-        aria-controls="panel-strategic"
-      >
+      <button class="section-toggle" type="button" id="toggle-strategic" aria-expanded="true" aria-controls="panel-strategic">
         <span class="toggle-copy">
           <span>🎯 Strategic Priorities</span>
-          <span class="toggle-sub">What matters most to them right now?</span>
+          <span class="toggle-sub">What matters most to CMC right now?</span>
         </span>
         <span class="chevron" aria-hidden="true">▾</span>
       </button>
       <div class="section-panel compact" id="panel-strategic" role="region" aria-labelledby="toggle-strategic">
         <div class="field">
           <label for="strategicPriorities">Current priorities, challenges, or initiatives</label>
-          <textarea id="strategicPriorities" placeholder="Example: visitor engagement, archive access, internal workflows, educational programming, analytics needs..."></textarea>
+          <textarea id="strategicPriorities" placeholder="Example: guest experience, collections access, educational programming, donor engagement, internal workflows, search, analytics, staff efficiency..."></textarea>
         </div>
       </div>
     </section>
 
     <section class="section">
-      <button
-        class="section-toggle"
-        type="button"
-        id="toggle-opportunity"
-        aria-expanded="true"
-        aria-controls="panel-opportunity"
-      >
+      <button class="section-toggle" type="button" id="toggle-opportunity" aria-expanded="true" aria-controls="panel-opportunity">
         <span class="toggle-copy">
           <span>🧠 Opportunity Area</span>
-          <span class="toggle-sub">Choose the best-fit lane for the project</span>
+          <span class="toggle-sub">Where does the project naturally fit?</span>
         </span>
         <span class="chevron" aria-hidden="true">▾</span>
       </button>
@@ -552,92 +551,92 @@
             <label class="check-item"><input type="checkbox" id="oppVisitor"> <span>Visitor Experience</span></label>
             <label class="check-item"><input type="checkbox" id="oppOperations"> <span>Internal Operations</span></label>
             <label class="check-item"><input type="checkbox" id="oppData"> <span>Data & Insights</span></label>
+            <label class="check-item"><input type="checkbox" id="oppEducation"> <span>Education / Informal Learning</span></label>
+            <label class="check-item"><input type="checkbox" id="oppCollections"> <span>Collections / Archive Access</span></label>
             <label class="check-item"><input type="checkbox" id="oppUnsure"> <span>Not Sure Yet</span></label>
           </div>
         </div>
 
         <div class="field">
           <label for="opportunityNotes">What stood out most in this discussion?</label>
-          <textarea id="opportunityNotes" placeholder="Capture the strongest direction and why it seems promising."></textarea>
+          <textarea id="opportunityNotes" placeholder="Capture the strongest opportunity area and why it feels like the best fit."></textarea>
         </div>
       </div>
     </section>
 
     <section class="section">
-      <button
-        class="section-toggle"
-        type="button"
-        id="toggle-problem"
-        aria-expanded="true"
-        aria-controls="panel-problem"
-      >
+      <button class="section-toggle" type="button" id="toggle-problem" aria-expanded="true" aria-controls="panel-problem">
         <span class="toggle-copy">
           <span>💡 Problem Definition</span>
-          <span class="toggle-sub">Turn the conversation into a clear problem statement</span>
+          <span class="toggle-sub">Turn the conversation into a clear project problem</span>
         </span>
         <span class="chevron" aria-hidden="true">▾</span>
       </button>
       <div class="section-panel" id="panel-problem" role="region" aria-labelledby="toggle-problem">
         <div class="field">
           <label for="problemStatement">Problem statement</label>
-          <textarea id="problemStatement" placeholder="What problem are we actually solving?"></textarea>
+          <textarea id="problemStatement" placeholder="What problem are we solving?"></textarea>
         </div>
-
         <div class="field">
           <label for="whyItMatters">Why this matters now</label>
-          <textarea id="whyItMatters" placeholder="Why is this a priority? What happens if it remains unsolved?"></textarea>
+          <textarea id="whyItMatters" placeholder="Why is this important for CMC right now? What happens if it stays unsolved?"></textarea>
         </div>
       </div>
     </section>
 
     <section class="section">
-      <button
-        class="section-toggle"
-        type="button"
-        id="toggle-ideas"
-        aria-expanded="true"
-        aria-controls="panel-ideas"
-      >
+      <button class="section-toggle" type="button" id="toggle-existing" aria-expanded="true" aria-controls="panel-existing">
         <span class="toggle-copy">
-          <span>🚀 Project Ideas</span>
-          <span class="toggle-sub">Capture one or two realistic project directions</span>
+          <span>🗂 Existing AI Project Inventory</span>
+          <span class="toggle-sub">Use this to learn what CMC already has “in the mix”</span>
+        </span>
+        <span class="chevron" aria-hidden="true">▾</span>
+      </button>
+      <div class="section-panel" id="panel-existing" role="region" aria-labelledby="toggle-existing">
+        <div class="field">
+          <label for="existingProjects">Existing AI projects or concepts already under consideration</label>
+          <textarea id="existingProjects" placeholder="List anything Jason or the team shares that is already under review internally."></textarea>
+        </div>
+        <div class="field">
+          <label for="gapsAndAdjacencies">Gaps, adjacent ideas, or areas where NKU students might add value</label>
+          <textarea id="gapsAndAdjacencies" placeholder="What seems too large, too internal, too early, or too narrow? Where could a scoped student prototype create real value?"></textarea>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <button class="section-toggle" type="button" id="toggle-ideas" aria-expanded="true" aria-controls="panel-ideas">
+        <span class="toggle-copy">
+          <span>🚀 Project Concepts</span>
+          <span class="toggle-sub">Capture one or two realistic, semester-sized options</span>
         </span>
         <span class="chevron" aria-hidden="true">▾</span>
       </button>
       <div class="section-panel" id="panel-ideas" role="region" aria-labelledby="toggle-ideas">
         <div class="field">
           <label for="idea1Title">Idea #1 title</label>
-          <input type="text" id="idea1Title" placeholder="Example: AI Visitor Guide" />
+          <input type="text" id="idea1Title" value="AI-assisted access to museum knowledge or content" />
         </div>
-
         <div class="field">
           <label for="idea1Desc">Idea #1 description</label>
-          <textarea id="idea1Desc" placeholder="What could this look like as a scoped semester project?"></textarea>
+          <textarea id="idea1Desc">A focused prototype that helps users or staff find and interact with museum information more efficiently, using a limited, approved content set and a clearly defined audience.</textarea>
         </div>
-
         <div class="field">
           <label for="idea2Title">Idea #2 title</label>
-          <input type="text" id="idea2Title" placeholder="Optional second option" />
+          <input type="text" id="idea2Title" value="Visitor or staff workflow support prototype" />
         </div>
-
         <div class="field">
           <label for="idea2Desc">Idea #2 description</label>
-          <textarea id="idea2Desc" placeholder="Optional alternate direction"></textarea>
+          <textarea id="idea2Desc">A scoped AI prototype that supports a repeatable internal or visitor-facing workflow, designed as a pilot proof of concept rather than a full enterprise deployment.</textarea>
         </div>
       </div>
     </section>
 
     <section class="section">
-      <button
-        class="section-toggle"
-        type="button"
-        id="toggle-data"
-        aria-expanded="true"
-        aria-controls="panel-data"
-      >
+      <button class="section-toggle" type="button" id="toggle-data" aria-expanded="true" aria-controls="panel-data">
         <span class="toggle-copy">
           <span>📊 Data & Feasibility</span>
-          <span class="toggle-sub">Can this actually be built within the semester?</span>
+          <span class="toggle-sub">What content can students realistically work with?</span>
         </span>
         <span class="chevron" aria-hidden="true">▾</span>
       </button>
@@ -645,49 +644,51 @@
         <div class="field">
           <label>Data or content available</label>
           <div class="checkbox-stack">
-            <label class="check-item"><input type="checkbox" id="dataDocuments"> <span>Documents</span></label>
-            <label class="check-item"><input type="checkbox" id="dataArchives"> <span>Archives</span></label>
-            <label class="check-item"><input type="checkbox" id="dataVisitor"> <span>Visitor Data</span></label>
+            <label class="check-item"><input type="checkbox" id="dataDocuments"> <span>Documents / Policies / Internal Knowledge</span></label>
+            <label class="check-item"><input type="checkbox" id="dataArchives"> <span>Archives / Collections Metadata</span></label>
+            <label class="check-item"><input type="checkbox" id="dataVisitor"> <span>Visitor / Engagement Data</span></label>
+            <label class="check-item"><input type="checkbox" id="dataExhibits"> <span>Exhibit / Program Content</span></label>
             <label class="check-item"><input type="checkbox" id="dataOtherCheck"> <span>Other</span></label>
           </div>
         </div>
-
         <div class="field">
           <label for="dataOtherText">Other data or content</label>
           <input type="text" id="dataOtherText" placeholder="Optional" />
         </div>
-
         <div class="field">
           <label for="dataAccess">Data access and feasibility notes</label>
-          <textarea id="dataAccess" placeholder="What is accessible, what needs approval, and what might limit scope?"></textarea>
+          <textarea id="dataAccess" placeholder="What is accessible? What needs approval? What can be safely shared with a student team?"></textarea>
         </div>
       </div>
     </section>
 
     <section class="section">
-      <button
-        class="section-toggle"
-        type="button"
-        id="toggle-collab"
-        aria-expanded="true"
-        aria-controls="panel-collab"
-      >
+      <button class="section-toggle" type="button" id="toggle-collab" aria-expanded="true" aria-controls="panel-collab">
         <span class="toggle-copy">
-          <span>🧑‍🤝‍🧑 Collaboration</span>
-          <span class="toggle-sub">Who is involved, and how available are they?</span>
+          <span>🧑‍🤝‍🧑 Collaboration Model</span>
+          <span class="toggle-sub">Who should be involved from CMC?</span>
         </span>
         <span class="chevron" aria-hidden="true">▾</span>
       </button>
       <div class="section-panel" id="panel-collab" role="region" aria-labelledby="toggle-collab">
         <div class="field">
           <label for="stakeholders">Stakeholders</label>
-          <textarea id="stakeholders" placeholder="Teams, users, sponsors, decision-makers, and the likely main point of contact"></textarea>
+          <textarea id="stakeholders" placeholder="List sponsor-level contacts, technical team members, end users, and decision makers."></textarea>
         </div>
-
         <div class="field">
-          <label for="checkInAvailability">Check-in availability</label>
+          <label for="teamStructure">Best initial meeting structure</label>
+          <select id="teamStructure">
+            <option>Sponsor only</option>
+            <option>Sponsor + technical team</option>
+            <option>Technical team only</option>
+            <option>Needs discussion</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="checkInAvailability">Check-in availability during the semester</label>
           <select id="checkInAvailability">
             <option>Yes (biweekly)</option>
+            <option>Monthly only</option>
             <option>Maybe</option>
             <option>Needs discussion</option>
           </select>
@@ -696,60 +697,42 @@
     </section>
 
     <section class="section">
-      <button
-        class="section-toggle"
-        type="button"
-        id="toggle-success"
-        aria-expanded="true"
-        aria-controls="panel-success"
-      >
+      <button class="section-toggle" type="button" id="toggle-success" aria-expanded="true" aria-controls="panel-success">
         <span class="toggle-copy">
           <span>🎯 Success Definition</span>
-          <span class="toggle-sub">What does a successful December outcome look like?</span>
+          <span class="toggle-sub">What would make this feel successful by December?</span>
         </span>
         <span class="chevron" aria-hidden="true">▾</span>
       </button>
       <div class="section-panel compact" id="panel-success" role="region" aria-labelledby="toggle-success">
         <div class="field">
           <label for="successDefinition">Definition of success</label>
-          <textarea id="successDefinition" placeholder="How would they define success by the end of the semester?"></textarea>
+          <textarea id="successDefinition" placeholder="How would CMC define a valuable end-of-semester outcome?"></textarea>
         </div>
       </div>
     </section>
 
     <section class="section">
-      <button
-        class="section-toggle"
-        type="button"
-        id="toggle-fit"
-        aria-expanded="true"
-        aria-controls="panel-fit"
-      >
+      <button class="section-toggle" type="button" id="toggle-fit" aria-expanded="true" aria-controls="panel-fit">
         <span class="toggle-copy">
-          <span>⚖️ Project Fit Check</span>
-          <span class="toggle-sub">Quick feasibility checkpoint</span>
+          <span>⚖️ Fit Check for the Pilot</span>
+          <span class="toggle-sub">Quick checkpoint against the pilot-course model</span>
         </span>
         <span class="chevron" aria-hidden="true">▾</span>
       </button>
       <div class="section-panel" id="panel-fit" role="region" aria-labelledby="toggle-fit">
         <div class="checkbox-stack">
-          <label class="check-item"><input type="checkbox" id="fitProblem"> <span>Clear Problem</span></label>
-          <label class="check-item"><input type="checkbox" id="fitTimeline"> <span>Feasible in 16 Weeks</span></label>
-          <label class="check-item"><input type="checkbox" id="fitData"> <span>Data Available</span></label>
-          <label class="check-item"><input type="checkbox" id="fitStakeholder"> <span>Stakeholder Support</span></label>
-          <label class="check-item"><input type="checkbox" id="fitValue"> <span>High Value Outcome</span></label>
+          <label class="check-item"><input type="checkbox" id="fitProblem"> <span>Clear problem</span></label>
+          <label class="check-item"><input type="checkbox" id="fitTimeline"> <span>Feasible in 16 weeks</span></label>
+          <label class="check-item"><input type="checkbox" id="fitData"> <span>Data available or obtainable</span></label>
+          <label class="check-item"><input type="checkbox" id="fitStakeholder"> <span>Stakeholder support</span></label>
+          <label class="check-item"><input type="checkbox" id="fitValue"> <span>High-value outcome for a selective pilot</span></label>
         </div>
       </div>
     </section>
 
     <section class="section">
-      <button
-        class="section-toggle"
-        type="button"
-        id="toggle-next"
-        aria-expanded="true"
-        aria-controls="panel-next"
-      >
+      <button class="section-toggle" type="button" id="toggle-next" aria-expanded="true" aria-controls="panel-next">
         <span class="toggle-copy">
           <span>🧾 Next Steps</span>
           <span class="toggle-sub">What should happen after the meeting?</span>
@@ -759,50 +742,38 @@
       <div class="section-panel compact" id="panel-next" role="region" aria-labelledby="toggle-next">
         <div class="field">
           <label for="nextSteps">Agreed next steps</label>
-          <textarea id="nextSteps" placeholder="Example: confirm contact, review data access, draft 1–2 scoped concepts, send follow-up by..."></textarea>
+          <textarea id="nextSteps">Confirm preferred project direction, identify the right CMC contacts for continued discovery, verify what data/content can be shared, and prepare a scoped follow-up proposal from NKU.</textarea>
         </div>
       </div>
     </section>
 
     <section class="section">
-      <button
-        class="section-toggle"
-        type="button"
-        id="toggle-live"
-        aria-expanded="true"
-        aria-controls="panel-live"
-      >
+      <button class="section-toggle" type="button" id="toggle-live" aria-expanded="true" aria-controls="panel-live">
         <span class="toggle-copy">
           <span>🧠 Live Notes</span>
-          <span class="toggle-sub">Anything important that does not fit neatly elsewhere</span>
+          <span class="toggle-sub">Capture quotes, constraints, opportunities, and instincts</span>
         </span>
         <span class="chevron" aria-hidden="true">▾</span>
       </button>
       <div class="section-panel" id="panel-live" role="region" aria-labelledby="toggle-live">
         <div class="field">
           <label for="liveNotes">Live notes</label>
-          <textarea id="liveNotes" style="min-height:180px;" placeholder="Capture key quotes, constraints, red flags, energy, opportunities, or follow-up items."></textarea>
+          <textarea id="liveNotes" style="min-height:180px;" placeholder="Type live notes here during the meeting."></textarea>
         </div>
       </div>
     </section>
 
     <section class="section">
-      <button
-        class="section-toggle"
-        type="button"
-        id="toggle-generated"
-        aria-expanded="true"
-        aria-controls="panel-generated"
-      >
+      <button class="section-toggle" type="button" id="toggle-generated" aria-expanded="true" aria-controls="panel-generated">
         <span class="toggle-copy">
           <span>📄 Generated Project Scope</span>
-          <span class="toggle-sub">Use near the end of the meeting or right after</span>
+          <span class="toggle-sub">Build a draft scope summary from the notes above</span>
         </span>
         <span class="chevron" aria-hidden="true">▾</span>
       </button>
       <div class="section-panel" id="panel-generated" role="region" aria-labelledby="toggle-generated">
         <div id="generatedScope" class="generated-box" aria-live="polite">Your generated project scope will appear here.</div>
-        <div class="note">Tip: generate this near the end of the meeting, then copy it into a follow-up email or proposal draft.</div>
+        <div class="note">Tip: Generate this near the end of the meeting, then copy it into a follow-up email or proposal draft.</div>
       </div>
     </section>
 
@@ -811,19 +782,21 @@
         <button class="btn btn-primary" type="button" id="meetingModeBtn">Enable Meeting Mode</button>
         <button class="btn btn-soft" type="button" id="expandAllBtn">Expand All</button>
         <button class="btn btn-soft" type="button" id="collapseAllBtn">Collapse All</button>
-        <button class="btn btn-accent" type="button" id="generateBtn">Generate Project Scope</button>
+        <button class="btn btn-gold" type="button" id="generateBtn">Generate Project Scope</button>
         <button class="btn btn-dark" type="button" id="copyBtn">Copy Scope</button>
         <button class="btn btn-dark" type="button" id="downloadBtn">Download Notes</button>
         <button class="btn btn-soft" type="button" id="printBtn">Print / Save PDF</button>
         <button class="btn btn-danger" type="button" id="clearBtn">Clear All</button>
       </div>
     </div>
+
+    <div class="footer-space"></div>
   </main>
 
   <script>
-    const STORAGE_KEY = "ai_studio_project_discovery_form_v3";
-    const GENERATED_SCOPE_KEY = "ai_studio_project_discovery_generated_scope_v3";
-    const MEETING_MODE_KEY = "ai_studio_project_discovery_meeting_mode_v3";
+    const STORAGE_KEY = "nku_cmc_ai_studio_discovery_form_v1";
+    const GENERATED_SCOPE_KEY = "nku_cmc_ai_studio_generated_scope_v1";
+    const MEETING_MODE_KEY = "nku_cmc_ai_studio_meeting_mode_v1";
     const SAVE_DELAY = 500;
     let saveTimer = null;
 
@@ -831,8 +804,7 @@
     const formFields = Array.from(document.querySelectorAll("input, textarea, select"));
 
     function setStatus(message) {
-      const status = document.getElementById("saveStatus");
-      status.textContent = message;
+      document.getElementById("saveStatus").textContent = message;
     }
 
     function getTimeStamp() {
@@ -841,33 +813,30 @@
 
     function updateProgress() {
       const relevantIds = [
-        "meetingDate", "organization", "primaryContact", "meetingGoal",
-        "strategicPriorities", "opportunityNotes", "problemStatement", "whyItMatters",
-        "idea1Title", "idea1Desc", "dataAccess", "stakeholders", "successDefinition",
-        "nextSteps", "liveNotes"
+        "meetingDate","organization","primaryContact","meetingGoal","contextSummary",
+        "strategicPriorities","opportunityNotes","problemStatement","whyItMatters",
+        "existingProjects","gapsAndAdjacencies","idea1Title","idea1Desc","idea2Title","idea2Desc",
+        "dataAccess","stakeholders","successDefinition","nextSteps","liveNotes"
       ];
 
       let completed = 0;
-
       relevantIds.forEach(id => {
         const el = document.getElementById(id);
-        if (!el) return;
-        if ((el.value || "").trim()) completed += 1;
+        if (el && (el.value || "").trim()) completed += 1;
       });
 
       const checkboxGroups = [
-        ["oppVisitor", "oppOperations", "oppData", "oppUnsure"],
-        ["dataDocuments", "dataArchives", "dataVisitor", "dataOtherCheck"],
-        ["fitProblem", "fitTimeline", "fitData", "fitStakeholder", "fitValue"]
+        ["oppVisitor","oppOperations","oppData","oppEducation","oppCollections","oppUnsure"],
+        ["dataDocuments","dataArchives","dataVisitor","dataExhibits","dataOtherCheck"],
+        ["fitProblem","fitTimeline","fitData","fitStakeholder","fitValue"]
       ];
 
       checkboxGroups.forEach(group => {
-        if (group.some(id => document.getElementById(id).checked)) completed += 1;
+        if (group.some(id => document.getElementById(id)?.checked)) completed += 1;
       });
 
       const total = relevantIds.length + checkboxGroups.length;
       const pct = Math.round((completed / total) * 100);
-
       document.getElementById("progressFill").style.width = pct + "%";
       document.getElementById("progressText").textContent = pct + "% complete";
     }
@@ -905,7 +874,6 @@
         updateProgress();
         return;
       }
-
       try {
         const data = JSON.parse(saved);
         formFields.forEach(field => {
@@ -925,13 +893,11 @@
     }
 
     function getCheckedLabels(items) {
-      return items
-        .filter(item => document.getElementById(item.id).checked)
-        .map(item => item.label);
+      return items.filter(item => document.getElementById(item.id)?.checked).map(item => item.label);
     }
 
     function yesNo(id) {
-      return document.getElementById(id).checked ? "Yes" : "No";
+      return document.getElementById(id)?.checked ? "Yes" : "No";
     }
 
     function safeValue(id, fallback = "Not yet specified") {
@@ -965,7 +931,6 @@
         const panelId = btn.getAttribute("aria-controls");
         const isGenerated = panelId === "panel-generated";
         if (exceptGenerated && isGenerated) return;
-
         const panel = document.getElementById(panelId);
         btn.setAttribute("aria-expanded", "false");
         panel.hidden = true;
@@ -984,12 +949,11 @@
     function applyMeetingMode(enabled) {
       document.body.classList.toggle("meeting-mode", enabled);
       localStorage.setItem(MEETING_MODE_KEY, String(enabled));
-
       const btn = document.getElementById("meetingModeBtn");
       if (enabled) {
         collapseAllSections(true);
-        const firstBtn = document.getElementById("toggle-strategic");
-        const firstPanel = document.getElementById("panel-strategic");
+        const firstBtn = document.getElementById("toggle-context");
+        const firstPanel = document.getElementById("panel-context");
         firstBtn.setAttribute("aria-expanded", "true");
         firstPanel.hidden = false;
         firstBtn.querySelector(".chevron").textContent = "▾";
@@ -1016,10 +980,13 @@
       const organization = safeValue("organization");
       const primaryContact = safeValue("primaryContact");
       const meetingGoal = safeValue("meetingGoal");
+      const contextSummary = safeValue("contextSummary");
       const strategicPriorities = safeValue("strategicPriorities");
       const opportunityNotes = safeValue("opportunityNotes");
       const problemStatement = safeValue("problemStatement");
       const whyItMatters = safeValue("whyItMatters");
+      const existingProjects = safeValue("existingProjects");
+      const gapsAndAdjacencies = safeValue("gapsAndAdjacencies");
       const idea1Title = safeValue("idea1Title");
       const idea1Desc = safeValue("idea1Desc");
       const idea2Title = safeValue("idea2Title", "");
@@ -1027,6 +994,7 @@
       const dataAccess = safeValue("dataAccess");
       const dataOtherText = safeValue("dataOtherText", "");
       const stakeholders = safeValue("stakeholders");
+      const teamStructure = safeValue("teamStructure");
       const checkInAvailability = safeValue("checkInAvailability");
       const successDefinition = safeValue("successDefinition");
       const nextSteps = safeValue("nextSteps");
@@ -1036,18 +1004,21 @@
         { id: "oppVisitor", label: "Visitor Experience" },
         { id: "oppOperations", label: "Internal Operations" },
         { id: "oppData", label: "Data & Insights" },
+        { id: "oppEducation", label: "Education / Informal Learning" },
+        { id: "oppCollections", label: "Collections / Archive Access" },
         { id: "oppUnsure", label: "Not Sure Yet" }
       ]);
 
       const dataSources = getCheckedLabels([
-        { id: "dataDocuments", label: "Documents" },
-        { id: "dataArchives", label: "Archives" },
-        { id: "dataVisitor", label: "Visitor Data" },
+        { id: "dataDocuments", label: "Documents / Policies / Internal Knowledge" },
+        { id: "dataArchives", label: "Archives / Collections Metadata" },
+        { id: "dataVisitor", label: "Visitor / Engagement Data" },
+        { id: "dataExhibits", label: "Exhibit / Program Content" },
         { id: "dataOtherCheck", label: "Other" }
       ]);
 
       let dataSourceText = dataSources.length ? dataSources.join(", ") : "Not yet specified";
-      if (document.getElementById("dataOtherCheck").checked && dataOtherText !== "") {
+      if (document.getElementById("dataOtherCheck")?.checked && dataOtherText !== "") {
         dataSourceText += ` (${dataOtherText})`;
       }
 
@@ -1070,7 +1041,7 @@ Secondary Project Concept:
       }
 
       const scopeText =
-`AI Studio Partnership Discovery Summary
+`NKU AI Studio Partnership Discovery Summary
 ${organization}
 Meeting Date: ${meetingDate}
 Primary Contact: ${primaryContact}
@@ -1078,50 +1049,62 @@ Primary Contact: ${primaryContact}
 Meeting Goal
 ${meetingGoal}
 
-1. Strategic Priorities
+1. Partnership Context from Pre-Meeting Discussion
+${contextSummary}
+
+2. Strategic Priorities
 ${strategicPriorities}
 
-2. Opportunity Area
+3. Opportunity Area
 ${opportunityAreas.length ? opportunityAreas.join(", ") : "Not yet specified"}
 
 Discussion Notes:
 ${opportunityNotes}
 
-3. Problem Statement
+4. Problem Statement
 ${problemStatement}
 
-4. Why This Matters
+5. Why This Matters
 ${whyItMatters}
 
-5. Potential Project Scope
+6. Existing CMC AI Project Inventory
+${existingProjects}
+
+Gaps / Adjacencies / Right-Fit Opportunity for NKU:
+${gapsAndAdjacencies}
+
+7. Potential Project Scope
 ${projectOptions}
 
-6. Data / Content Available
+8. Data / Content Available
 ${dataSourceText}
 
 Data Access + Feasibility Notes:
 ${dataAccess}
 
-7. Stakeholders / Collaboration
+9. Stakeholders / Collaboration
 ${stakeholders}
+
+Preferred Initial Team Structure:
+${teamStructure}
 
 Check-in Availability:
 ${checkInAvailability}
 
-8. Definition of Success
+10. Definition of Success
 ${successDefinition}
 
-9. Project Fit Check
+11. Pilot Fit Check
 ${fitSummary}
 
-10. Recommended Next Steps
+12. Recommended Next Steps
 ${nextSteps}
 
-11. Additional Live Notes
+13. Additional Live Notes
 ${liveNotes}
 
 Draft Framing Statement
-This potential AI Studio project would involve a focused student team at Northern Kentucky University working over a 16-week fall semester to explore, design, and develop a meaningful prototype aligned to ${organization}'s needs. The goal would be to define a clear, feasible problem, work with available data or content, engage appropriate stakeholders, and deliver a valuable final prototype, documentation, and presentation by the end of the term.`;
+This potential AI Studio engagement would involve a focused Northern Kentucky University student team working over a 16-week fall semester to explore, design, and develop a meaningful prototype aligned to ${organization}'s needs. The recommendation would be to prioritize a right-fit project for the pilot: clearly scoped, feasible within the semester, supported by appropriate stakeholders, and valuable enough to demonstrate what a long-term NKU × CMC collaboration could become.`;
 
       document.getElementById("generatedScope").textContent = scopeText;
       saveGeneratedScope(scopeText);
@@ -1147,12 +1130,11 @@ This potential AI Studio project would involve a focused student team at Norther
 
     function downloadNotes() {
       const scopeText = document.getElementById("generatedScope").textContent;
-      const filename = "ai-studio-project-discovery-notes.txt";
       const blob = new Blob([scopeText], { type: "text/plain;charset=utf-8" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = filename;
+      a.download = "nku-cmc-ai-studio-discovery-notes.txt";
       document.body.appendChild(a);
       a.click();
       a.remove();
@@ -1165,17 +1147,21 @@ This potential AI Studio project would involve a focused student team at Norther
       if (!confirmed) return;
 
       formFields.forEach(field => {
-        if (field.type === "checkbox") {
-          field.checked = false;
-        } else if (field.tagName === "SELECT") {
-          field.selectedIndex = 0;
-        } else {
-          field.value = "";
-        }
+        if (field.type === "checkbox") field.checked = false;
+        else if (field.tagName === "SELECT") field.selectedIndex = 0;
+        else field.value = "";
       });
 
+      document.getElementById("meetingDate").value = "April 6, 2026";
       document.getElementById("organization").value = "Cincinnati Museum Center";
-      document.getElementById("meetingGoal").value = "Identify a feasible, high-impact AI Studio project for a 16-week fall semester.";
+      document.getElementById("primaryContact").value = "Jason Perkins, Vice President, Technology";
+      document.getElementById("meetingGoal").value = "Identify a right-fit AI Studio project from CMC’s current AI opportunities or adjacent needs that can be scoped to a 16-week pilot semester.";
+      document.getElementById("contextSummary").value = "CMC expressed interest in participating, wants to ensure strong fit, has several AI projects already in the mix, and is open to reviewing whether the best next discussion should involve sponsor-level leadership only or additional technical team members. NKU is treating this as a selective pilot with a controlled number of high-value projects.";
+      document.getElementById("idea1Title").value = "AI-assisted access to museum knowledge or content";
+      document.getElementById("idea1Desc").value = "A focused prototype that helps users or staff find and interact with museum information more efficiently, using a limited, approved content set and a clearly defined audience.";
+      document.getElementById("idea2Title").value = "Visitor or staff workflow support prototype";
+      document.getElementById("idea2Desc").value = "A scoped AI prototype that supports a repeatable internal or visitor-facing workflow, designed as a pilot proof of concept rather than a full enterprise deployment.";
+      document.getElementById("nextSteps").value = "Confirm preferred project direction, identify the right CMC contacts for continued discovery, verify what data/content can be shared, and prepare a scoped follow-up proposal from NKU.";
       document.getElementById("generatedScope").textContent = "Your generated project scope will appear here.";
 
       localStorage.removeItem(STORAGE_KEY);
