@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>NKU AI Studio | CMC Project Discovery</title>
+  <title>NKU AI Studio | CMC Project Discovery Navigator</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     :root{
@@ -423,10 +423,157 @@
       height: 18px;
     }
 
+    
+    .quick-nav{
+      position: sticky;
+      top: 82px;
+      z-index: 900;
+      margin: 0 0 16px;
+    }
+
+    .quick-nav-inner{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      align-items:center;
+      background: rgba(255,255,255,0.96);
+      border:1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      padding: 10px;
+      backdrop-filter: blur(8px);
+    }
+
+    .quick-nav-label{
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--gold-deep);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-right: 4px;
+    }
+
+    .quick-link{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding: 8px 10px;
+      border-radius: 999px;
+      text-decoration:none;
+      font-size: 12px;
+      font-weight: 700;
+      color: #3b3423;
+      background: #f7f2df;
+      border: 1px solid #e6dbb6;
+    }
+
+    .quick-link:hover{
+      background:#efe6c6;
+    }
+
+    .mini-actions{
+      margin-left:auto;
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .mini-btn{
+      border:none;
+      border-radius: 10px;
+      padding: 8px 10px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor:pointer;
+      background:#f3eed8;
+      color:#3d3521;
+    }
+
+    .mini-btn:hover{ opacity:.94; }
+
+    .section-anchor{
+      scroll-margin-top: 155px;
+    }
+
+    .section-header-row{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom: 10px;
+    }
+
+    .section-badge{
+      display:inline-flex;
+      align-items:center;
+      padding: 5px 9px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      background:#f5efd8;
+      border:1px solid #e2d6ad;
+      color:#5a4d21;
+    }
+
+    .contact-grid{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap:16px;
+    }
+
+    .contact-card{
+      background: #fffef8;
+      border: 1px solid #e3d9b5;
+      border-radius: 14px;
+      padding: 14px;
+    }
+
+    .contact-card h3{
+      margin:0 0 10px;
+      font-size: 16px;
+      color:#222;
+    }
+
+    .contact-card .field{
+      margin-bottom: 10px;
+    }
+
+    .meeting-snapshot{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:12px;
+      margin-top: 14px;
+    }
+
+    .snapshot-item{
+      background:#fffef8;
+      border:1px solid #e2d7b1;
+      border-radius: 14px;
+      padding: 12px;
+    }
+
+    .snapshot-label{
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--gold-deep);
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .snapshot-value{
+      font-size: 14px;
+      color:#222;
+      font-weight:700;
+    }
+
     @media (max-width: 860px){
       .grid-2{ grid-template-columns: 1fr; }
+      .contact-grid{ grid-template-columns: 1fr; }
+      .meeting-snapshot{ grid-template-columns: 1fr; }
       .status-wrap{ align-items:flex-start; }
       .topbar-inner{ align-items:flex-start; }
+      .quick-nav{ top: 76px; }
     }
 
     @media print{
@@ -468,9 +615,46 @@
         <span class="pill">Autosave</span>
         <span class="pill">Scope Generator</span>
       </div>
+    
+    <nav class="quick-nav" aria-label="Quick navigation">
+      <div class="quick-nav-inner">
+        <span class="quick-nav-label">Jump to</span>
+        <a class="quick-link" href="#meeting-overview">Overview</a>
+        <a class="quick-link" href="#partnership-context">Context</a>
+        <a class="quick-link" href="#strategic-priorities">Priorities</a>
+        <a class="quick-link" href="#existing-ai-projects">AI Inventory</a>
+        <a class="quick-link" href="#contact-directory">Contacts</a>
+        <a class="quick-link" href="#project-scope-output">Scope</a>
+        <div class="mini-actions">
+          <button class="mini-btn" type="button" id="jumpNotesBtn">Jump to Notes</button>
+          <button class="mini-btn" type="button" id="jumpScopeBtn">Jump to Scope</button>
+        </div>
+      </div>
+    </nav>
+
+    <section class="card section-anchor" id="meeting-overview">
+      <div class="section-header-row">
+        <span class="section-badge">Fast navigation</span>
+        <span class="section-badge">Live meeting summary</span>
+      </div>
+      <div class="meeting-snapshot">
+        <div class="snapshot-item">
+          <div class="snapshot-label">Primary contact</div>
+          <div class="snapshot-value" id="snapshotPrimaryContact">Jason Perkins, Vice President, Technology</div>
+        </div>
+        <div class="snapshot-item">
+          <div class="snapshot-label">Best-fit opportunity</div>
+          <div class="snapshot-value" id="snapshotOpportunity">Not selected yet</div>
+        </div>
+        <div class="snapshot-item">
+          <div class="snapshot-label">Preferred next step</div>
+          <div class="snapshot-value" id="snapshotNextStep">To be captured during the meeting</div>
+        </div>
+      </div>
+      <span class="help-text">These summary fields update automatically as you type so you can glance at the current story of the meeting.</span>
     </section>
 
-    <section class="callout">
+    <section class="callout section-anchor" id="email-context-callout">
       <h2>CMC-specific setup from the email thread</h2>
       <ul>
         <li>CMC said <strong>yes, they would like to participate</strong>.</li>
@@ -504,7 +688,7 @@
       <span class="help-text">This page is preloaded based on the email thread, but everything is editable live.</span>
     </section>
 
-    <section class="section">
+    <section class="section section-anchor" id="partnership-context">
       <button class="section-toggle" type="button" id="toggle-context" aria-expanded="true" aria-controls="panel-context">
         <span class="toggle-copy">
           <span>📌 Partnership Context</span>
@@ -520,7 +704,7 @@
       </div>
     </section>
 
-    <section class="section">
+    <section class="section section-anchor" id="strategic-priorities">
       <button class="section-toggle" type="button" id="toggle-strategic" aria-expanded="true" aria-controls="panel-strategic">
         <span class="toggle-copy">
           <span>🎯 Strategic Priorities</span>
@@ -536,7 +720,7 @@
       </div>
     </section>
 
-    <section class="section">
+    <section class="section section-anchor" id="opportunity-area">
       <button class="section-toggle" type="button" id="toggle-opportunity" aria-expanded="true" aria-controls="panel-opportunity">
         <span class="toggle-copy">
           <span>🧠 Opportunity Area</span>
@@ -564,7 +748,7 @@
       </div>
     </section>
 
-    <section class="section">
+    <section class="section section-anchor" id="problem-definition">
       <button class="section-toggle" type="button" id="toggle-problem" aria-expanded="true" aria-controls="panel-problem">
         <span class="toggle-copy">
           <span>💡 Problem Definition</span>
@@ -584,7 +768,7 @@
       </div>
     </section>
 
-    <section class="section">
+    <section class="section section-anchor" id="existing-ai-projects">
       <button class="section-toggle" type="button" id="toggle-existing" aria-expanded="true" aria-controls="panel-existing">
         <span class="toggle-copy">
           <span>🗂 Existing AI Project Inventory</span>
@@ -604,7 +788,7 @@
       </div>
     </section>
 
-    <section class="section">
+    <section class="section section-anchor" id="project-concepts">
       <button class="section-toggle" type="button" id="toggle-ideas" aria-expanded="true" aria-controls="panel-ideas">
         <span class="toggle-copy">
           <span>🚀 Project Concepts</span>
@@ -632,7 +816,7 @@
       </div>
     </section>
 
-    <section class="section">
+    <section class="section section-anchor" id="data-feasibility">
       <button class="section-toggle" type="button" id="toggle-data" aria-expanded="true" aria-controls="panel-data">
         <span class="toggle-copy">
           <span>📊 Data & Feasibility</span>
@@ -662,7 +846,7 @@
       </div>
     </section>
 
-    <section class="section">
+    <section class="section section-anchor" id="collaboration-model">
       <button class="section-toggle" type="button" id="toggle-collab" aria-expanded="true" aria-controls="panel-collab">
         <span class="toggle-copy">
           <span>🧑‍🤝‍🧑 Collaboration Model</span>
@@ -696,7 +880,7 @@
       </div>
     </section>
 
-    <section class="section">
+    <section class="section section-anchor" id="success-definition">
       <button class="section-toggle" type="button" id="toggle-success" aria-expanded="true" aria-controls="panel-success">
         <span class="toggle-copy">
           <span>🎯 Success Definition</span>
@@ -712,7 +896,7 @@
       </div>
     </section>
 
-    <section class="section">
+    <section class="section section-anchor" id="pilot-fit-check">
       <button class="section-toggle" type="button" id="toggle-fit" aria-expanded="true" aria-controls="panel-fit">
         <span class="toggle-copy">
           <span>⚖️ Fit Check for the Pilot</span>
@@ -731,7 +915,7 @@
       </div>
     </section>
 
-    <section class="section">
+    <section class="section section-anchor" id="next-steps-section">
       <button class="section-toggle" type="button" id="toggle-next" aria-expanded="true" aria-controls="panel-next">
         <span class="toggle-copy">
           <span>🧾 Next Steps</span>
@@ -747,7 +931,7 @@
       </div>
     </section>
 
-    <section class="section">
+    <section class="section section-anchor" id="live-notes-section">
       <button class="section-toggle" type="button" id="toggle-live" aria-expanded="true" aria-controls="panel-live">
         <span class="toggle-copy">
           <span>🧠 Live Notes</span>
@@ -763,7 +947,117 @@
       </div>
     </section>
 
-    <section class="section">
+    
+    <section class="section section-anchor" id="contact-directory">
+      <button class="section-toggle" type="button" id="toggle-contacts" aria-expanded="true" aria-controls="panel-contacts">
+        <span class="toggle-copy">
+          <span>👥 Team Contact Details</span>
+          <span class="toggle-sub">Capture sponsor, technical, and follow-up contacts from the meeting</span>
+        </span>
+        <span class="chevron" aria-hidden="true">▾</span>
+      </button>
+      <div class="section-panel" id="panel-contacts" role="region" aria-labelledby="toggle-contacts">
+        <div class="contact-grid">
+          <div class="contact-card">
+            <h3>Contact 1</h3>
+            <div class="field">
+              <label for="contact1Name">Name</label>
+              <input type="text" id="contact1Name" value="Jason Perkins" />
+            </div>
+            <div class="field">
+              <label for="contact1Title">Title</label>
+              <input type="text" id="contact1Title" value="Vice President, Technology" />
+            </div>
+            <div class="field">
+              <label for="contact1Email">Email</label>
+              <input type="text" id="contact1Email" placeholder="name@cincymuseum.org" />
+            </div>
+            <div class="field">
+              <label for="contact1Phone">Phone</label>
+              <input type="text" id="contact1Phone" placeholder="Optional" />
+            </div>
+            <div class="field">
+              <label for="contact1Role">Role in project</label>
+              <input type="text" id="contact1Role" value="Executive sponsor / primary technology contact" />
+            </div>
+          </div>
+
+          <div class="contact-card">
+            <h3>Contact 2</h3>
+            <div class="field">
+              <label for="contact2Name">Name</label>
+              <input type="text" id="contact2Name" placeholder="Add contact name" />
+            </div>
+            <div class="field">
+              <label for="contact2Title">Title</label>
+              <input type="text" id="contact2Title" placeholder="Add title" />
+            </div>
+            <div class="field">
+              <label for="contact2Email">Email</label>
+              <input type="text" id="contact2Email" placeholder="Add email" />
+            </div>
+            <div class="field">
+              <label for="contact2Phone">Phone</label>
+              <input type="text" id="contact2Phone" placeholder="Optional" />
+            </div>
+            <div class="field">
+              <label for="contact2Role">Role in project</label>
+              <input type="text" id="contact2Role" placeholder="Subject matter expert, data contact, end user, etc." />
+            </div>
+          </div>
+
+          <div class="contact-card">
+            <h3>Contact 3</h3>
+            <div class="field">
+              <label for="contact3Name">Name</label>
+              <input type="text" id="contact3Name" placeholder="Add contact name" />
+            </div>
+            <div class="field">
+              <label for="contact3Title">Title</label>
+              <input type="text" id="contact3Title" placeholder="Add title" />
+            </div>
+            <div class="field">
+              <label for="contact3Email">Email</label>
+              <input type="text" id="contact3Email" placeholder="Add email" />
+            </div>
+            <div class="field">
+              <label for="contact3Phone">Phone</label>
+              <input type="text" id="contact3Phone" placeholder="Optional" />
+            </div>
+            <div class="field">
+              <label for="contact3Role">Role in project</label>
+              <input type="text" id="contact3Role" placeholder="Technical lead, collections lead, stakeholder, etc." />
+            </div>
+          </div>
+
+          <div class="contact-card">
+            <h3>Contact 4 / Follow-up</h3>
+            <div class="field">
+              <label for="contact4Name">Name</label>
+              <input type="text" id="contact4Name" placeholder="Add contact name" />
+            </div>
+            <div class="field">
+              <label for="contact4Title">Title</label>
+              <input type="text" id="contact4Title" placeholder="Add title" />
+            </div>
+            <div class="field">
+              <label for="contact4Email">Email</label>
+              <input type="text" id="contact4Email" placeholder="Add email" />
+            </div>
+            <div class="field">
+              <label for="contact4Phone">Phone</label>
+              <input type="text" id="contact4Phone" placeholder="Optional" />
+            </div>
+            <div class="field">
+              <label for="contact4Role">Role in project</label>
+              <input type="text" id="contact4Role" placeholder="Follow-up owner, scheduling contact, or additional sponsor" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+<section class="section section-anchor" id="project-scope-output">
       <button class="section-toggle" type="button" id="toggle-generated" aria-expanded="true" aria-controls="panel-generated">
         <span class="toggle-copy">
           <span>📄 Generated Project Scope</span>
@@ -807,6 +1101,30 @@
       document.getElementById("saveStatus").textContent = message;
     }
 
+
+    function scrollToSection(id) {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function updateSnapshots() {
+      const primaryContact = safeValue("primaryContact", "Not captured yet");
+      document.getElementById("snapshotPrimaryContact").textContent = primaryContact;
+
+      const opps = getCheckedLabels([
+        { id: "oppVisitor", label: "Visitor Experience" },
+        { id: "oppOperations", label: "Internal Operations" },
+        { id: "oppData", label: "Data & Insights" },
+        { id: "oppEducation", label: "Education / Informal Learning" },
+        { id: "oppCollections", label: "Collections / Archive Access" },
+        { id: "oppUnsure", label: "Not Sure Yet" }
+      ]);
+      document.getElementById("snapshotOpportunity").textContent = opps.length ? opps.join(", ") : "Not selected yet";
+
+      const nextStep = safeValue("nextSteps", "To be captured during the meeting");
+      document.getElementById("snapshotNextStep").textContent = nextStep.length > 85 ? nextStep.slice(0, 85) + "..." : nextStep;
+    }
+
     function getTimeStamp() {
       return new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
     }
@@ -816,7 +1134,11 @@
         "meetingDate","organization","primaryContact","meetingGoal","contextSummary",
         "strategicPriorities","opportunityNotes","problemStatement","whyItMatters",
         "existingProjects","gapsAndAdjacencies","idea1Title","idea1Desc","idea2Title","idea2Desc",
-        "dataAccess","stakeholders","successDefinition","nextSteps","liveNotes"
+        "dataAccess","stakeholders","successDefinition","nextSteps","liveNotes",
+        "contact1Name","contact1Title","contact1Email","contact1Phone","contact1Role",
+        "contact2Name","contact2Title","contact2Email","contact2Phone","contact2Role",
+        "contact3Name","contact3Title","contact3Email","contact3Phone","contact3Role",
+        "contact4Name","contact4Title","contact4Email","contact4Phone","contact4Role"
       ];
 
       let completed = 0;
@@ -865,6 +1187,7 @@
       });
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
       updateProgress();
+      updateSnapshots();
       setStatus("Saved locally at " + getTimeStamp());
     }
 
@@ -885,6 +1208,7 @@
           }
         });
         updateProgress();
+        updateSnapshots();
         setStatus("Saved notes restored.");
       } catch (err) {
         console.error(err);
@@ -1000,6 +1324,41 @@
       const nextSteps = safeValue("nextSteps");
       const liveNotes = safeValue("liveNotes");
 
+      const contacts = [
+        {
+          name: safeValue("contact1Name", ""),
+          title: safeValue("contact1Title", ""),
+          email: safeValue("contact1Email", ""),
+          phone: safeValue("contact1Phone", ""),
+          role: safeValue("contact1Role", "")
+        },
+        {
+          name: safeValue("contact2Name", ""),
+          title: safeValue("contact2Title", ""),
+          email: safeValue("contact2Email", ""),
+          phone: safeValue("contact2Phone", ""),
+          role: safeValue("contact2Role", "")
+        },
+        {
+          name: safeValue("contact3Name", ""),
+          title: safeValue("contact3Title", ""),
+          email: safeValue("contact3Email", ""),
+          phone: safeValue("contact3Phone", ""),
+          role: safeValue("contact3Role", "")
+        },
+        {
+          name: safeValue("contact4Name", ""),
+          title: safeValue("contact4Title", ""),
+          email: safeValue("contact4Email", ""),
+          phone: safeValue("contact4Phone", ""),
+          role: safeValue("contact4Role", "")
+        }
+      ].filter(c => c.name || c.title || c.email || c.phone || c.role);
+
+      const contactBlock = contacts.length
+        ? contacts.map((c, i) => `Contact ${i + 1}:\n- Name: ${c.name || "Not captured"}\n- Title: ${c.title || "Not captured"}\n- Email: ${c.email || "Not captured"}\n- Phone: ${c.phone || "Not captured"}\n- Role in project: ${c.role || "Not captured"}`).join("\n\n")
+        : "No additional team contact details captured yet.";
+
       const opportunityAreas = getCheckedLabels([
         { id: "oppVisitor", label: "Visitor Experience" },
         { id: "oppOperations", label: "Internal Operations" },
@@ -1073,16 +1432,19 @@ ${existingProjects}
 Gaps / Adjacencies / Right-Fit Opportunity for NKU:
 ${gapsAndAdjacencies}
 
-7. Potential Project Scope
+7. Team Contact Details
+${contactBlock}
+
+8. Potential Project Scope
 ${projectOptions}
 
-8. Data / Content Available
+9. Data / Content Available
 ${dataSourceText}
 
 Data Access + Feasibility Notes:
 ${dataAccess}
 
-9. Stakeholders / Collaboration
+10. Stakeholders / Collaboration
 ${stakeholders}
 
 Preferred Initial Team Structure:
@@ -1091,16 +1453,16 @@ ${teamStructure}
 Check-in Availability:
 ${checkInAvailability}
 
-10. Definition of Success
+11. Definition of Success
 ${successDefinition}
 
-11. Pilot Fit Check
+12. Pilot Fit Check
 ${fitSummary}
 
-12. Recommended Next Steps
+13. Recommended Next Steps
 ${nextSteps}
 
-13. Additional Live Notes
+14. Additional Live Notes
 ${liveNotes}
 
 Draft Framing Statement
@@ -1162,11 +1524,32 @@ This potential AI Studio engagement would involve a focused Northern Kentucky Un
       document.getElementById("idea2Title").value = "Visitor or staff workflow support prototype";
       document.getElementById("idea2Desc").value = "A scoped AI prototype that supports a repeatable internal or visitor-facing workflow, designed as a pilot proof of concept rather than a full enterprise deployment.";
       document.getElementById("nextSteps").value = "Confirm preferred project direction, identify the right CMC contacts for continued discovery, verify what data/content can be shared, and prepare a scoped follow-up proposal from NKU.";
+      document.getElementById("contact1Name").value = "Jason Perkins";
+      document.getElementById("contact1Title").value = "Vice President, Technology";
+      document.getElementById("contact1Email").value = "";
+      document.getElementById("contact1Phone").value = "";
+      document.getElementById("contact1Role").value = "Executive sponsor / primary technology contact";
+      document.getElementById("contact2Name").value = "";
+      document.getElementById("contact2Title").value = "";
+      document.getElementById("contact2Email").value = "";
+      document.getElementById("contact2Phone").value = "";
+      document.getElementById("contact2Role").value = "";
+      document.getElementById("contact3Name").value = "";
+      document.getElementById("contact3Title").value = "";
+      document.getElementById("contact3Email").value = "";
+      document.getElementById("contact3Phone").value = "";
+      document.getElementById("contact3Role").value = "";
+      document.getElementById("contact4Name").value = "";
+      document.getElementById("contact4Title").value = "";
+      document.getElementById("contact4Email").value = "";
+      document.getElementById("contact4Phone").value = "";
+      document.getElementById("contact4Role").value = "";
       document.getElementById("generatedScope").textContent = "Your generated project scope will appear here.";
 
       localStorage.removeItem(STORAGE_KEY);
       localStorage.removeItem(GENERATED_SCOPE_KEY);
       updateProgress();
+      updateSnapshots();
       setStatus("All saved notes cleared.");
     }
 
@@ -1192,10 +1575,14 @@ This potential AI Studio engagement would involve a focused Northern Kentucky Un
     document.getElementById("printBtn").addEventListener("click", () => window.print());
     document.getElementById("clearBtn").addEventListener("click", clearAllData);
 
+    document.getElementById("jumpNotesBtn").addEventListener("click", () => scrollToSection("live-notes-section"));
+    document.getElementById("jumpScopeBtn").addEventListener("click", () => scrollToSection("project-scope-output"));
+
     loadFormData();
     loadGeneratedScope();
     loadMeetingMode();
     updateProgress();
+    updateSnapshots();
   </script>
 </body>
 </html>
