@@ -91,7 +91,7 @@
 
     .brand-sub{
       font-size: 12px;
-      color: var(--muted);
+      color: #4f4a39;
       margin-top: 2px;
     }
 
@@ -104,7 +104,7 @@
 
     .status{
       font-size: 12px;
-      color: var(--muted);
+      color: #4f4a39;
     }
 
     .progress-wrap{
@@ -112,7 +112,7 @@
       align-items: center;
       gap: 10px;
       font-size: 12px;
-      color: var(--muted);
+      color: #4f4a39;
     }
 
     .progress-bar{
@@ -222,7 +222,7 @@
     .help-text{
       display:block;
       margin-top: 6px;
-      color: var(--muted);
+      color: #5a5444;
       font-size: 12px;
     }
 
@@ -286,7 +286,7 @@
     .section-toggle .toggle-sub{
       font-size:12px;
       font-weight:400;
-      color: var(--muted);
+      color: #5a5444;
     }
 
     .chevron{
@@ -378,17 +378,18 @@
     .generated-box{
       white-space: pre-wrap;
       background: #fffef8;
-      border: 1px solid #ddd6b8;
+      border: 1px solid #cfbf83;
       border-radius: 14px;
       padding: 16px;
       min-height: 200px;
       font-size: 14px;
       line-height: 1.65;
+      color:#1f1f1f;
     }
 
     .note{
       font-size: 12px;
-      color: var(--muted);
+      color: #5a5444;
       margin-top: 10px;
     }
 
@@ -556,7 +557,7 @@
       font-size: 11px;
       text-transform: uppercase;
       letter-spacing: .06em;
-      color: var(--gold-deep);
+      color: #7b6218;
       font-weight: 700;
       margin-bottom: 5px;
     }
@@ -567,10 +568,154 @@
       font-weight:700;
     }
 
+    
+    .output-grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:16px;
+    }
+
+    .email-box{
+      white-space: pre-wrap;
+      background: #fffef8;
+      border: 1px solid #cfbf83;
+      border-radius: 14px;
+      padding: 16px;
+      min-height: 220px;
+      font-size: 14px;
+      line-height: 1.65;
+      color:#1f1f1f;
+    }
+
+    .subject-box{
+      background:#f7f2df;
+      border:1px solid #cfbf83;
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-weight:700;
+      color:#1f1f1f;
+      min-height: 48px;
+    }
+
+    
+    .proposal-sheet{
+      background: #fffef8;
+      border: 1px solid #cfbf83;
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: var(--shadow);
+      color:#1f1f1f;
+    }
+
+    .proposal-header{
+      border-bottom: 2px solid #e7dbad;
+      padding-bottom: 14px;
+      margin-bottom: 18px;
+    }
+
+    .proposal-kicker{
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: #7b6218;
+      margin-bottom: 6px;
+    }
+
+    .proposal-title{
+      font-size: 28px;
+      line-height: 1.12;
+      margin: 0 0 6px;
+      color:#141414;
+    }
+
+    .proposal-subtitle{
+      color:#4f4a39;
+      font-size:14px;
+      margin:0;
+    }
+
+    .proposal-meta{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:12px;
+      margin: 18px 0;
+    }
+
+    .proposal-meta-item{
+      background:#f8f2de;
+      border:1px solid #dfcf98;
+      border-radius: 14px;
+      padding: 12px;
+    }
+
+    .proposal-meta-label{
+      font-size:11px;
+      font-weight:700;
+      text-transform: uppercase;
+      letter-spacing:.06em;
+      color:#7b6218;
+      margin-bottom: 4px;
+    }
+
+    .proposal-meta-value{
+      font-size:14px;
+      font-weight:700;
+      color:#1f1f1f;
+    }
+
+    .proposal-section{
+      margin-top: 18px;
+    }
+
+    .proposal-section h3{
+      margin:0 0 8px;
+      color:#1f1f1f;
+      font-size:18px;
+    }
+
+    .proposal-section p{
+      margin:0;
+      color:#2c2c2c;
+      line-height:1.7;
+    }
+
+    .proposal-list{
+      margin: 8px 0 0 18px;
+      color:#2c2c2c;
+    }
+
+    .proposal-list li{
+      margin-bottom: 7px;
+    }
+
+    .proposal-two-col{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:18px;
+      margin-top: 18px;
+    }
+
+    .proposal-card{
+      background:#fffcf2;
+      border:1px solid #dfcf98;
+      border-radius: 14px;
+      padding: 16px;
+    }
+
+    .proposal-card h4{
+      margin:0 0 8px;
+      font-size:16px;
+      color:#141414;
+    }
+
     @media (max-width: 860px){
       .grid-2{ grid-template-columns: 1fr; }
       .contact-grid{ grid-template-columns: 1fr; }
       .meeting-snapshot{ grid-template-columns: 1fr; }
+      .output-grid{ grid-template-columns: 1fr; }
+      .proposal-meta{ grid-template-columns: 1fr; }
+      .proposal-two-col{ grid-template-columns: 1fr; }
       .status-wrap{ align-items:flex-start; }
       .topbar-inner{ align-items:flex-start; }
       .quick-nav{ top: 76px; }
@@ -625,6 +770,8 @@
         <a class="quick-link" href="#existing-ai-projects">AI Inventory</a>
         <a class="quick-link" href="#contact-directory">Contacts</a>
         <a class="quick-link" href="#project-scope-output">Scope</a>
+        <a class="quick-link" href="#followup-email-output">Email</a>
+        <a class="quick-link" href="#proposal-output">Proposal</a>
         <div class="mini-actions">
           <button class="mini-btn" type="button" id="jumpNotesBtn">Jump to Notes</button>
           <button class="mini-btn" type="button" id="jumpScopeBtn">Jump to Scope</button>
@@ -1071,12 +1218,94 @@
       </div>
     </section>
 
+
+    <section class="section section-anchor" id="followup-email-output">
+      <button class="section-toggle" type="button" id="toggle-email" aria-expanded="true" aria-controls="panel-email">
+        <span class="toggle-copy">
+          <span>✉️ Follow-Up Email Draft</span>
+          <span class="toggle-sub">Generate a clean post-meeting email you can send or adapt</span>
+        </span>
+        <span class="chevron" aria-hidden="true">▾</span>
+      </button>
+      <div class="section-panel" id="panel-email" role="region" aria-labelledby="toggle-email">
+        <div class="output-grid">
+          <div>
+            <div class="field">
+              <label>Email subject</label>
+              <div id="generatedEmailSubject" class="subject-box">Your generated follow-up subject will appear here.</div>
+            </div>
+            <div class="field">
+              <label>Email body</label>
+              <div id="generatedEmailBody" class="email-box">Your generated follow-up email will appear here.</div>
+            </div>
+          </div>
+          <div>
+            <div class="field">
+              <label for="emailTone">Tone</label>
+              <select id="emailTone">
+                <option>Polished and warm</option>
+                <option>Concise and executive</option>
+                <option>Friendly and collaborative</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="emailSenderName">Sender name</label>
+              <input type="text" id="emailSenderName" value="Dr. Brandi Neal" />
+            </div>
+            <div class="field">
+              <label for="emailClosingLine">Closing line</label>
+              <input type="text" id="emailClosingLine" value="I’m excited about the potential here and look forward to next steps." />
+            </div>
+            <div class="btn-row">
+              <button class="btn btn-gold" type="button" id="generateEmailBtn">Generate Follow-Up Email</button>
+              <button class="btn btn-dark" type="button" id="copyEmailBtn">Copy Email</button>
+            </div>
+            <div class="note">Tip: generate the project scope first, then generate the email so the summary is more complete.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="section section-anchor" id="proposal-output">
+      <button class="section-toggle" type="button" id="toggle-proposal" aria-expanded="true" aria-controls="panel-proposal">
+        <span class="toggle-copy">
+          <span>📑 Proposal Mode</span>
+          <span class="toggle-sub">Turn the meeting into a polished partner-facing concept brief</span>
+        </span>
+        <span class="chevron" aria-hidden="true">▾</span>
+      </button>
+      <div class="section-panel" id="panel-proposal" role="region" aria-labelledby="toggle-proposal">
+        <div class="field">
+          <label for="proposalTitle">Proposal title</label>
+          <input type="text" id="proposalTitle" value="Proposed AI Studio Collaboration Concept" />
+        </div>
+        <div class="field">
+          <label for="proposalAudience">Audience label</label>
+          <input type="text" id="proposalAudience" value="Cincinnati Museum Center × Northern Kentucky University" />
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-gold" type="button" id="generateProposalBtn">Generate Proposal Brief</button>
+          <button class="btn btn-dark" type="button" id="copyProposalBtn">Copy Proposal</button>
+        </div>
+        <div id="generatedProposal" class="proposal-sheet" style="margin-top:16px;">
+          <div class="proposal-header">
+            <div class="proposal-kicker">Proposal mode</div>
+            <h2 class="proposal-title">Your generated proposal brief will appear here.</h2>
+            <p class="proposal-subtitle">Use this after the meeting to create a clean internal or partner-facing concept summary.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <div class="toolbar" role="toolbar" aria-label="Meeting actions">
       <div class="toolbar-inner">
         <button class="btn btn-primary" type="button" id="meetingModeBtn">Enable Meeting Mode</button>
         <button class="btn btn-soft" type="button" id="expandAllBtn">Expand All</button>
         <button class="btn btn-soft" type="button" id="collapseAllBtn">Collapse All</button>
         <button class="btn btn-gold" type="button" id="generateBtn">Generate Project Scope</button>
+        <button class="btn btn-gold" type="button" id="generateEmailToolbarBtn">Generate Follow-Up Email</button>
+        <button class="btn btn-gold" type="button" id="generateProposalToolbarBtn">Generate Proposal Brief</button>
         <button class="btn btn-dark" type="button" id="copyBtn">Copy Scope</button>
         <button class="btn btn-dark" type="button" id="downloadBtn">Download Notes</button>
         <button class="btn btn-soft" type="button" id="printBtn">Print / Save PDF</button>
@@ -1093,6 +1322,31 @@
     const MEETING_MODE_KEY = "nku_cmc_ai_studio_meeting_mode_v1";
     const SAVE_DELAY = 500;
     let saveTimer = null;
+
+    const GENERATED_EMAIL_SUBJECT_KEY = "nku_cmc_ai_studio_generated_email_subject_v1";
+    const GENERATED_EMAIL_BODY_KEY = "nku_cmc_ai_studio_generated_email_body_v1";
+    const GENERATED_PROPOSAL_KEY = "nku_cmc_ai_studio_generated_proposal_v1";
+
+    function saveGeneratedEmail(subject, body) {
+      localStorage.setItem(GENERATED_EMAIL_SUBJECT_KEY, subject);
+      localStorage.setItem(GENERATED_EMAIL_BODY_KEY, body);
+    }
+
+    function saveGeneratedProposal(html) {
+      localStorage.setItem(GENERATED_PROPOSAL_KEY, html);
+    }
+
+    function loadGeneratedEmail() {
+      const subject = localStorage.getItem(GENERATED_EMAIL_SUBJECT_KEY);
+      const body = localStorage.getItem(GENERATED_EMAIL_BODY_KEY);
+      if (subject) document.getElementById("generatedEmailSubject").textContent = subject;
+      if (body) document.getElementById("generatedEmailBody").textContent = body;
+    }
+
+    function loadGeneratedProposal() {
+      const proposal = localStorage.getItem(GENERATED_PROPOSAL_KEY);
+      if (proposal) document.getElementById("generatedProposal").innerHTML = proposal;
+    }
 
     const sectionButtons = Array.from(document.querySelectorAll(".section-toggle"));
     const formFields = Array.from(document.querySelectorAll("input, textarea, select"));
@@ -1138,7 +1392,7 @@
         "contact1Name","contact1Title","contact1Email","contact1Phone","contact1Role",
         "contact2Name","contact2Title","contact2Email","contact2Phone","contact2Role",
         "contact3Name","contact3Title","contact3Email","contact3Phone","contact3Role",
-        "contact4Name","contact4Title","contact4Email","contact4Phone","contact4Role"
+        "contact4Name","contact4Title","contact4Email","contact4Phone","contact4Role","emailSenderName","emailClosingLine","emailTone","proposalTitle","proposalAudience"
       ];
 
       let completed = 0;
@@ -1480,6 +1734,229 @@ This potential AI Studio engagement would involve a focused Northern Kentucky Un
       setStatus("Project scope generated at " + getTimeStamp());
     }
 
+
+    function generateFollowUpEmail() {
+      const organization = safeValue("organization");
+      const primaryContact = safeValue("primaryContact", "team");
+      const tone = safeValue("emailTone", "Polished and warm");
+      const senderName = safeValue("emailSenderName", "Dr. Brandi Neal");
+      const closingLine = safeValue("emailClosingLine", "I’m excited about the potential here and look forward to next steps.");
+      const meetingGoal = safeValue("meetingGoal");
+      const strategicPriorities = safeValue("strategicPriorities", "");
+      const problemStatement = safeValue("problemStatement", "");
+      const successDefinition = safeValue("successDefinition", "");
+      const nextSteps = safeValue("nextSteps", "");
+      const idea1Title = safeValue("idea1Title", "");
+      const idea1Desc = safeValue("idea1Desc", "");
+      const idea2Title = safeValue("idea2Title", "");
+      const idea2Desc = safeValue("idea2Desc", "");
+      const existingProjects = safeValue("existingProjects", "");
+      const teamStructure = safeValue("teamStructure", "");
+      const contacts = [
+        safeValue("contact1Name", ""),
+        safeValue("contact2Name", ""),
+        safeValue("contact3Name", ""),
+        safeValue("contact4Name", "")
+      ].filter(Boolean);
+
+      let subject = `Follow-up: NKU AI Studio x ${organization}`;
+      let greeting = `Hi ${primaryContact.split(",")[0]},`;
+      let opener = `Thank you again for taking the time to meet with us today. It was great learning more about ${organization}'s interest in identifying a right-fit opportunity for the NKU AI Studio pilot.`;
+
+      if (tone === "Concise and executive") {
+        opener = `Thank you again for meeting with us today. We appreciated the opportunity to discuss a potential ${organization} project for the NKU AI Studio pilot.`;
+      } else if (tone === "Friendly and collaborative") {
+        opener = `Thank you again for the conversation today. We really enjoyed learning more about what ${organization} is exploring and where there may be a strong fit for collaboration through the NKU AI Studio pilot.`;
+      }
+
+      const bullets = [];
+      if (meetingGoal && meetingGoal !== "Not yet specified") bullets.push(`Our working goal was to identify a project that is feasible within a 16-week semester and valuable enough to matter to your team.`);
+      if (existingProjects && existingProjects !== "Not yet specified") bullets.push(`You shared that CMC already has AI ideas or efforts in motion, which is helpful context for identifying the right pilot opportunity.`);
+      if (strategicPriorities && strategicPriorities !== "Not yet specified") bullets.push(`Key priorities discussed included: ${strategicPriorities}`);
+      if (problemStatement && problemStatement !== "Not yet specified") bullets.push(`A likely problem area to frame further is: ${problemStatement}`);
+      if (idea1Title && idea1Desc) bullets.push(`One promising concept was ${idea1Title}: ${idea1Desc}`);
+      if (idea2Title && idea2Desc && idea2Title !== "Not yet specified") bullets.push(`A second possible direction was ${idea2Title}: ${idea2Desc}`);
+      if (successDefinition && successDefinition !== "Not yet specified") bullets.push(`A successful outcome by December would look like: ${successDefinition}`);
+      if (teamStructure && teamStructure !== "Not yet specified") bullets.push(`For continued discovery, the most useful meeting structure may be: ${teamStructure}.`);
+
+      let body = `${greeting}
+
+${opener}
+
+A few takeaways from our discussion:
+${bullets.length ? bullets.map(item => `• ${item}`).join("\n") : "• We captured initial discovery notes and will shape them into a more refined recommendation."}
+
+Our suggested next steps:
+${nextSteps && nextSteps !== "Not yet specified" ? nextSteps : "Refine the project direction, confirm the right contacts, and identify what data or content could be used in a scoped student prototype."}
+
+${contacts.length ? `We also captured the following key contacts for follow-up: ${contacts.join(", ")}.` : ""}
+
+${closingLine}
+
+Best,
+${senderName}`;
+
+      document.getElementById("generatedEmailSubject").textContent = subject;
+      document.getElementById("generatedEmailBody").textContent = body;
+      saveGeneratedEmail(subject, body);
+
+      const emailBtn = document.getElementById("toggle-email");
+      const emailPanel = document.getElementById("panel-email");
+      emailBtn.setAttribute("aria-expanded", "true");
+      emailPanel.hidden = false;
+      emailBtn.querySelector(".chevron").textContent = "▾";
+
+      setStatus("Follow-up email generated at " + getTimeStamp());
+    }
+
+    async function copyGeneratedEmail() {
+      const subject = document.getElementById("generatedEmailSubject").textContent;
+      const body = document.getElementById("generatedEmailBody").textContent;
+      const text = `Subject: ${subject}\n\n${body}`;
+      try {
+        await navigator.clipboard.writeText(text);
+        setStatus("Follow-up email copied at " + getTimeStamp());
+      } catch (err) {
+        alert("Copy failed. You can still manually select and copy the text.");
+      }
+    }
+
+
+
+    function generateProposalBrief() {
+      const organization = safeValue("organization");
+      const audience = safeValue("proposalAudience", `${organization} × Northern Kentucky University`);
+      const proposalTitle = safeValue("proposalTitle", "Proposed AI Studio Collaboration Concept");
+      const primaryContact = safeValue("primaryContact", "CMC team");
+      const problemStatement = safeValue("problemStatement", "A right-fit pilot problem is still being finalized.");
+      const whyItMatters = safeValue("whyItMatters", "The project should create visible value while remaining feasible for a 16-week semester.");
+      const strategicPriorities = safeValue("strategicPriorities", "Strategic priorities were discussed and should be refined in follow-up.");
+      const successDefinition = safeValue("successDefinition", "A successful outcome would be a meaningful, clearly scoped prototype with documented next steps.");
+      const nextSteps = safeValue("nextSteps", "Confirm the preferred direction, clarify contacts, and identify usable data or content.");
+      const idea1Title = safeValue("idea1Title", "Primary concept");
+      const idea1Desc = safeValue("idea1Desc", "Description to be refined.");
+      const idea2Title = safeValue("idea2Title", "");
+      const idea2Desc = safeValue("idea2Desc", "");
+      const dataAccess = safeValue("dataAccess", "Data access and approval requirements still need confirmation.");
+      const teamStructure = safeValue("teamStructure", "Needs discussion");
+      const checkInAvailability = safeValue("checkInAvailability", "Needs discussion");
+      const opps = getCheckedLabels([
+        { id: "oppVisitor", label: "Visitor Experience" },
+        { id: "oppOperations", label: "Internal Operations" },
+        { id: "oppData", label: "Data & Insights" },
+        { id: "oppEducation", label: "Education / Informal Learning" },
+        { id: "oppCollections", label: "Collections / Archive Access" },
+        { id: "oppUnsure", label: "Not Sure Yet" }
+      ]);
+      const oppText = opps.length ? opps.join(", ") : "To be finalized";
+      const contacts = [
+        {name: safeValue("contact1Name",""), title: safeValue("contact1Title",""), role: safeValue("contact1Role","")},
+        {name: safeValue("contact2Name",""), title: safeValue("contact2Title",""), role: safeValue("contact2Role","")},
+        {name: safeValue("contact3Name",""), title: safeValue("contact3Title",""), role: safeValue("contact3Role","")},
+        {name: safeValue("contact4Name",""), title: safeValue("contact4Title",""), role: safeValue("contact4Role","")}
+      ].filter(c => c.name || c.title || c.role);
+
+      let contactsHtml = contacts.length
+        ? `<ul class="proposal-list">${contacts.map(c => `<li><strong>${c.name || "Unnamed contact"}</strong>${c.title ? `, ${c.title}` : ""}${c.role ? ` — ${c.role}` : ""}</li>`).join("")}</ul>`
+        : `<p>No additional contact details were captured yet.</p>`;
+
+      const conceptTwoHtml = (idea2Title && idea2Title !== "Not yet specified")
+        ? `<div class="proposal-card"><h4>${idea2Title}</h4><p>${idea2Desc || "Description to be refined."}</p></div>`
+        : "";
+
+      const htmlOut = `
+        <div class="proposal-header">
+          <div class="proposal-kicker">${audience}</div>
+          <h2 class="proposal-title">${proposalTitle}</h2>
+          <p class="proposal-subtitle">Prepared from live discovery notes for discussion with ${organization} regarding a potential AI Studio pilot collaboration.</p>
+        </div>
+
+        <div class="proposal-meta">
+          <div class="proposal-meta-item">
+            <div class="proposal-meta-label">Primary contact</div>
+            <div class="proposal-meta-value">${primaryContact}</div>
+          </div>
+          <div class="proposal-meta-item">
+            <div class="proposal-meta-label">Opportunity area</div>
+            <div class="proposal-meta-value">${oppText}</div>
+          </div>
+          <div class="proposal-meta-item">
+            <div class="proposal-meta-label">Engagement model</div>
+            <div class="proposal-meta-value">16-week AI Studio pilot</div>
+          </div>
+        </div>
+
+        <div class="proposal-section">
+          <h3>Opportunity Summary</h3>
+          <p>${whyItMatters}</p>
+        </div>
+
+        <div class="proposal-section">
+          <h3>Problem to Solve</h3>
+          <p>${problemStatement}</p>
+        </div>
+
+        <div class="proposal-section">
+          <h3>Strategic Context</h3>
+          <p>${strategicPriorities}</p>
+        </div>
+
+        <div class="proposal-two-col">
+          <div class="proposal-card">
+            <h4>Recommended Concept</h4>
+            <p><strong>${idea1Title}</strong></p>
+            <p>${idea1Desc}</p>
+          </div>
+          ${conceptTwoHtml || `<div class="proposal-card"><h4>Potential Outcome</h4><p>${successDefinition}</p></div>`}
+        </div>
+
+        <div class="proposal-two-col">
+          <div class="proposal-card">
+            <h4>Feasibility Notes</h4>
+            <p>${dataAccess}</p>
+          </div>
+          <div class="proposal-card">
+            <h4>Collaboration Model</h4>
+            <p><strong>Team structure:</strong> ${teamStructure}</p>
+            <p><strong>Check-ins:</strong> ${checkInAvailability}</p>
+          </div>
+        </div>
+
+        <div class="proposal-section">
+          <h3>Key Contacts</h3>
+          ${contactsHtml}
+        </div>
+
+        <div class="proposal-section">
+          <h3>Suggested Next Steps</h3>
+          <p>${nextSteps}</p>
+        </div>
+      `;
+
+      document.getElementById("generatedProposal").innerHTML = htmlOut;
+      saveGeneratedProposal(htmlOut);
+
+      const proposalBtn = document.getElementById("toggle-proposal");
+      const proposalPanel = document.getElementById("panel-proposal");
+      proposalBtn.setAttribute("aria-expanded", "true");
+      proposalPanel.hidden = false;
+      proposalBtn.querySelector(".chevron").textContent = "▾";
+
+      setStatus("Proposal brief generated at " + getTimeStamp());
+    }
+
+    async function copyGeneratedProposal() {
+      const container = document.getElementById("generatedProposal");
+      const text = container.innerText;
+      try {
+        await navigator.clipboard.writeText(text);
+        setStatus("Proposal brief copied at " + getTimeStamp());
+      } catch (err) {
+        alert("Copy failed. You can still manually select and copy the text.");
+      }
+    }
+
+
     async function copyGeneratedScope() {
       const text = document.getElementById("generatedScope").textContent;
       try {
@@ -1548,6 +2025,21 @@ This potential AI Studio engagement would involve a focused Northern Kentucky Un
 
       localStorage.removeItem(STORAGE_KEY);
       localStorage.removeItem(GENERATED_SCOPE_KEY);
+      localStorage.removeItem(GENERATED_EMAIL_SUBJECT_KEY);
+      localStorage.removeItem(GENERATED_EMAIL_BODY_KEY);
+      localStorage.removeItem(GENERATED_PROPOSAL_KEY);
+      document.getElementById("generatedEmailSubject").textContent = "Your generated follow-up subject will appear here.";
+      document.getElementById("generatedEmailBody").textContent = "Your generated follow-up email will appear here.";
+      document.getElementById("generatedProposal").innerHTML = `<div class="proposal-header">
+            <div class="proposal-kicker">Proposal mode</div>
+            <h2 class="proposal-title">Your generated proposal brief will appear here.</h2>
+            <p class="proposal-subtitle">Use this after the meeting to create a clean internal or partner-facing concept summary.</p>
+          </div>`;
+      document.getElementById("emailSenderName").value = "Dr. Brandi Neal";
+      document.getElementById("emailClosingLine").value = "I’m excited about the potential here and look forward to next steps.";
+      document.getElementById("emailTone").selectedIndex = 0;
+      document.getElementById("proposalTitle").value = "Proposed AI Studio Collaboration Concept";
+      document.getElementById("proposalAudience").value = "Cincinnati Museum Center × Northern Kentucky University";
       updateProgress();
       updateSnapshots();
       setStatus("All saved notes cleared.");
@@ -1570,7 +2062,13 @@ This potential AI Studio engagement would involve a focused Northern Kentucky Un
     document.getElementById("expandAllBtn").addEventListener("click", expandAllSections);
     document.getElementById("collapseAllBtn").addEventListener("click", () => collapseAllSections(true));
     document.getElementById("generateBtn").addEventListener("click", generateProjectScope);
+    document.getElementById("generateEmailBtn").addEventListener("click", generateFollowUpEmail);
+    document.getElementById("generateEmailToolbarBtn").addEventListener("click", generateFollowUpEmail);
+    document.getElementById("generateProposalBtn").addEventListener("click", generateProposalBrief);
+    document.getElementById("generateProposalToolbarBtn").addEventListener("click", generateProposalBrief);
     document.getElementById("copyBtn").addEventListener("click", copyGeneratedScope);
+    document.getElementById("copyEmailBtn").addEventListener("click", copyGeneratedEmail);
+    document.getElementById("copyProposalBtn").addEventListener("click", copyGeneratedProposal);
     document.getElementById("downloadBtn").addEventListener("click", downloadNotes);
     document.getElementById("printBtn").addEventListener("click", () => window.print());
     document.getElementById("clearBtn").addEventListener("click", clearAllData);
@@ -1580,6 +2078,8 @@ This potential AI Studio engagement would involve a focused Northern Kentucky Un
 
     loadFormData();
     loadGeneratedScope();
+    loadGeneratedEmail();
+    loadGeneratedProposal();
     loadMeetingMode();
     updateProgress();
     updateSnapshots();
