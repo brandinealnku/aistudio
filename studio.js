@@ -2,6 +2,7 @@
   'use strict';
   const CONFIG = window.AI_STUDIO_CONFIG;
   const STORAGE_KEY = 'aistudio.foundation.v1';
+
   const charterFields = ['problem','primaryUsers','objective','inScope','outOfScope','expectedMvp','successMeasures','clientResponsibilities','studioResponsibilities','dataAccess','feedbackTurnaround','security','showcaseRestrictions','finalDeliverables','handoff','approval'];
   const discoveryFields = ['problem','primaryUsers','evidence','constraints','successMeasures','initialScope','sponsor','dayContact','approver','smEs','currentWorkflow','painPoints','dataAvailable','dataAccess','projectOwner','notes'];
 
@@ -18,7 +19,7 @@
         dataAccess: '', feedbackTurnaround: '', security: starter.constraints || '', showcaseRestrictions: '',
         finalDeliverables: '', handoff: '', approval: ''
       },
-      gate1: { decision: 'Not Ready', conditions: '', decisionDate: '', approvedBy: '', notes: '' },
+      gate1: { decision: 'Not Ready', conditions: '', decisionDate: '', approvedBy: '', notes: '', validation: {problem:false,primaryUsers:false,evidence:false,constraints:false,successMeasures:false,initialScope:false} },
       updatedAt: null
     };
   }
@@ -38,14 +39,17 @@
         ...base.projects[id], ...incoming,
         discovery: {...base.projects[id].discovery, ...(incoming.discovery||{})},
         charter: {...base.projects[id].charter, ...(incoming.charter||{})},
-        gate1: {...base.projects[id].gate1, ...(incoming.gate1||{})}
+        gate1: {...base.projects[id].gate1, ...(incoming.gate1||{}), validation: {...base.projects[id].gate1.validation, ...((incoming.gate1||{}).validation||{})}}
       };
     });
     return base;
   }
 
   const Store = {
-    load(){ try { return normalize(JSON.parse(localStorage.getItem(STORAGE_KEY))); } catch(e){ return defaultState(); } },
+    load(){
+      try { return normalize(JSON.parse(localStorage.getItem(STORAGE_KEY))); }
+      catch(e){ return defaultState(); }
+    },
     save(state){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); },
     export(){
       const blob = new Blob([JSON.stringify(Store.load(),null,2)],{type:'application/json'});
@@ -61,13 +65,13 @@
   function esc(s){return String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
   function filled(v){return String(v||'').trim().length>2;}
   function gateEvidence(p){
-    const d=p.discovery;
+    const d=p.discovery, v=(p.gate1&&p.gate1.validation)||{};
     return [
-      ['Validated problem', filled(d.problem)], ['Primary users', filled(d.primaryUsers)], ['Evidence / current-state input', filled(d.evidence)],
-      ['Constraints', filled(d.constraints)], ['Success measures', filled(d.successMeasures)], ['Initial scope', filled(d.initialScope)]
+      ['problem','Validated problem', filled(d.problem) && !!v.problem], ['primaryUsers','Primary users', filled(d.primaryUsers) && !!v.primaryUsers], ['evidence','Evidence / current-state input', filled(d.evidence) && !!v.evidence],
+      ['constraints','Constraints', filled(d.constraints) && !!v.constraints], ['successMeasures','Success measures', filled(d.successMeasures) && !!v.successMeasures], ['initialScope','Initial scope', filled(d.initialScope) && !!v.initialScope]
     ];
   }
-  function gatePct(p){ const ev=gateEvidence(p); return Math.round(ev.filter(x=>x[1]).length/ev.length*100); }
+  function gatePct(p){ const ev=gateEvidence(p); return Math.round(ev.filter(x=>x[2]).length/ev.length*100); }
 
   function renderLifecycle(active){
     const el=document.getElementById('lifecycle'); if(!el)return;
@@ -93,6 +97,7 @@
   }
 
   function projectFromUrl(){const id=new URLSearchParams(location.search).get('project')||'cmc'; return CONFIG.projects[id]||CONFIG.projects.cmc;}
+
   function bindTabs(){
     document.querySelectorAll('.tab').forEach(btn=>btn.addEventListener('click',()=>{
       document.querySelectorAll('.tab').forEach(b=>b.setAttribute('aria-selected','false'));
@@ -100,8 +105,12 @@
       btn.setAttribute('aria-selected','true'); document.getElementById(btn.dataset.panel).hidden=false;
     }));
   }
-  function setFormValues(scope,obj){ scope.querySelectorAll('[data-field]').forEach(el=>{ const k=el.dataset.field; if(k in obj) el.value=obj[k]||''; }); }
+
+  function setFormValues(scope,obj){
+    scope.querySelectorAll('[data-field]').forEach(el=>{ const k=el.dataset.field; if(k in obj) el.value=obj[k]||''; });
+  }
   function collect(scope){ const o={}; scope.querySelectorAll('[data-field]').forEach(el=>o[el.dataset.field]=el.value); return o; }
+
   function copyDiscoveryToCharter(state,id){
     const d=state.projects[id].discovery,c=state.projects[id].charter;
     ['problem','primaryUsers','successMeasures'].forEach(k=>{if(filled(d[k]))c[k]=d[k]});
@@ -109,22 +118,35 @@
     if(filled(d.constraints)) c.security=d.constraints;
     if(filled(d.dataAccess)) c.dataAccess=d.dataAccess;
   }
+
   function renderEvidence(projectState){
     const root=document.getElementById('gateEvidence'); if(!root)return;
     const ev=gateEvidence(projectState);
-    root.innerHTML=ev.map(([label,ok])=>`<div class="evidence-row"><span><span class="state-dot ${ok?'ok':'warn'}"></span>${esc(label)}</span><strong>${ok?'Ready':'Missing'}</strong></div>`).join('');
+    root.innerHTML=ev.map(([key,label,ok])=>`<label class="evidence-row"><span><span class="state-dot ${ok?'ok':'warn'}"></span>${esc(label)}</span><span><input type="checkbox" data-evidence="${key}" ${projectState.gate1.validation[key]?'checked':''}> <strong>${ok?'Validated':'Validate'}</strong></span></label>`).join('');
+    root.querySelectorAll('[data-evidence]').forEach(cb=>cb.addEventListener('change',saveWorkspace));
     const pct=gatePct(projectState); document.getElementById('gatePercent').textContent=pct+'%';
     document.getElementById('gateProgress').style.width=pct+'%';
-    document.getElementById('gateBlocker').textContent=pct===100?'Evidence package complete. A decision can be recorded.':`${ev.filter(x=>!x[1]).length} evidence item(s) still missing.`;
+    document.getElementById('gateBlocker').textContent=pct===100?'Evidence package complete. A decision can be recorded.':`${ev.filter(x=>!x[2]).length} evidence item(s) still unvalidated.`;
   }
+
   function saveWorkspace(){
     const project=projectFromUrl(),state=Store.load(),p=state.projects[project.id];
     p.discovery=collect(document.getElementById('discoveryPanel'));
     p.charter=collect(document.getElementById('charterPanel'));
-    p.gate1=collect(document.getElementById('gatePanel'));
+    const gateValues=collect(document.getElementById('gatePanel'));
+    gateValues.validation={...(p.gate1.validation||{})};
+    document.querySelectorAll('#gateEvidence [data-evidence]').forEach(cb=>gateValues.validation[cb.dataset.evidence]=cb.checked);
+    p.gate1=gateValues;
+    const readiness=gatePct(p);
+    if(readiness<100 && (p.gate1.decision==='GO' || p.gate1.decision==='GO WITH CONDITIONS')){
+      p.gate1.decision='Not Ready';
+      const decisionEl=document.querySelector('#gatePanel [data-field="decision"]'); if(decisionEl) decisionEl.value='Not Ready';
+      alert('Gate 1 cannot be recorded as GO until all six evidence items are present and explicitly validated.');
+    }
     p.updatedAt=new Date().toISOString(); Store.save(state); renderEvidence(p);
     const s=document.getElementById('saveStatus'); s.textContent='Saved locally '+new Date().toLocaleTimeString([], {hour:'numeric',minute:'2-digit'});
   }
+
   function renderWorkspace(){
     if(!document.getElementById('workspaceTitle')) return;
     const project=projectFromUrl(),state=Store.load(),p=state.projects[project.id];
@@ -143,9 +165,11 @@
     document.getElementById('saveBtn').addEventListener('click',saveWorkspace);
     document.getElementById('charterFromDiscovery').addEventListener('click',()=>{const fresh=Store.load();fresh.projects[project.id].discovery=collect(document.getElementById('discoveryPanel'));copyDiscoveryToCharter(fresh,project.id);setFormValues(document.getElementById('charterPanel'),fresh.projects[project.id].charter);Store.save(fresh);saveWorkspace();});
   }
+
   function bindDataTools(){
     const exp=document.getElementById('exportData');if(exp)exp.addEventListener('click',Store.export);
     const imp=document.getElementById('importData');if(imp)imp.addEventListener('change',e=>{if(e.target.files[0])Store.import(e.target.files[0]);});
   }
+
   document.addEventListener('DOMContentLoaded',()=>{renderDashboard();renderWorkspace();bindDataTools();});
 })();
