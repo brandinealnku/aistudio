@@ -13,121 +13,42 @@
       <div class="eyebrow">INF 396 · AI NATIVE STUDIO · FALL 2026</div>
       <h1 id="landing-title">6 HUMANS.<br><span>2 CLIENTS.</span><br>1 AI STUDIO.</h1>
       <p class="lede">What do you want to make possible with AI this semester?</p>
-      <div class="action-row">
-        <button class="primary" id="hostBtn">HOST THE EXPERIENCE</button>
-        <button class="secondary" id="joinBtn">JOIN THE STUDIO</button>
-      </div>
+      <div class="action-row"><button class="primary" id="hostBtn">HOST THE EXPERIENCE</button><button class="secondary" id="joinBtn">JOIN THE STUDIO</button></div>
       <p class="micro">Designed tonight. Used tomorrow. That’s kind of the point.</p>
     </section>
 
     <section id="join" class="screen" aria-labelledby="join-title">
       <button class="back" data-back="landing" aria-label="Back">←</button>
-      <div class="eyebrow">JOIN THE STUDIO</div>
-      <h2 id="join-title">Add your signal.</h2>
+      <div class="eyebrow">JOIN THE STUDIO</div><h2 id="join-title">Add your signal.</h2>
       <form id="joinForm" class="join-card">
-        <label>First name
-          <input id="nameInput" maxlength="24" required autocomplete="given-name" placeholder="Your first name" />
-        </label>
-        <label>What do you want to make possible with AI this semester?
-          <textarea id="answerInput" maxlength="160" required rows="4" placeholder="Keep it short. Aim for 10–15 words."></textarea>
-        </label>
+        <label>First name<input id="nameInput" maxlength="24" required autocomplete="given-name" placeholder="Your first name" /></label>
+        <label>What do you want to make possible with AI this semester?<textarea id="answerInput" maxlength="160" required rows="4" placeholder="Keep it short. Aim for 10–15 words."></textarea></label>
+        <div class="portrait-field">
+          <div><strong>Add yourself to the studio</strong><p>Optional · Take a selfie or choose a photo. Used only for this live studio session and removed when the host resets the room.</p></div>
+          <label class="photo-picker" for="photoInput"><span id="photoPickerText">TAKE OR CHOOSE PHOTO</span><input id="photoInput" type="file" accept="image/*" capture="user" /></label>
+          <div id="portraitPreviewWrap" class="portrait-preview-wrap hidden"><img id="portraitPreview" alt="Your selected portrait preview" /><button type="button" class="secondary small" id="removePhotoBtn">REMOVE PHOTO</button></div>
+        </div>
         <button class="primary" type="submit">ADD ME TO THE STUDIO</button>
       </form>
-      <div id="joinSuccess" class="success hidden" role="status">
-        <div class="pulse-dot"></div>
-        <h3>Signal received.</h3>
-        <p>Look up at the studio wall.</p>
-      </div>
+      <div id="joinSuccess" class="success hidden" role="status"><div class="pulse-dot"></div><h3>Signal received.</h3><p>Look up at the studio wall.</p></div>
     </section>
 
     <section id="host" class="screen host-screen" aria-labelledby="host-title">
-      <div class="host-topbar">
-        <div>
-          <div class="eyebrow">INF 396 · AI NATIVE STUDIO · LIVE</div>
-          <h2 id="host-title">Build the studio.</h2>
-          <div class="status-row">
-            <span id="connectionStatus" class="status-pill">CONNECTING</span>
-            <span id="readinessStatus" class="status-copy">Waiting for the first signal.</span>
-          </div>
-        </div>
-        <div class="host-actions">
-          <button class="secondary small" id="copyJoinBtn">COPY JOIN LINK</button>
-          <button class="secondary small" id="demoBtn">LOAD DEMO</button>
-          <button class="secondary small" id="hostPhotoBtn">PHOTO MODE</button>
-          <button class="secondary small" id="resetBtn">RESET</button>
-        </div>
-      </div>
-
-      <div class="host-grid">
-        <div class="join-panel">
-          <div class="join-url-label">STUDENTS OPEN</div>
-          <div id="joinUrl" class="join-url"></div>
-          <img id="qrImage" class="qr" alt="QR code to join the AI Native Studio launch experience" />
-          <p class="micro">One question. One sentence. Watch the wall change.</p>
-        </div>
-
-        <div class="wall-panel">
-          <div class="counter"><span id="count">0</span>/6 SIGNALS</div>
-          <div id="peopleGrid" class="people-grid" aria-live="polite"></div>
-        </div>
-      </div>
-
-      <div class="reveal-controls">
-        <div id="readyHint" class="ready-hint">The reveal unlocks after the first signal.</div>
-        <button class="primary" id="revealBtn" disabled>SYNTHESIZE WITH AI →</button>
-      </div>
+      <div class="host-topbar"><div><div class="eyebrow">INF 396 · AI NATIVE STUDIO · LIVE</div><h2 id="host-title">Build the studio.</h2><div class="status-row"><span id="connectionStatus" class="status-pill">CONNECTING</span><span id="readinessStatus" class="status-copy">Waiting for the first signal.</span></div></div>
+        <div class="host-actions"><button class="secondary small" id="copyJoinBtn">COPY JOIN LINK</button><button class="secondary small" id="demoBtn">LOAD DEMO</button><button class="secondary small" id="hostPhotoBtn">PHOTO MODE</button><button class="secondary small" id="resetBtn">RESET</button></div></div>
+      <div class="host-grid"><div class="join-panel"><div class="join-url-label">STUDENTS OPEN</div><div id="joinUrl" class="join-url"></div><img id="qrImage" class="qr" alt="QR code to join the AI Native Studio launch experience" /><p class="micro">One question. One sentence. One optional portrait. Watch the wall change.</p></div>
+        <div class="wall-panel"><div class="counter"><span id="count">0</span>/6 SIGNALS</div><div id="peopleGrid" class="people-grid" aria-live="polite"></div></div></div>
+      <div class="reveal-controls"><div id="readyHint" class="ready-hint">The reveal unlocks after the first signal.</div><button class="primary" id="revealBtn" disabled>SYNTHESIZE WITH AI →</button></div>
     </section>
 
-    <section id="thinking" class="screen thinking-screen" aria-labelledby="thinking-title">
-      <div class="thinking-orbit" aria-hidden="true"><span></span><span></span><span></span></div>
-      <div class="eyebrow">AI IS READING THE ROOM</div>
-      <h2 id="thinking-title">Turning six signals<br>into one studio.</h2>
-      <p id="thinkingCopy" class="lede">Finding the patterns between what you want to build.</p>
-    </section>
+    <section id="thinking" class="screen thinking-screen" aria-labelledby="thinking-title"><div class="thinking-orbit" aria-hidden="true"><span></span><span></span><span></span></div><div class="eyebrow">AI IS READING THE ROOM</div><h2 id="thinking-title">Turning six signals<br>into one studio.</h2><p id="thinkingCopy" class="lede">Finding the patterns between what you want to build.</p></section>
 
-    <section id="reveal" class="screen reveal-screen" aria-labelledby="reveal-title">
-      <div class="eyebrow">OUR STUDIO SIGNAL · FALL 2026</div>
-      <div id="themeChips" class="theme-chips" aria-label="AI-generated studio themes"></div>
-      <div class="signal-line" id="signalLine">CURIOUS × EXPERIMENTAL × HUMAN × USEFUL × UNFINISHED</div>
-      <h2 id="reveal-title" class="manifesto">WE’RE NOT STUDYING AI.<br><span>WE’RE BUILDING WITH IT.</span></h2>
-      <div class="mission-card">
-        <div class="label">AI-GENERATED STUDIO MISSION</div>
-        <p id="missionText">We are six students building at the edge of what AI can do—alongside real organizations, with real stakes.</p>
-      </div>
-      <div class="reveal-actions">
-        <button class="primary" id="predictionBtn">SEE THE DECEMBER PREDICTION</button>
-        <button class="secondary" id="copyLinkedInBtn">COPY LINKEDIN CAPTION</button>
-        <button class="secondary" id="photoBtn">PHOTO MODE</button>
-      </div>
-      <p id="aiSource" class="micro">Synthesized from this room’s signals.</p>
-    </section>
+    <section id="reveal" class="screen reveal-screen" aria-labelledby="reveal-title"><div class="eyebrow">OUR STUDIO SIGNAL · FALL 2026</div><div id="themeChips" class="theme-chips" aria-label="AI-generated studio themes"></div><div class="signal-line" id="signalLine">CURIOUS × EXPERIMENTAL × HUMAN × USEFUL × UNFINISHED</div><h2 id="reveal-title" class="manifesto">WE’RE NOT STUDYING AI.<br><span>WE’RE BUILDING WITH IT.</span></h2><div class="mission-card"><div class="label">AI-GENERATED STUDIO MISSION</div><p id="missionText">We are six students building at the edge of what AI can do—alongside real organizations, with real stakes.</p></div><div class="reveal-actions"><button class="primary" id="predictionBtn">SEE THE DECEMBER PREDICTION</button><button class="secondary" id="copyLinkedInBtn">COPY LINKEDIN CAPTION</button><button class="secondary" id="photoBtn">PHOTO MODE</button></div><p id="aiSource" class="micro">Synthesized from this room’s signals.</p></section>
 
-    <section id="prediction" class="screen prediction-screen" aria-labelledby="prediction-title">
-      <div class="eyebrow">DECEMBER 2026 · AI PREDICTION LOGGED</div>
-      <h2 id="prediction-title">Six NKU students prove what happens when the classroom starts operating like an AI product studio.</h2>
-      <p id="predictionSub">Come back in December to see if we were right.</p>
-      <div class="stamp">THE PREDICTION HAS BEEN LOGGED.</div>
-      <div class="reveal-actions">
-        <button class="primary" id="predictionPhotoBtn">PHOTO MODE</button>
-        <button class="secondary" id="predictionCopyBtn">COPY LINKEDIN CAPTION</button>
-      </div>
-    </section>
+    <section id="prediction" class="screen prediction-screen" aria-labelledby="prediction-title"><div class="eyebrow">DECEMBER 2026 · AI PREDICTION LOGGED</div><h2 id="prediction-title">Six NKU students prove what happens when the classroom starts operating like an AI product studio.</h2><p id="predictionSub">Come back in December to see if we were right.</p><div class="stamp">THE PREDICTION HAS BEEN LOGGED.</div><div class="reveal-actions"><button class="primary" id="predictionPhotoBtn">PHOTO MODE</button><button class="secondary" id="predictionCopyBtn">COPY LINKEDIN CAPTION</button></div></section>
 
-    <section id="photo" class="screen photo-screen" aria-labelledby="photo-title">
-      <div class="photo-frame">
-        <div class="eyebrow">NORTHERN KENTUCKY UNIVERSITY · INF 396</div>
-        <h2 id="photo-title">AI NATIVE<br><span>STUDIO</span></h2>
-        <div class="photo-sub">6 HUMANS · 2 CLIENTS · 1 AI STUDIO</div>
-        <div id="photoMission" class="photo-mission">We’re building with AI, not just studying it.</div>
-        <div id="photoNames" class="photo-names"></div>
-        <div id="photoDate" class="photo-date">FIRST STUDIO SESSION · AUGUST 25, 2026</div>
-        <div class="photo-footer">WE’RE NOT STUDYING AI. WE’RE BUILDING WITH IT.</div>
-      </div>
-      <button class="ghost-control" id="exitPhotoBtn">EXIT PHOTO MODE</button>
-    </section>
+    <section id="photo" class="screen photo-screen" aria-labelledby="photo-title"><div class="photo-frame"><div class="eyebrow">NORTHERN KENTUCKY UNIVERSITY · INF 396</div><h2 id="photo-title">AI NATIVE <span>STUDIO</span></h2><div class="photo-sub">6 HUMANS · 2 CLIENTS · 1 AI STUDIO</div><div id="portraitRoster" class="portrait-roster" aria-label="Studio portrait roster"></div><div id="photoMission" class="photo-mission">We’re building with AI, not just studying it.</div><div id="photoNames" class="photo-names"></div><div id="photoDate" class="photo-date">FIRST STUDIO SESSION · AUGUST 25, 2026</div><div class="photo-footer">WE’RE NOT STUDYING AI. WE’RE BUILDING WITH IT.</div></div><button class="ghost-control" id="exitPhotoBtn">EXIT PHOTO MODE</button></section>
   </main>
-
-  <script src="config.js"></script>
-  <script src="app.js"></script>
+  <script src="config.js"></script><script src="app.js"></script>
 </body>
 </html>
