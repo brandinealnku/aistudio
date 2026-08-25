@@ -7,6 +7,7 @@
   <title>INF 396 · AI Native Studio Launch</title>
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="photo.css" />
+  <link rel="stylesheet" href="sequence.css" />
 </head>
 <body>
   <main id="app" class="shell">
@@ -39,7 +40,14 @@
         <div class="host-actions"><button class="secondary small" id="copyJoinBtn">COPY JOIN LINK</button><button class="secondary small" id="demoBtn">LOAD DEMO</button><button class="secondary small" id="hostPhotoBtn">PHOTO MODE</button><button class="secondary small" id="resetBtn">RESET</button></div></div>
       <div class="host-grid"><div class="join-panel"><div class="join-url-label">STUDENTS OPEN</div><div id="joinUrl" class="join-url"></div><img id="qrImage" class="qr" alt="QR code to join the AI Native Studio launch experience" /><p class="micro">One question. One sentence. One optional portrait. Watch the wall change.</p></div>
         <div class="wall-panel"><div class="counter"><span id="count">0</span>/6 SIGNALS</div><div id="peopleGrid" class="people-grid" aria-live="polite"></div></div></div>
-      <div class="reveal-controls"><div id="readyHint" class="ready-hint">The reveal unlocks after the first signal.</div><button class="primary" id="revealBtn" disabled>SYNTHESIZE WITH AI →</button></div>
+      <div class="reveal-controls"><div id="readyHint" class="ready-hint">The activation unlocks after the first signal.</div><button class="primary activation-cta" id="revealBtn" disabled>ACTIVATE THE STUDIO →</button></div>
+    </section>
+
+    <section id="activation" class="screen activation-screen" aria-labelledby="activationTitle">
+      <div class="activation-progress" aria-label="Studio activation progress"><span data-step="signals">01 SIGNALS</span><span data-step="identity">02 IDENTITY</span><span data-step="teams">03 TEAMS</span><span data-step="prediction">04 PREDICTION</span><span data-step="online">05 ONLINE</span></div>
+      <button id="skipActivationBtn" class="activation-skip">SKIP TO REVEAL</button>
+      <div id="activationStage" class="activation-stage" aria-live="polite"><div id="activationEyebrow" class="activation-eyebrow">STUDIO ACTIVATION</div><h2 id="activationTitle">LOCKING SIGNALS.</h2><div id="activationSignal" class="activation-signal"></div><p id="activationCopy" class="activation-copy">Preparing the room.</p><div id="activationVisual" class="activation-visual"></div></div>
+      <div id="activationFinalActions" class="activation-final-actions hidden"><button class="primary" id="activationPhotoBtn">OPEN LINKEDIN PHOTO MODE</button><button class="secondary" id="activationRevealBtn">VIEW THE AI SYNTHESIS</button><button class="secondary" id="activationHostBtn">BACK TO HOST</button></div>
     </section>
 
     <section id="thinking" class="screen thinking-screen" aria-labelledby="thinking-title"><div class="thinking-orbit" aria-hidden="true"><span></span><span></span><span></span></div><div class="eyebrow">AI IS READING THE ROOM</div><h2 id="thinking-title">Turning six signals<br>into one studio.</h2><p id="thinkingCopy" class="lede">Finding the patterns between what you want to build.</p></section>
@@ -48,25 +56,8 @@
 
     <section id="prediction" class="screen prediction-screen" aria-labelledby="prediction-title"><div class="eyebrow">DECEMBER 2026 · AI PREDICTION LOGGED</div><h2 id="prediction-title">Six NKU students prove what happens when the classroom starts operating like an AI product studio.</h2><p id="predictionSub">Come back in December to see if we were right.</p><div class="stamp">THE PREDICTION HAS BEEN LOGGED.</div><div class="reveal-actions"><button class="primary" id="predictionPhotoBtn">PHOTO MODE</button><button class="secondary" id="predictionCopyBtn">COPY LINKEDIN CAPTION</button></div></section>
 
-    <section id="photo" class="screen photo-screen" aria-labelledby="photo-title">
-      <div class="photo-frame">
-        <div class="photo-kicker"><span>NKU · INF 396</span><span id="photoDate">FIRST STUDIO SESSION · AUGUST 25, 2026</span></div>
-        <div class="photo-hero">
-          <div class="photo-copy">
-            <div class="photo-series">AI NATIVE STUDIO · 001</div>
-            <h2 id="photo-title">WE'RE<br><span>BUILDING</span><br>WITH AI.</h2>
-            <div id="photoSub" class="photo-sub">6 HUMANS · 2 CLIENTS · 1 AI STUDIO</div>
-          </div>
-          <div id="portraitRoster" class="portrait-roster" aria-label="Studio portrait roster"></div>
-        </div>
-        <div class="photo-bottom">
-          <div class="photo-mission-wrap"><div class="photo-label">OUR FIRST SIGNAL</div><div id="photoMission" class="photo-mission">We’re building with AI, not just studying it.</div></div>
-          <div class="photo-mark"><strong>AI NATIVE</strong><span>STUDIO / FALL 2026</span></div>
-        </div>
-      </div>
-      <div class="photo-controls" aria-label="Photo mode controls"><span>Frame it. Screenshot it. Share it.</span><button class="ghost-control" id="exitPhotoBtn">EXIT PHOTO MODE</button></div>
-    </section>
+    <section id="photo" class="screen photo-screen" aria-labelledby="photo-title"><div class="photo-frame"><div class="photo-kicker"><span>NKU · INF 396</span><span id="photoDate">FIRST STUDIO SESSION · AUGUST 25, 2026</span></div><div class="photo-hero"><div class="photo-copy"><div class="photo-series">AI NATIVE STUDIO · 001</div><h2 id="photo-title">WE'RE<br><span>BUILDING</span><br>WITH AI.</h2><div id="photoSub" class="photo-sub">6 HUMANS · 2 CLIENTS · 1 AI STUDIO</div></div><div id="portraitRoster" class="portrait-roster" aria-label="Studio portrait roster"></div></div><div class="photo-bottom"><div class="photo-mission-wrap"><div class="photo-label">OUR FIRST SIGNAL</div><div id="photoMission" class="photo-mission">We’re building with AI, not just studying it.</div></div><div class="photo-mark"><strong>AI NATIVE</strong><span>STUDIO / FALL 2026</span></div></div></div><div class="photo-controls" aria-label="Photo mode controls"><span>Frame it. Screenshot it. Share it.</span><button class="ghost-control" id="exitPhotoBtn">EXIT PHOTO MODE</button></div></section>
   </main>
-  <script src="config.js"></script><script src="app.js"></script>
+  <script src="config.js"></script><script src="app.js"></script><script src="sequence.js"></script>
 </body>
 </html>
