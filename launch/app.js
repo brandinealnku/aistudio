@@ -1,6 +1,12 @@
 const cfg = window.AI_STUDIO_LAUNCH_CONFIG || { apiBase: "", maxSignals: 6, room: "fall-2026-launch" };
 const screens = [...document.querySelectorAll('.screen')];
-const state = { people: [], lastScreen: 'landing', demoMode: false };
+const state = {
+  people: [],
+  lastScreen: 'landing',
+  demoMode: false,
+  connected: false,
+  synthesis: null
+};
 const storageKey = `ai-native-studio:${cfg.room}`;
 const participantKey = `${storageKey}:participant-id`;
 
@@ -27,19 +33,37 @@ function loadLocal(){
 function saveLocal(){
   localStorage.setItem(storageKey, JSON.stringify(state.people));
 }
+function setConnection(mode){
+  const el=document.getElementById('connectionStatus');
+  if(!el) return;
+  el.className='status-pill';
+  if(mode==='demo'){
+    el.textContent='DEMO MODE'; el.classList.add('demo');
+  }else if(mode==='online'){
+    el.textContent='LIVE · CONNECTED'; el.classList.add('online');
+  }else{
+    el.textContent='OFFLINE'; el.classList.add('offline');
+  }
+}
 async function syncRemote(){
   if(!cfg.apiBase || state.demoMode) return;
   try{
     const r = await fetch(`${cfg.apiBase}?room=${encodeURIComponent(cfg.room)}`,{cache:'no-store'});
     if(r.ok){
       const data = await r.json();
+      state.connected=true;
+      setConnection('online');
       if(Array.isArray(data.people)){
         state.people = data.people.slice(0,cfg.maxSignals);
         saveLocal();
         renderPeople();
       }
-    }
-  }catch(e){ console.warn('Live sync unavailable',e); }
+    }else throw new Error('sync failed');
+  }catch(e){
+    state.connected=false;
+    setConnection('offline');
+    console.warn('Live sync unavailable',e);
+  }
 }
 async function submitSignal(person){
   state.demoMode = false;
@@ -51,6 +75,7 @@ async function submitSignal(person){
     });
     const data = await r.json().catch(()=>({}));
     if(!r.ok) throw new Error(data.reason==='room-full'?'The studio wall is full.':'Submission failed');
+    state.connected=true;
     if(Array.isArray(data.people)){
       state.people = data.people.slice(0,cfg.maxSignals);
       saveLocal();
@@ -66,6 +91,7 @@ async function submitSignal(person){
 }
 async function resetSignals(){
   state.demoMode = false;
+  state.synthesis = null;
   if(!cfg.apiBase){ state.people=[];saveLocal();renderPeople();return; }
   const token = window.prompt('Enter the host reset token.');
   if(!token) return;
@@ -75,6 +101,7 @@ async function resetSignals(){
   });
   if(!r.ok){ alert('Reset failed. Check the host token.'); return; }
   state.people=[];saveLocal();renderPeople();
+  setConnection('online');
 }
 function renderPeople(){
   const grid=document.getElementById('peopleGrid');
@@ -87,25 +114,108 @@ function renderPeople(){
     card.innerHTML=`<div class="person-num">0${i+1}</div><div class="person-name">${p?escapeHtml(p.name):'WAITING'}</div><div class="person-answer">${p?escapeHtml(p.answer):'Signal not received yet.'}</div>`;
     grid.appendChild(card);
   }
-  document.getElementById('count').textContent=state.people.length;
+  const count=state.people.length;
+  document.getElementById('count').textContent=count;
   const revealBtn=document.getElementById('revealBtn');
-  revealBtn.disabled=state.people.length===0;
+  revealBtn.disabled=count===0;
   document.getElementById('photoNames').textContent=state.people.map(p=>p.name).join(' · ');
+  const ready=document.getElementById('readinessStatus');
+  const hint=document.getElementById('readyHint');
+  if(count===0){
+    ready.textContent='Waiting for the first signal.';
+    hint.textContent='The reveal unlocks after the first signal.';
+  }else if(count<cfg.maxSignals){
+    ready.textContent=`${count} of ${cfg.maxSignals} signals received.`;
+    hint.textContent=`You can synthesize now, or wait for ${cfg.maxSignals-count} more.`;
+  }else{
+    ready.textContent='All six signals received. The studio is ready.';
+    hint.textContent='All signals are in. Time for the reveal.';
+  }
 }
 function escapeHtml(str=''){
   return String(str).replace(/[&<>'"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#039;','"':'&quot;'}[ch]));
 }
-function buildMission(){
+function fallbackSynthesis(){
   const answers=state.people.map(p=>p.answer.toLowerCase()).join(' ');
-  const words=['curious','experimental','human','useful','bold','creative','responsible','inventive','practical','ambitious'];
-  const hits=words.filter(w=>answers.includes(w)).slice(0,5);
-  const signal=[...new Set([...hits,'CURIOUS','EXPERIMENTAL','HUMAN','USEFUL','UNFINISHED'])].slice(0,5).map(x=>x.toUpperCase());
-  document.getElementById('signalLine').textContent=signal.join(' × ');
-  const names=state.people.length===1?'one student':`${state.people.length} students`;
-  document.getElementById('missionText').textContent=`We are ${names} building at the edge of what AI can do—alongside real organizations, with real stakes.`;
+  const candidates=['curious','experimental','human','useful','bold','creative','responsible','inventive','practical','ambitious'];
+  const hits=candidates.filter(w=>answers.includes(w));
+  const themes=[...new Set([...hits,'curious','experimental','human-centered','useful'])].slice(0,4);
+  const count=state.people.length;
+  return {
+    themes,
+    signal:themes.map(x=>x.toUpperCase()).join(' × '),
+    mission:`We are ${count} students turning curiosity into useful AI products—experimenting boldly, building responsibly, and learning through real work.`,
+    prediction:'Six NKU students prove what happens when the classroom starts operating like an AI product studio.',
+    linkedin:`I asked ${count} students one question: “What do you want to make possible with AI this semester?”\n\nTheir answers became the first signal for INF 396: AI Native Studio. We’re not studying AI. We’re building with it.\n\n6 humans. 2 clients. 1 AI studio.`,
+    source:'fallback'
+  };
+}
+async function synthesizeStudio(){
+  if(!state.people.length) return;
+  show('thinking');
+  const phrases=[
+    'Finding the patterns between what you want to build.',
+    'Looking for the ideas that connect this team.',
+    'Turning individual ambitions into a shared studio signal.'
+  ];
+  let phraseIndex=0;
+  const thinkingTimer=setInterval(()=>{
+    phraseIndex=(phraseIndex+1)%phrases.length;
+    document.getElementById('thinkingCopy').textContent=phrases[phraseIndex];
+  },1400);
+
+  let result=null;
+  try{
+    if(cfg.apiBase && !state.demoMode){
+      const r=await fetch(`${cfg.apiBase}/synthesize?room=${encodeURIComponent(cfg.room)}`,{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({room:cfg.room,people:state.people})
+      });
+      if(r.ok) result=await r.json();
+    }
+  }catch(error){ console.warn('AI synthesis unavailable',error); }
+
+  if(!result || !result.mission) result=fallbackSynthesis();
+  state.synthesis=result;
+  clearInterval(thinkingTimer);
+  await new Promise(resolve=>setTimeout(resolve,700));
+  applySynthesis(result);
+  show('reveal');
+}
+function applySynthesis(result){
+  const themes=Array.isArray(result.themes)?result.themes.slice(0,5):[];
+  const chips=document.getElementById('themeChips');
+  chips.innerHTML='';
+  themes.forEach(theme=>{
+    const span=document.createElement('span');
+    span.textContent=theme;
+    chips.appendChild(span);
+  });
+  document.getElementById('signalLine').textContent=result.signal || themes.map(x=>x.toUpperCase()).join(' × ');
+  document.getElementById('missionText').textContent=result.mission;
+  document.getElementById('prediction-title').textContent=result.prediction || fallbackSynthesis().prediction;
+  document.getElementById('photoMission').textContent=result.mission;
+  document.getElementById('aiSource').textContent=result.source==='ai'?'Synthesized live with Cloudflare Workers AI from this room’s signals.':'Synthesized from this room’s signals with the classroom fallback.';
+}
+async function copyLinkedIn(){
+  const text=state.synthesis?.linkedin || fallbackSynthesis().linkedin;
+  try{
+    await navigator.clipboard.writeText(text);
+    const buttons=[document.getElementById('copyLinkedInBtn'),document.getElementById('predictionCopyBtn')];
+    buttons.forEach(button=>{
+      if(!button) return;
+      const original=button.textContent;
+      button.textContent='CAPTION COPIED';
+      setTimeout(()=>button.textContent=original,1500);
+    });
+  }catch{
+    window.prompt('Copy this LinkedIn caption:',text);
+  }
 }
 function loadDemo(){
   state.demoMode = true;
+  state.synthesis = null;
   state.people=[
     {id:crypto.randomUUID(),name:'Aaron',answer:'Build intelligent agents that can make better decisions with people.'},
     {id:crypto.randomUUID(),name:'Ashok',answer:'Turn ambitious ideas into useful AI products people can trust.'},
@@ -114,7 +224,7 @@ function loadDemo(){
     {id:crypto.randomUUID(),name:'Nora',answer:'Experiment boldly while keeping the technology responsible and useful.'},
     {id:crypto.randomUUID(),name:'Aaron',answer:'Learn how real AI teams move from uncertainty to working products.'}
   ];
-  saveLocal();renderPeople();
+  saveLocal();renderPeople();setConnection('demo');
 }
 
 document.getElementById('hostBtn').addEventListener('click',()=>show('host'));
@@ -123,7 +233,7 @@ document.querySelectorAll('[data-back]').forEach(b=>b.addEventListener('click',(
 
 document.getElementById('joinForm').addEventListener('submit',async e=>{
   e.preventDefault();
-  const form = e.currentTarget;
+  const form=e.currentTarget;
   const name=document.getElementById('nameInput').value.trim();
   const answer=document.getElementById('answerInput').value.trim();
   if(!name||!answer)return;
@@ -142,8 +252,10 @@ document.getElementById('copyJoinBtn').addEventListener('click',async()=>{
 });
 document.getElementById('demoBtn').addEventListener('click',loadDemo);
 document.getElementById('resetBtn').addEventListener('click',resetSignals);
-document.getElementById('revealBtn').addEventListener('click',()=>{buildMission();show('reveal')});
+document.getElementById('revealBtn').addEventListener('click',synthesizeStudio);
 document.getElementById('predictionBtn').addEventListener('click',()=>show('prediction'));
+document.getElementById('copyLinkedInBtn').addEventListener('click',copyLinkedIn);
+document.getElementById('predictionCopyBtn').addEventListener('click',copyLinkedIn);
 document.getElementById('photoBtn').addEventListener('click',()=>show('photo'));
 document.getElementById('predictionPhotoBtn').addEventListener('click',()=>show('photo'));
 document.getElementById('exitPhotoBtn').addEventListener('click',()=>show('reveal'));
@@ -153,7 +265,9 @@ window.addEventListener('storage',e=>{if(e.key===storageKey){loadLocal();renderP
 const url=joinLink();
 document.getElementById('joinUrl').textContent=url;
 document.getElementById('qrImage').src=`https://api.qrserver.com/v1/create-qr-code/?size=420x420&data=${encodeURIComponent(url)}`;
+const classDate=new Date(2026,7,25);
+document.getElementById('photoDate').textContent=`FIRST STUDIO SESSION · ${classDate.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}).toUpperCase()}`;
 loadLocal();renderPeople();
 if(new URLSearchParams(location.search).get('join')==='1') show('join');
 else show('landing');
-if(cfg.apiBase){syncRemote();setInterval(syncRemote,1000);}
+if(cfg.apiBase){syncRemote();setInterval(syncRemote,1000);} else setConnection('offline');
