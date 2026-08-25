@@ -5,7 +5,8 @@ const state = {
   lastScreen: 'landing',
   demoMode: false,
   connected: false,
-  synthesis: null
+  synthesis: null,
+  photoReturn: 'reveal'
 };
 const storageKey = `ai-native-studio:${cfg.room}`;
 const participantKey = `${storageKey}:participant-id`;
@@ -14,6 +15,10 @@ function show(id){
   screens.forEach(s=>s.classList.toggle('active', s.id===id));
   state.lastScreen = id;
   window.scrollTo({top:0,behavior:'instant'});
+}
+function openPhoto(returnTo='reveal'){
+  state.photoReturn=returnTo;
+  show('photo');
 }
 function joinLink(){
   const url = new URL(window.location.href);
@@ -251,14 +256,15 @@ document.getElementById('copyJoinBtn').addEventListener('click',async()=>{
   const b=document.getElementById('copyJoinBtn');const t=b.textContent;b.textContent='COPIED';setTimeout(()=>b.textContent=t,1200);
 });
 document.getElementById('demoBtn').addEventListener('click',loadDemo);
+document.getElementById('hostPhotoBtn').addEventListener('click',()=>openPhoto('host'));
 document.getElementById('resetBtn').addEventListener('click',resetSignals);
 document.getElementById('revealBtn').addEventListener('click',synthesizeStudio);
 document.getElementById('predictionBtn').addEventListener('click',()=>show('prediction'));
 document.getElementById('copyLinkedInBtn').addEventListener('click',copyLinkedIn);
 document.getElementById('predictionCopyBtn').addEventListener('click',copyLinkedIn);
-document.getElementById('photoBtn').addEventListener('click',()=>show('photo'));
-document.getElementById('predictionPhotoBtn').addEventListener('click',()=>show('photo'));
-document.getElementById('exitPhotoBtn').addEventListener('click',()=>show('reveal'));
+document.getElementById('photoBtn').addEventListener('click',()=>openPhoto('reveal'));
+document.getElementById('predictionPhotoBtn').addEventListener('click',()=>openPhoto('prediction'));
+document.getElementById('exitPhotoBtn').addEventListener('click',()=>show(state.photoReturn || 'reveal'));
 
 window.addEventListener('storage',e=>{if(e.key===storageKey){loadLocal();renderPeople();}});
 
