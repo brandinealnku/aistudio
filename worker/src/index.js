@@ -3,6 +3,7 @@ import { DurableObject } from "cloudflare:workers";
 const DEFAULT_MAX_SIGNALS = 6;
 const MAX_NAME_LENGTH = 40;
 const MAX_ANSWER_LENGTH = 240;
+const DEFAULT_AI_MODEL = "@cf/meta/llama-3.1-8b-instruct";
 
 function json(data, status = 200, extraHeaders = {}) {
   return Response.json(data, {
@@ -58,6 +59,56 @@ async function verifyToken(provided, expected) {
     crypto.subtle.digest("SHA-256", encoder.encode(expected)),
   ]);
   return crypto.subtle.timingSafeEqual(providedHash, expectedHash);
+}
+
+function fallbackSynthesis(people) {
+  const count = people.length;
+  return {
+    themes: ["curiosity", "experimentation", "human-centered", "useful"],
+    signal: "CURIOUS × EXPERIMENTAL × HUMAN-CENTERED × USEFUL",
+    mission: `We are ${count} students turning curiosity into useful AI products—experimenting boldly, building responsibly, and learning through real work.`,
+    prediction: "Six NKU students prove what happens when the classroom starts operating like an AI product studio.",
+    linkedin: `I asked ${count} students one question: “What do you want to make possible with AI this semester?”\n\nTheir answers became the first signal for INF 396: AI Native Studio. We’re not studying AI. We’re building with it.\n\n6 humans. 2 clients. 1 AI studio.`,
+    source: "fallback",
+  };
+}
+
+function cleanSynthesis(value, people) {
+  const fallback = fallbackSynthesis(people);
+  const input = value && typeof value === "object" ? value : {};
+  const themes = Array.isArray(input.themes)
+    ? input.themes.map((item) => String(item).trim()).filter(Boolean).slice(0, 5)
+    : fallback.themes;
+  const mission = String(input.mission || "").trim().slice(0, 320) || fallback.mission;
+  const prediction = String(input.prediction || "").trim().slice(0, 260) || fallback.prediction;
+  const linkedin = String(input.linkedin || "").trim().slice(0, 1100) || fallback.linkedin;
+  const signal = String(input.signal || "").trim().slice(0, 180) || themes.map((item) => item.toUpperCase()).join(" × ");
+  return { themes, signal, mission, prediction, linkedin, source: "ai" };
+}
+
+function parseModelJson(response) {
+  const raw = typeof response === "string"
+    ? response
+    : String(response?.response || response?.result?.response || "");
+  const cleaned = raw.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/i, "").trim();
+  const start = cleaned.indexOf("{");
+  const end = cleaned.lastIndexOf("}");
+  if (start < 0 || end <= start) throw new Error("AI response did not contain JSON");
+  return JSON.parse(cleaned.slice(start, end + 1));
+}
+
+async function synthesizeWithAI(env, people) {
+  if (!env.AI) return fallbackSynthesis(people);
+  const responses = people.map((person, index) => `${index + 1}. ${person.answer}`).join("\n");
+  const prompt = `You are synthesizing the first-day identity of a university AI product studio.\n\nThe students answered: “What do you want to make possible with AI this semester?”\n\nRESPONSES:\n${responses}\n\nReturn ONLY valid JSON with exactly these keys:\n{\n  "themes": ["3 to 5 short themes, 1-3 words each"],\n  "signal": "the themes as a punchy uppercase line separated by ×",\n  "mission": "one vivid sentence, 22-38 words, grounded only in the responses",\n  "prediction": "one ambitious but plausible December 2026 headline, 16-28 words",\n  "linkedin": "a LinkedIn-ready launch caption, 70-130 words, warm and energetic, beginning with a strong hook and ending with '6 humans. 2 clients. 1 AI studio.'"\n}\n\nDo not invent specific student accomplishments, client outcomes, or facts not present in the responses. Do not use hashtags. Avoid generic corporate language.`;
+
+  try {
+    const response = await env.AI.run(env.AI_MODEL || DEFAULT_AI_MODEL, { prompt });
+    return cleanSynthesis(parseModelJson(response), people);
+  } catch (error) {
+    console.error(JSON.stringify({ event: "ai_synthesis_fallback", message: error?.message || "AI synthesis failed" }));
+    return fallbackSynthesis(people);
+  }
 }
 
 export class LaunchRoom extends DurableObject {
@@ -129,12 +180,19 @@ export default {
     try {
       const url = new URL(request.url);
       if (url.pathname === "/health") {
-        return json({ ok: true, service: "inf396-launch" }, 200, cors);
+        return json({ ok: true, service: "inf396-launch", ai: Boolean(env.AI) }, 200, cors);
       }
 
       const roomName = normalizeRoom(url.searchParams.get("room") || undefined);
       const room = env.LAUNCH_ROOM.getByName(roomName);
       const maxSignals = Number(env.MAX_SIGNALS || DEFAULT_MAX_SIGNALS);
+
+      if (url.pathname === "/synthesize" && request.method === "POST") {
+        const people = await room.list(maxSignals);
+        if (!people.length) return json({ error: "No signals to synthesize" }, 409, cors);
+        const synthesis = await synthesizeWithAI(env, people);
+        return json({ room: roomName, count: people.length, ...synthesis }, 200, cors);
+      }
 
       if (request.method === "GET") {
         return json({ room: roomName, people: await room.list(maxSignals) }, 200, cors);
