@@ -1,0 +1,29 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "inf396-ai-native-studio-launch",
+  "main": "src/index.js",
+  "compatibility_date": "2026-08-24",
+  "compatibility_flags": ["nodejs_compat"],
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "LAUNCH_ROOM",
+        "class_name": "LaunchRoom"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": ["LaunchRoom"]
+    }
+  ],
+  "vars": {
+    "MAX_SIGNALS": "6",
+    "ALLOWED_ORIGINS": "https://brandinealnku.github.io"
+  },
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1
+  }
+}
