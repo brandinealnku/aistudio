@@ -120,12 +120,13 @@ document.querySelectorAll('[data-back]').forEach(b=>b.addEventListener('click',(
 
 document.getElementById('joinForm').addEventListener('submit',async e=>{
   e.preventDefault();
+  const form = e.currentTarget;
   const name=document.getElementById('nameInput').value.trim();
   const answer=document.getElementById('answerInput').value.trim();
   if(!name||!answer)return;
   try{
     await submitSignal({id:participantId(),name,answer,createdAt:new Date().toISOString()});
-    e.currentTarget.classList.add('hidden');
+    form.classList.add('hidden');
     document.getElementById('joinSuccess').classList.remove('hidden');
   }catch(error){
     alert(error?.message || 'Your signal could not be submitted. Please try again.');
