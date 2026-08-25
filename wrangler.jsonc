@@ -4,6 +4,9 @@
   "main": "worker/src/index.js",
   "compatibility_date": "2026-08-24",
   "compatibility_flags": ["nodejs_compat"],
+  "ai": {
+    "binding": "AI"
+  },
   "durable_objects": {
     "bindings": [
       {
@@ -20,7 +23,8 @@
   ],
   "vars": {
     "MAX_SIGNALS": "6",
-    "ALLOWED_ORIGINS": "https://brandinealnku.github.io"
+    "ALLOWED_ORIGINS": "https://brandinealnku.github.io",
+    "AI_MODEL": "@cf/meta/llama-3.1-8b-instruct"
   },
   "observability": {
     "enabled": true,
