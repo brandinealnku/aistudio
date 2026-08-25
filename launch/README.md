@@ -1,35 +1,39 @@
 # INF 396 AI Native Studio Launch
 
-This folder contains a standalone first-day launch experience for INF 396: AI Native Studio.
+This folder contains the standalone first-day launch experience for INF 396: AI Native Studio.
 
 ## Files
 - `index.html` — student + instructor experience
 - `styles.css` — presentation and mobile styles
-- `app.js` — interaction, reveal, photo mode, demo mode, and optional live sync
-- `config.js` — live aggregation configuration
+- `app.js` — interaction, reveal, photo mode, demo mode, and live sync
+- `config.js` — room and backend endpoint configuration
 
-## Current behavior
-The experience is fully usable on one browser/device and includes a six-person demo mode. Local submissions persist in that browser.
+## Live classroom behavior
 
-For true multi-device classroom aggregation, set `apiBase` in `config.js` to an endpoint that supports:
+The Cloudflare backend lives in `/worker/` and uses a Durable Object so separate student phones share one consistent room state.
 
-### GET
-`GET <apiBase>?room=fall-2026-launch`
+When `apiBase` is configured, the experience:
+- POSTs each student response to the Worker
+- polls the Worker every second from the instructor display
+- supports students with duplicate first names by assigning each browser a UUID
+- allows the host to clear the room with a protected reset token
 
-Response:
-```json
-{"people":[{"name":"Aaron","answer":"..."}]}
+If `apiBase` is blank, the page falls back to local/demo mode.
+
+## Connect the deployed Worker
+
+After deploying `/worker/`, update `config.js`:
+
+```js
+window.AI_STUDIO_LAUNCH_CONFIG = {
+  apiBase: "https://inf396-ai-native-studio-launch.YOUR-SUBDOMAIN.workers.dev",
+  maxSignals: 6,
+  room: "fall-2026-launch"
+};
 ```
 
-### POST
-`POST <apiBase>`
-
-Body:
-```json
-{"room":"fall-2026-launch","person":{"name":"Aaron","answer":"...","createdAt":"..."}}
-```
-
-The host screen polls the endpoint every 2.5 seconds when `apiBase` is configured.
+The reset token is never stored here. The host enters it only when using Reset on the instructor display.
 
 ## Safety
-This launch experience was added only under `/launch/`. Existing repository files are not modified.
+
+All launch-specific work remains under `/launch/` and `/worker/`. The existing `discovery.html` experience is not changed.
