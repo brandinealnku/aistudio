@@ -2,6 +2,7 @@ const cfg = window.AI_STUDIO_LAUNCH_CONFIG || { apiBase: "", maxSignals: 6, room
 const screens = [...document.querySelectorAll('.screen')];
 const state = { people: [], lastScreen: 'landing' };
 const storageKey = `ai-native-studio:${cfg.room}`;
+const participantKey = `${storageKey}:participant-id`;
 
 function show(id){
   screens.forEach(s=>s.classList.toggle('active', s.id===id));
@@ -14,13 +15,17 @@ function joinLink(){
   url.hash = '';
   return url.toString();
 }
+function participantId(){
+  let id = localStorage.getItem(participantKey);
+  if(!id){ id = crypto.randomUUID(); localStorage.setItem(participantKey,id); }
+  return id;
+}
 function loadLocal(){
   try { state.people = JSON.parse(localStorage.getItem(storageKey) || '[]'); }
   catch { state.people = []; }
 }
 function saveLocal(){
   localStorage.setItem(storageKey, JSON.stringify(state.people));
-  window.dispatchEvent(new StorageEvent('storage',{key:storageKey,newValue:JSON.stringify(state.people)}));
 }
 async function syncRemote(){
   if(!cfg.apiBase) return;
@@ -38,15 +43,36 @@ async function syncRemote(){
 }
 async function submitSignal(person){
   if(cfg.apiBase){
-    const r = await fetch(cfg.apiBase,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({room:cfg.room,person})});
-    if(!r.ok) throw new Error('Submission failed');
+    const r = await fetch(`${cfg.apiBase}?room=${encodeURIComponent(cfg.room)}`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({room:cfg.room,person})
+    });
+    const data = await r.json().catch(()=>({}));
+    if(!r.ok) throw new Error(data.reason==='room-full'?'The studio wall is full.':'Submission failed');
+    if(Array.isArray(data.people)){
+      state.people = data.people.slice(0,cfg.maxSignals);
+      saveLocal();
+      renderPeople();
+    }
     return;
   }
-  const duplicate = state.people.some(p=>p.name.toLowerCase()===person.name.toLowerCase());
-  if(!duplicate && state.people.length < cfg.maxSignals){
-    state.people.push(person);
-    saveLocal();
-  }
+  const existingIndex = state.people.findIndex(p=>p.id===person.id);
+  if(existingIndex >= 0) state.people[existingIndex] = person;
+  else if(state.people.length < cfg.maxSignals) state.people.push(person);
+  saveLocal();
+  renderPeople();
+}
+async function resetSignals(){
+  if(!cfg.apiBase){ state.people=[];saveLocal();renderPeople();return; }
+  const token = window.prompt('Enter the host reset token.');
+  if(!token) return;
+  const r = await fetch(`${cfg.apiBase}?room=${encodeURIComponent(cfg.room)}`,{
+    method:'DELETE',
+    headers:{'X-Reset-Token':token}
+  });
+  if(!r.ok){ alert('Reset failed. Check the host token.'); return; }
+  state.people=[];saveLocal();renderPeople();
 }
 function renderPeople(){
   const grid=document.getElementById('peopleGrid');
@@ -65,7 +91,7 @@ function renderPeople(){
   document.getElementById('photoNames').textContent=state.people.map(p=>p.name).join(' · ');
 }
 function escapeHtml(str=''){
-  return str.replace(/[&<>'"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#039;','"':'&quot;'}[ch]));
+  return String(str).replace(/[&<>'"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#039;','"':'&quot;'}[ch]));
 }
 function buildMission(){
   const answers=state.people.map(p=>p.answer.toLowerCase()).join(' ');
@@ -78,12 +104,12 @@ function buildMission(){
 }
 function loadDemo(){
   state.people=[
-    {name:'Aaron',answer:'Build intelligent agents that can make better decisions with people.'},
-    {name:'Ashok',answer:'Turn ambitious ideas into useful AI products people can trust.'},
-    {name:'Mark',answer:'Use computer vision to help people discover stories in museum collections.'},
-    {name:'Elaina',answer:'Create human-centered AI experiences that make information easier to explore.'},
-    {name:'Nora',answer:'Experiment boldly while keeping the technology responsible and useful.'},
-    {name:'Aaron',answer:'Learn how real AI teams move from uncertainty to working products.'}
+    {id:crypto.randomUUID(),name:'Aaron',answer:'Build intelligent agents that can make better decisions with people.'},
+    {id:crypto.randomUUID(),name:'Ashok',answer:'Turn ambitious ideas into useful AI products people can trust.'},
+    {id:crypto.randomUUID(),name:'Mark',answer:'Use computer vision to help people discover stories in museum collections.'},
+    {id:crypto.randomUUID(),name:'Elaina',answer:'Create human-centered AI experiences that make information easier to explore.'},
+    {id:crypto.randomUUID(),name:'Nora',answer:'Experiment boldly while keeping the technology responsible and useful.'},
+    {id:crypto.randomUUID(),name:'Aaron',answer:'Learn how real AI teams move from uncertainty to working products.'}
   ];
   saveLocal();renderPeople();
 }
@@ -98,11 +124,11 @@ document.getElementById('joinForm').addEventListener('submit',async e=>{
   const answer=document.getElementById('answerInput').value.trim();
   if(!name||!answer)return;
   try{
-    await submitSignal({name,answer,createdAt:new Date().toISOString()});
+    await submitSignal({id:participantId(),name,answer,createdAt:new Date().toISOString()});
     e.currentTarget.classList.add('hidden');
     document.getElementById('joinSuccess').classList.remove('hidden');
-  }catch{
-    alert('Your signal could not be submitted. Please try again.');
+  }catch(error){
+    alert(error?.message || 'Your signal could not be submitted. Please try again.');
   }
 });
 
@@ -111,7 +137,7 @@ document.getElementById('copyJoinBtn').addEventListener('click',async()=>{
   const b=document.getElementById('copyJoinBtn');const t=b.textContent;b.textContent='COPIED';setTimeout(()=>b.textContent=t,1200);
 });
 document.getElementById('demoBtn').addEventListener('click',loadDemo);
-document.getElementById('resetBtn').addEventListener('click',()=>{state.people=[];saveLocal();renderPeople();});
+document.getElementById('resetBtn').addEventListener('click',resetSignals);
 document.getElementById('revealBtn').addEventListener('click',()=>{buildMission();show('reveal')});
 document.getElementById('predictionBtn').addEventListener('click',()=>show('prediction'));
 document.getElementById('photoBtn').addEventListener('click',()=>show('photo'));
@@ -126,4 +152,4 @@ document.getElementById('qrImage').src=`https://api.qrserver.com/v1/create-qr-co
 loadLocal();renderPeople();
 if(new URLSearchParams(location.search).get('join')==='1') show('join');
 else show('landing');
-if(cfg.apiBase){syncRemote();setInterval(syncRemote,2500);}
+if(cfg.apiBase){syncRemote();setInterval(syncRemote,1000);}
