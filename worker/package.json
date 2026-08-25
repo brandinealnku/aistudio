@@ -1,0 +1,12 @@
+{
+  "name": "inf396-ai-native-studio-launch-worker",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "types": "wrangler types"
+  },
+  "devDependencies": {
+    "wrangler": "^4.33.1"
+  }
+}
