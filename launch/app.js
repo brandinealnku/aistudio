@@ -1,6 +1,6 @@
 const cfg = window.AI_STUDIO_LAUNCH_CONFIG || { apiBase: "", maxSignals: 6, room: "fall-2026-launch" };
 const screens = [...document.querySelectorAll('.screen')];
-const state = { people: [], lastScreen: 'landing' };
+const state = { people: [], lastScreen: 'landing', demoMode: false };
 const storageKey = `ai-native-studio:${cfg.room}`;
 const participantKey = `${storageKey}:participant-id`;
 
@@ -28,7 +28,7 @@ function saveLocal(){
   localStorage.setItem(storageKey, JSON.stringify(state.people));
 }
 async function syncRemote(){
-  if(!cfg.apiBase) return;
+  if(!cfg.apiBase || state.demoMode) return;
   try{
     const r = await fetch(`${cfg.apiBase}?room=${encodeURIComponent(cfg.room)}`,{cache:'no-store'});
     if(r.ok){
@@ -42,6 +42,7 @@ async function syncRemote(){
   }catch(e){ console.warn('Live sync unavailable',e); }
 }
 async function submitSignal(person){
+  state.demoMode = false;
   if(cfg.apiBase){
     const r = await fetch(`${cfg.apiBase}?room=${encodeURIComponent(cfg.room)}`,{
       method:'POST',
@@ -64,6 +65,7 @@ async function submitSignal(person){
   renderPeople();
 }
 async function resetSignals(){
+  state.demoMode = false;
   if(!cfg.apiBase){ state.people=[];saveLocal();renderPeople();return; }
   const token = window.prompt('Enter the host reset token.');
   if(!token) return;
@@ -103,6 +105,7 @@ function buildMission(){
   document.getElementById('missionText').textContent=`We are ${names} building at the edge of what AI can do—alongside real organizations, with real stakes.`;
 }
 function loadDemo(){
+  state.demoMode = true;
   state.people=[
     {id:crypto.randomUUID(),name:'Aaron',answer:'Build intelligent agents that can make better decisions with people.'},
     {id:crypto.randomUUID(),name:'Ashok',answer:'Turn ambitious ideas into useful AI products people can trust.'},
