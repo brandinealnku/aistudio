@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#050505" />
+  <title>INF 396 · AI Native Studio Launch</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main id="app" class="shell">
+    <section id="landing" class="screen active" aria-labelledby="landing-title">
+      <div class="eyebrow">INF 396 · AI NATIVE STUDIO · FALL 2026</div>
+      <h1 id="landing-title">6 HUMANS.<br><span>2 CLIENTS.</span><br>1 AI STUDIO.</h1>
+      <p class="lede">What do you want to make possible with AI this semester?</p>
+      <div class="action-row">
+        <button class="primary" id="hostBtn">HOST THE EXPERIENCE</button>
+        <button class="secondary" id="joinBtn">JOIN THE STUDIO</button>
+      </div>
+      <p class="micro">Designed tonight. Used tomorrow. That’s kind of the point.</p>
+    </section>
+
+    <section id="join" class="screen" aria-labelledby="join-title">
+      <button class="back" data-back="landing" aria-label="Back">←</button>
+      <div class="eyebrow">JOIN THE STUDIO</div>
+      <h2 id="join-title">Add your signal.</h2>
+      <form id="joinForm" class="join-card">
+        <label>First name
+          <input id="nameInput" maxlength="24" required autocomplete="given-name" placeholder="Your first name" />
+        </label>
+        <label>What do you want to make possible with AI this semester?
+          <textarea id="answerInput" maxlength="160" required rows="4" placeholder="Keep it short. Aim for 10–15 words."></textarea>
+        </label>
+        <button class="primary" type="submit">ADD ME TO THE STUDIO</button>
+      </form>
+      <div id="joinSuccess" class="success hidden" role="status">
+        <div class="pulse-dot"></div>
+        <h3>Signal received.</h3>
+        <p>Look up at the studio wall.</p>
+      </div>
+    </section>
+
+    <section id="host" class="screen host-screen" aria-labelledby="host-title">
+      <div class="host-topbar">
+        <div>
+          <div class="eyebrow">INF 396 · AI NATIVE STUDIO · LIVE</div>
+          <h2 id="host-title">Build the studio.</h2>
+        </div>
+        <div class="host-actions">
+          <button class="secondary small" id="copyJoinBtn">COPY JOIN LINK</button>
+          <button class="secondary small" id="demoBtn">LOAD DEMO</button>
+          <button class="secondary small" id="resetBtn">RESET</button>
+        </div>
+      </div>
+
+      <div class="host-grid">
+        <div class="join-panel">
+          <div class="join-url-label">STUDENTS OPEN</div>
+          <div id="joinUrl" class="join-url"></div>
+          <img id="qrImage" class="qr" alt="QR code to join the AI Native Studio launch experience" />
+          <p class="micro">One question. One sentence. Watch the wall change.</p>
+        </div>
+
+        <div class="wall-panel">
+          <div class="counter"><span id="count">0</span>/6 SIGNALS</div>
+          <div id="peopleGrid" class="people-grid" aria-live="polite"></div>
+        </div>
+      </div>
+
+      <div class="reveal-controls">
+        <button class="primary" id="revealBtn" disabled>GENERATE OUR STUDIO →</button>
+      </div>
+    </section>
+
+    <section id="reveal" class="screen reveal-screen" aria-labelledby="reveal-title">
+      <div class="eyebrow">OUR STUDIO SIGNAL · FALL 2026</div>
+      <div class="signal-line" id="signalLine">CURIOUS × EXPERIMENTAL × HUMAN × USEFUL × UNFINISHED</div>
+      <h2 id="reveal-title" class="manifesto">WE’RE NOT STUDYING AI.<br><span>WE’RE BUILDING WITH IT.</span></h2>
+      <div class="mission-card">
+        <div class="label">OUR STUDIO MISSION</div>
+        <p id="missionText">We are six students building at the edge of what AI can do—alongside real organizations, with real stakes.</p>
+      </div>
+      <div class="reveal-actions">
+        <button class="primary" id="predictionBtn">PREDICT DECEMBER 2026</button>
+        <button class="secondary" id="photoBtn">PHOTO MODE</button>
+      </div>
+      <p class="micro">Built by humans + AI in minutes.</p>
+    </section>
+
+    <section id="prediction" class="screen prediction-screen" aria-labelledby="prediction-title">
+      <div class="eyebrow">DECEMBER 2026 · PREDICTION LOGGED</div>
+      <h2 id="prediction-title">Six NKU students prove what happens when the classroom starts operating like an AI product studio.</h2>
+      <p>Come back in December to see if we were right.</p>
+      <div class="stamp">THE PREDICTION HAS BEEN LOGGED.</div>
+      <button class="primary" id="predictionPhotoBtn">PHOTO MODE</button>
+    </section>
+
+    <section id="photo" class="screen photo-screen" aria-labelledby="photo-title">
+      <div class="photo-frame">
+        <div class="eyebrow">NORTHERN KENTUCKY UNIVERSITY · INF 396</div>
+        <h2 id="photo-title">AI NATIVE<br><span>STUDIO</span></h2>
+        <div class="photo-sub">6 HUMANS · 2 CLIENTS · 1 AI STUDIO</div>
+        <div id="photoNames" class="photo-names"></div>
+        <div class="photo-footer">WE’RE NOT STUDYING AI. WE’RE BUILDING WITH IT.</div>
+      </div>
+      <button class="ghost-control" id="exitPhotoBtn">EXIT PHOTO MODE</button>
+    </section>
+  </main>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
