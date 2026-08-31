@@ -12,7 +12,7 @@
   <meta property="og:type" content="website" />
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="sharing.css" />
-  <link rel="stylesheet" href="poster.css" />
+  <link rel="stylesheet" href="poster.css?v=16" />
 </head>
 <body>
   <main id="app" class="shell">
@@ -50,9 +50,25 @@
 
     <section id="thinking" class="screen thinking-screen" aria-labelledby="thinking-title"><div class="thinking-orbit" aria-hidden="true"><span></span><span></span><span></span></div><div class="eyebrow">AI IS READING THE ROOM</div><h2 id="thinking-title">Building the studio poster.</h2><p id="thinkingCopy" class="lede">Turning student signals into one shared mission.</p></section>
 
-    <section id="poster" class="screen poster-screen" aria-labelledby="posterTitle"><div class="poster-shell"><article id="linkedinPoster" class="linkedin-poster"><header class="poster-top"><div><div class="poster-school">NORTHERN KENTUCKY UNIVERSITY</div><div class="poster-course">INF 396 · AI NATIVE STUDIO</div></div><div class="poster-term">FALL 2026</div></header><div class="poster-message"><div class="poster-series">FIRST STUDIO SESSION</div><h2 id="posterTitle">WE'RE NOT<br>STUDYING AI.<br><span>WE'RE BUILDING WITH IT.</span></h2><div id="posterSignal" class="poster-signal">CURIOUS × EXPERIMENTAL × HUMAN-CENTERED</div></div><div id="posterPeople" class="poster-people" aria-label="AI Native Studio students"></div><div class="poster-mission-block"><div class="poster-label">OUR FIRST STUDIO SIGNAL</div><p id="posterMission">Six students turning curiosity into useful AI products.</p></div><footer class="poster-footer"><div class="poster-footer-copy"><strong><span id="posterCount">6</span> HUMANS · 2 CLIENTS · 1 AI STUDIO</strong><span>NKU · FALL 2026</span></div><div class="poster-roster-link"><img id="rosterQr" alt="QR code to meet the AI Native Studio" /><span>MEET THE<br>STUDIO</span></div></footer></article><div class="poster-controls"><div><strong>Your LinkedIn image is ready.</strong><span>Screenshot the poster, then post it from your own LinkedIn account.</span></div><div class="poster-control-actions"><button class="secondary" id="copyCaptionBtn">COPY POST CAPTION</button><button class="secondary" id="posterRosterBtn">OPEN STUDIO ROSTER</button><button class="ghost-control" id="backToHostBtn">BACK TO HOST</button></div></div></div></section>
+    <section id="poster" class="screen poster-screen" aria-labelledby="posterTitle">
+      <div class="poster-shell">
+        <article id="linkedinPoster" class="linkedin-poster">
+          <header class="poster-top"><div><div class="poster-school">NORTHERN KENTUCKY UNIVERSITY</div><div class="poster-course">INF 396 · AI NATIVE STUDIO</div></div><div class="poster-term">FALL 2026</div></header>
+          <div class="poster-message"><div class="poster-series">FIRST STUDIO SESSION</div><h2 id="posterTitle">WE'RE NOT<br>STUDYING AI.<br><span>WE'RE BUILDING WITH IT.</span></h2><div id="posterSignal" class="poster-signal">CURIOUS × EXPERIMENTAL × HUMAN-CENTERED</div></div>
+          <div id="posterPeople" class="poster-people" aria-label="AI Native Studio students"></div>
+          <div class="poster-mission-block"><div class="poster-label">OUR FIRST STUDIO SIGNAL</div><p id="posterMission">Six students turning curiosity into useful AI products.</p></div>
+          <footer class="poster-footer"><div class="poster-footer-copy"><strong><span id="posterCount">6</span> HUMANS · 2 CLIENTS · 1 AI STUDIO</strong><span>NKU · FALL 2026</span></div><div class="poster-roster-link"><img id="rosterQr" alt="QR code to meet the AI Native Studio" crossorigin="anonymous" /><span>MEET THE<br>STUDIO</span></div></footer>
+        </article>
+
+        <div class="poster-controls">
+          <div class="poster-control-copy"><strong>Your LinkedIn image is ready.</strong><span>Save the 4:5 poster as a PNG, then publish it from your own LinkedIn account.</span></div>
+          <div class="poster-control-actions"><button class="primary" id="savePosterBtn">SAVE POSTER PNG</button><button class="secondary" id="copyCaptionBtn">COPY POST CAPTION</button><button class="secondary" id="posterRosterBtn">OPEN STUDIO ROSTER</button><button class="ghost-control" id="backToHostBtn">BACK TO HOST</button></div>
+        </div>
+      </div>
+    </section>
   </main>
-  <script src="config.js?v=15"></script>
-  <script src="app.js?v=15"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="config.js?v=16"></script>
+  <script src="app.js?v=16"></script>
 </body>
 </html>
