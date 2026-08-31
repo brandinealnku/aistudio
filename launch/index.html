@@ -5,9 +5,15 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="theme-color" content="#050505" />
   <title>INF 396 · AI Native Studio Launch</title>
+  <meta name="description" content="INF 396 AI Native Studio at Northern Kentucky University — 6 humans, 2 clients, 1 AI studio." />
+  <meta property="og:title" content="INF 396 · AI Native Studio" />
+  <meta property="og:description" content="We’re not studying AI. We’re building with it. 6 humans · 2 clients · 1 AI studio." />
+  <meta property="og:url" content="https://brandinealnku.github.io/aistudio/launch/" />
+  <meta property="og:type" content="website" />
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="photo.css" />
   <link rel="stylesheet" href="sequence.css" />
+  <link rel="stylesheet" href="sharing.css" />
 </head>
 <body>
   <main id="app" class="shell">
@@ -32,7 +38,20 @@
         </div>
         <button class="primary" type="submit">ADD ME TO THE STUDIO</button>
       </form>
-      <div id="joinSuccess" class="success hidden" role="status"><div class="pulse-dot"></div><h3>Signal received.</h3><p>Look up at the studio wall.</p></div>
+      <div id="joinSuccess" class="success hidden" role="status">
+        <div class="pulse-dot"></div><h3>Signal received.</h3><p>Look up at the studio wall.</p>
+        <div id="studentShareCard" class="student-share-card">
+          <div class="share-kicker">MAKE IT OFFICIAL</div>
+          <h4>Share your first studio signal.</h4>
+          <p class="share-help">Your LinkedIn post is already written from your response. Review it, then share.</p>
+          <textarea id="studentLinkedInText" rows="9" readonly aria-label="Your prepared LinkedIn post"></textarea>
+          <div class="share-actions">
+            <button type="button" class="primary" id="studentShareBtn">SHARE TO LINKEDIN</button>
+            <button type="button" class="secondary" id="studentCopyBtn">COPY POST</button>
+          </div>
+          <p class="share-note">On supported phones, choose LinkedIn from the share sheet. The caption is also copied so it’s ready to paste if LinkedIn doesn’t carry the text through.</p>
+        </div>
+      </div>
     </section>
 
     <section id="host" class="screen host-screen" aria-labelledby="host-title">
