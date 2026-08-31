@@ -78,7 +78,7 @@
   }
 
   function escapeHtml(value=''){
-    return String(value).replace(/[&<>'"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#039;','"':'&quot;'}[ch]));
+    return String(value).replace(/[&<>'\"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#039;','\"':'&quot;'}[ch]));
   }
 
   function portraitStrip(list){
@@ -91,20 +91,59 @@
     return `<div class="activation-teams">${teams.map((team,i)=>`<div class="activation-team"><div class="activation-team-label">CLIENT TEAM ${String(i+1).padStart(2,'0')}</div><div class="activation-team-people">${team.map(p=>`<span>${escapeHtml(p.name)}</span>`).join('')}</div><div class="activation-team-status">MISSION READY</div></div>`).join('')}</div>`;
   }
 
+  function studioUrl(){
+    const url = new URL(window.location.href);
+    url.search='';
+    url.hash='';
+    return url.toString();
+  }
+
+  async function openLinkedInPost(){
+    const result = window.__AI_STUDIO_SYNTHESIS__ || fallbackSynthesis(people());
+    const text = result.linkedin || fallbackSynthesis(people()).linkedin;
+    const url = studioUrl();
+
+    try { await navigator.clipboard.writeText(text); } catch {}
+
+    if(navigator.share){
+      try{
+        await navigator.share({title:'INF 396 · AI Native Studio', text, url});
+        return;
+      }catch(error){
+        if(error?.name === 'AbortError') return;
+      }
+    }
+
+    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,'_blank','noopener');
+    setTimeout(()=>alert('Your studio caption is copied. Paste it into LinkedIn, then click Post.'),150);
+  }
+
+  function ensureLinkedInButton(){
+    const actions=$('activationFinalActions');
+    if(!actions || $('activationLinkedInBtn')) return;
+    const button=document.createElement('button');
+    button.className='primary';
+    button.id='activationLinkedInBtn';
+    button.textContent='OPEN LINKEDIN POST';
+    button.addEventListener('click',openLinkedInPost);
+    actions.prepend(button);
+  }
+
   async function activate(){
     const list=people();
     if(!list.length) return;
     cancelled=false;
+    ensureLinkedInButton();
     $('activationFinalActions').classList.add('hidden');
     showScreen('activation');
 
     setStep('signals');
     setStage({eyebrow:'STUDIO ACTIVATION · 01',title:`${String(list.length).padStart(2,'0')} SIGNALS LOCKED.`,copy:'Every person in the room just changed what this studio can become.',visual:portraitStrip(list)});
     const synthesisPromise=getSynthesis(list);
-    await wait(1700); if(cancelled) return;
+    await wait(3200); if(cancelled) return;
 
     setStage({eyebrow:'AI IS READING THE ROOM',title:'FINDING THE PATTERN.',copy:'Turning individual ambitions into one shared studio identity.',visual:`<div class="signal-scan">${list.map(p=>`<span>${escapeHtml(p.answer)}</span>`).join('')}</div>`});
-    await wait(1900); if(cancelled) return;
+    await wait(3600); if(cancelled) return;
 
     const synthesis=await synthesisPromise;
     applySynthesis(synthesis);
@@ -112,18 +151,19 @@
 
     setStep('identity');
     setStage({eyebrow:'STUDIO IDENTITY · GENERATED LIVE',title:synthesis.signal || 'CURIOUS × EXPERIMENTAL × HUMAN',copy:synthesis.mission,visual:`<div class="theme-burst">${(synthesis.themes||[]).map(t=>`<span>${escapeHtml(t)}</span>`).join('')}</div>`});
-    await wait(3100); if(cancelled) return;
+    await wait(4700); if(cancelled) return;
 
     setStep('teams');
     setStage({eyebrow:'TWO CLIENT MISSIONS · ONE STUDIO',title:'NOW WE BUILD.',copy:'Two teams. Shared standards. One studio operating system.',visual:teamVisual(list)});
-    await wait(2700); if(cancelled) return;
+    await wait(4200); if(cancelled) return;
 
     setStep('prediction');
     setStage({eyebrow:'DECEMBER 2026 · PREDICTION LOG',title:synthesis.prediction || 'THIS CLASS WILL BUILD SOMETHING WORTH SHOWING.',copy:'Prediction captured on day one. We come back in December and test it against reality.',visual:'<div class="prediction-stamp">PREDICTION LOGGED · AUG 25 2026</div>'});
-    await wait(3300); if(cancelled) return;
+    await wait(4800); if(cancelled) return;
 
     setStep('online');
     setStage({eyebrow:'INF 396 · AI NATIVE STUDIO',title:'STUDIO ONLINE.',signal:'6 HUMANS · 2 CLIENTS · 1 AI STUDIO',copy:'The studio is no longer an idea. It is operating.',visual:portraitStrip(list)});
+    await wait(2200); if(cancelled) return;
     $('activationFinalActions').classList.remove('hidden');
   }
 
@@ -138,6 +178,7 @@
   $('activationRevealBtn')?.addEventListener('click',()=>showScreen('reveal'));
   $('activationHostBtn')?.addEventListener('click',()=>showScreen('host'));
   $('activationPhotoBtn')?.addEventListener('click',()=>{$('photoBtn')?.click();});
+  ensureLinkedInButton();
 
   const updateActivationReadiness=()=>{
     const count=Number($('count')?.textContent||0), max=cfg.maxSignals||6;
