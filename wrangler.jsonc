@@ -4,9 +4,6 @@
   "main": "worker/src/index.js",
   "compatibility_date": "2026-08-24",
   "compatibility_flags": ["nodejs_compat"],
-  "secrets": {
-    "required": ["RESET_TOKEN"]
-  },
   "ai": {
     "binding": "AI"
   },
