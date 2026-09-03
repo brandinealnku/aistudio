@@ -2,13 +2,11 @@
   const cfg = window.AI_STUDIO_LAUNCH_CONFIG || { apiBase: '', maxSignals: 6, room: 'fall-2026-launch' };
   const escapeHtml = (value = '') => String(value).replace(/[&<>'\"]/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#039;', '\"': '&quot;' }[ch]));
 
-  // Add the v22 showcase visual layer without disturbing the live host/join tools.
   const style = document.createElement('link');
   style.rel = 'stylesheet';
   style.href = 'showcase.css?v=22';
   document.head.appendChild(style);
 
-  // Keep partner/client identities out of the public-facing story for this reveal.
   const footerStrong = document.querySelector('.poster-footer-copy strong');
   if (footerStrong) footerStrong.innerHTML = '<span id="posterCount">6</span> HUMANS · 2 TEAMS · 1 AI STUDIO';
   const posterMissionEl = document.getElementById('posterMission');
@@ -149,17 +147,44 @@
     if (underlyingPosterButton && !underlyingPosterButton.disabled) underlyingPosterButton.click();
   });
 
-  // Preserve instructor tooling without placing it in the public narrative.
+  const copyCaptionButton = document.getElementById('copyCaptionBtn');
+  copyCaptionButton?.addEventListener('click', async event => {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    const count = document.querySelectorAll('.showcase-person').length || 6;
+    const url = new URL(window.location.href);
+    url.search = '';
+    url.hash = '';
+    const caption = `What happens when students stop studying AI from the sidelines and start learning by building?\n\nMeet the inaugural Fall 2026 AI Native Studio cohort at Northern Kentucky University.\n\n${count} students. Two studio teams. One semester built around curiosity, evidence, experimentation, and human judgment.\n\nWe’re not revealing the work just yet. That comes next.\n\nMeet the Studio: ${url.toString()}`;
+    try {
+      await navigator.clipboard.writeText(caption);
+      const original = copyCaptionButton.textContent;
+      copyCaptionButton.textContent = 'CAPTION COPIED';
+      setTimeout(() => { copyCaptionButton.textContent = original; }, 1400);
+    } catch {
+      window.prompt('Copy your LinkedIn caption:', caption);
+    }
+  }, true);
+
+  document.getElementById('backToHostBtn')?.addEventListener('click', event => {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    showScreen('landing');
+  }, true);
+
   const params = new URLSearchParams(window.location.search);
   if (params.get('host') === '1') showScreen('host');
 
   loadCohort();
 
-  // Keep the public poster language partner-neutral even after the app re-renders it.
   const posterObserver = new MutationObserver(() => {
     const mission = document.getElementById('posterMission');
     if (mission && /client/i.test(mission.textContent || '')) {
       mission.textContent = 'Students turning curiosity into useful AI work through real-world studio challenges.';
+    }
+    const footer = document.querySelector('.poster-footer-copy strong');
+    if (footer && /client/i.test(footer.textContent || '')) {
+      footer.innerHTML = '<span id="posterCount">6</span> HUMANS · 2 TEAMS · 1 AI STUDIO';
     }
   });
   const poster = document.getElementById('linkedinPoster');
