@@ -45,11 +45,12 @@
     if (qrImage) qrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=420x420&data=${encodeURIComponent(url)}`;
   }
 
-  async function cloneRoomWithoutPerson(personId) {
+  async function cloneRoomWithoutPeople(personIds) {
+    const ids = new Set(Array.isArray(personIds) ? personIds : [personIds]);
     const response = await fetch(`${window.AI_STUDIO_LAUNCH_CONFIG.apiBase}?room=${encodeURIComponent(room)}`, { cache: "no-store" });
     if (!response.ok) throw new Error("Could not read the current studio room.");
     const data = await response.json();
-    const remaining = Array.isArray(data.people) ? data.people.filter((person) => person.id !== personId) : [];
+    const remaining = Array.isArray(data.people) ? data.people.filter((person) => !ids.has(person.id)) : [];
     const nextRoom = `fall-2026-launch-${Date.now().toString(36)}`;
 
     for (const person of remaining) {
@@ -63,6 +64,12 @@
 
     navigateToRoom(nextRoom);
   }
+
+  async function cloneRoomWithoutPerson(personId) {
+    return cloneRoomWithoutPeople([personId]);
+  }
+
+  window.AI_STUDIO_REMOVE_PEOPLE = cloneRoomWithoutPeople;
 
   document.addEventListener("click", async (event) => {
     const resetButton = event.target.closest?.("#resetBtn");
