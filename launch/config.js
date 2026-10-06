@@ -25,8 +25,13 @@
 
   function navigateToRoom(nextRoom) {
     localStorage.setItem(ROOM_KEY, nextRoom);
+    const current = new URL(window.location.href);
+    const stayInManage = current.searchParams.get("manage") === "1";
+    const stayInHost = current.searchParams.get("host") === "1";
     const url = new URL(window.location.href);
     url.search = "";
+    if (stayInManage) url.searchParams.set("manage", "1");
+    else if (stayInHost) url.searchParams.set("host", "1");
     url.searchParams.set("room", nextRoom);
     url.hash = "";
     window.location.href = url.toString();
