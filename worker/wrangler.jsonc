@@ -22,7 +22,7 @@
     }
   ],
   "vars": {
-    "MAX_SIGNALS": "6",
+    "MAX_SIGNALS": "7",
     "ALLOWED_ORIGINS": "https://brandinealnku.github.io",
     "AI_MODEL": "@cf/meta/llama-3.1-8b-instruct"
   },
