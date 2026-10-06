@@ -77,7 +77,7 @@ function renderPublic(){
     const photo=p?.photo?`<img src="${p.photo}" alt="Portrait of ${escapeHtml(student.name)}" />`:`<div class="placeholder">${escapeHtml(student.name.charAt(0))}</div>`;
     const quote=p?.answer?`<blockquote>“${escapeHtml(p.answer)}”</blockquote>`:'<p class="awaiting">Photo/profile awaiting update.</p>';
     const li=p?.linkedin?`<a href="${escapeHtml(p.linkedin)}" target="_blank" rel="noopener">LinkedIn ↗</a>`:'';
-    return `<article class="card"><div class="photo">${photo}</div><div class="meta"><span>${student.team}</span><h3>${student.name}</h3>${quote}${li}</div></article>`;
+    return `<article class="card"><div class="photo">${photo}</div><div class="meta"><span>${student.team==='CMC'?'Cincinnati Museum Center':student.team}</span><h3>${student.name}</h3>${quote}${li}</div></article>`;
   }).join('');
 }
 function renderManage(){
