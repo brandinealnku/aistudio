@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#0b0b0b" />
+  <title>AI Native Studio · Current Roster</title>
+  <meta name="description" content="Current Fall 2026 AI Native Studio roster at Northern Kentucky University." />
+  <link rel="stylesheet" href="studio-v2-styles.css?v=2" />
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div>
+        <div class="eyebrow">NORTHERN KENTUCKY UNIVERSITY · INF 396</div>
+        <h1>AI Native Studio</h1>
+      </div>
+      <div class="term">Fall 2026 · Current Cohort</div>
+    </header>
+
+    <section id="publicView" class="view">
+      <div class="hero">
+        <div>
+          <div class="kicker">CURRENT STUDIO</div>
+          <h2>7 students.<br>2 client teams.<br><span>1 working studio.</span></h2>
+        </div>
+        <p>This page only shows the seven current AI Native Studio students. Old test users and retired entries are ignored.</p>
+      </div>
+      <div id="publicStatus" class="status">Loading current cohort…</div>
+      <div id="publicGrid" class="grid"></div>
+    </section>
+
+    <section id="joinView" class="view hidden">
+      <div class="panel">
+        <div class="kicker">STUDENT PROFILE</div>
+        <h2 id="joinTitle">Add or update your Studio profile.</h2>
+        <p class="intro">Choose your name, then upload the photo you want shown on the current Studio roster.</p>
+        <form id="joinForm" class="form">
+          <label>Your name
+            <select id="studentSelect" required></select>
+          </label>
+          <label>What do you want to make possible with AI this semester?
+            <textarea id="answerInput" maxlength="180" rows="4" required></textarea>
+          </label>
+          <label>LinkedIn profile <span>optional</span>
+            <input id="linkedinInput" type="url" placeholder="https://www.linkedin.com/in/..." />
+          </label>
+          <label class="photo-label">Profile photo
+            <input id="photoInput" type="file" accept="image/*" />
+          </label>
+          <div id="photoPreviewWrap" class="preview hidden"><img id="photoPreview" alt="Profile preview" /></div>
+          <button class="primary" type="submit">SAVE MY STUDIO PROFILE</button>
+        </form>
+        <div id="joinResult" class="result hidden"></div>
+      </div>
+    </section>
+
+    <section id="manageView" class="view hidden">
+      <div class="manage-head">
+        <div>
+          <div class="kicker">STUDIO ADMIN</div>
+          <h2>Manage Current Roster</h2>
+          <p class="intro">This version uses a clean room and only recognizes the seven current students.</p>
+        </div>
+        <button id="migrateBtn" class="primary">IMPORT VALID PROFILES FROM OLD ROOM</button>
+      </div>
+      <div id="migrationStatus" class="result hidden"></div>
+      <div id="manageGrid" class="manage-grid"></div>
+      <div class="link-box">
+        <div>
+          <strong>Student upload link</strong>
+          <code id="studentLink"></code>
+        </div>
+        <button id="copyStudentLink" class="secondary">COPY LINK</button>
+      </div>
+    </section>
+  </main>
+  <script src="studio-v2-app.js?v=2"></script>
+</body>
+</html>
