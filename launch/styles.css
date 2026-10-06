@@ -33,3 +33,19 @@
 .manage-photo-button{appearance:none;border:1px solid #5e5428;background:#1b180b;color:#f7d96d;border-radius:999px;padding:11px 14px;font-size:11px;font-weight:900;letter-spacing:.04em;cursor:pointer;white-space:nowrap}
 .manage-photo-button:hover{background:#27210c;border-color:#8c7931}
 @media(max-width:760px){.manage-actions{grid-column:1/-1;display:grid;grid-template-columns:1fr}.manage-photo-button,.manage-remove{width:100%}}
+
+/* Roster multi-select v29 */
+.manage-selection-bar{display:flex;justify-content:space-between;gap:18px;align-items:center;margin:0 0 16px;padding:16px 18px;border:1px solid #353535;border-radius:18px;background:#111}
+.manage-selection-bar>div{display:flex;gap:12px;align-items:baseline;flex-wrap:wrap}
+.manage-selection-bar strong{color:#fff}.manage-selection-bar span{color:#888;font-size:12px}
+.manage-remove-selected{appearance:none;border:1px solid #8e3c3c;background:#361515;color:#ffd1d1;border-radius:999px;padding:12px 17px;font-size:11px;font-weight:950;letter-spacing:.05em;cursor:pointer}
+.manage-remove-selected:disabled{opacity:.35;cursor:not-allowed}
+.manage-person{grid-template-columns:auto 82px minmax(0,1fr) auto}
+.manage-person.selected{border-color:#d1a92d;box-shadow:0 0 0 2px #f7c94822;background:#141207}
+.manage-select{align-self:stretch;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;min-width:58px;cursor:pointer;color:#777;font-size:9px;letter-spacing:.1em}
+.manage-select input{position:absolute;opacity:0;pointer-events:none}
+.manage-select span{width:28px;height:28px;border-radius:8px;border:2px solid #555;background:#090909;position:relative}
+.manage-select input:checked+span{background:var(--gold);border-color:var(--gold)}
+.manage-select input:checked+span::after{content:'✓';position:absolute;inset:0;display:grid;place-items:center;color:#0a0a0a;font-size:18px;font-weight:950}
+.manage-select b{font-size:9px;color:#777}
+@media(max-width:760px){.manage-selection-bar{display:block}.manage-remove-selected{width:100%;margin-top:12px}.manage-person{grid-template-columns:auto 64px minmax(0,1fr)}.manage-actions{grid-column:1/-1}.manage-select{min-width:42px}}
