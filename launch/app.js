@@ -32,7 +32,54 @@ async function savePosterPng(){const poster=$('linkedinPoster'),button=$('savePo
 function openRoster(){window.open(rosterLink(),'_blank','noopener');}
 function loadDemo(){state.demoMode=true;state.synthesis=null;state.people=[{id:crypto.randomUUID(),name:'Aaron Kloss',answer:'Build intelligent agents that can make better decisions with people.',linkedin:'',photo:'',createdAt:new Date().toISOString()},{id:crypto.randomUUID(),name:'Aaron Milner',answer:'Learn how real AI teams move from uncertainty to working products.',linkedin:'',photo:'',createdAt:new Date().toISOString()},{id:crypto.randomUUID(),name:'Sean Cancel',answer:'Explore how AI systems can collaborate, learn, and support better decisions.',linkedin:'',photo:'',createdAt:new Date().toISOString()},{id:crypto.randomUUID(),name:'Phillip Bierley',answer:'Turn emerging AI capabilities into useful, testable experiences.',linkedin:'',photo:'',createdAt:new Date().toISOString()},{id:crypto.randomUUID(),name:'Mark Greene',answer:'Use computer vision to help people discover stories in museum collections.',linkedin:'',photo:'',createdAt:new Date().toISOString()},{id:crypto.randomUUID(),name:'Elaina Hall',answer:'Create human-centered AI experiences that make information easier to explore.',linkedin:'',photo:'',createdAt:new Date().toISOString()},{id:crypto.randomUUID(),name:'Nora Ernst',answer:'Experiment boldly while keeping the technology responsible and useful.',linkedin:'',photo:'',createdAt:new Date().toISOString()}];saveLocal();renderPeople();renderManageRoster();setConnection('demo');}
 $('hostBtn').addEventListener('click',()=>show('host'));$('joinBtn').addEventListener('click',()=>{prepareJoinForm();show('join');});$('manageRosterBtn')?.addEventListener('click',()=>{renderManageRoster();show('manage');});$('manageBackBtn')?.addEventListener('click',()=>show('host'));$('manageOpenRosterBtn')?.addEventListener('click',openRoster);
-$('manageRestoreCoreBtn')?.addEventListener('click',async()=>{const button=$('manageRestoreCoreBtn');const original=button.textContent;button.disabled=true;button.textContent='CHECKING…';try{const source=await fetch(`${cfg.apiBase}?room=fall-2026-launch&all=1`,{cache:'no-store'});if(!source.ok)throw new Error('Could not read the original Studio roster.');const data=await source.json();const people=Array.isArray(data.people)?data.people:[];const wanted=['nora ernst','nora','mark greene','mark'];const matches=[];for(const p of people){const name=String(p.name||'').trim().toLowerCase();if(wanted.includes(name)&&!matches.some(x=>String(x.name||'').trim().toLowerCase().split(' ')[0]===name.split(' ')[0]))matches.push(p);}const currentNames=new Set((state.managePeople.length?state.managePeople:state.people).map(p=>String(p.name||'').trim().toLowerCase()));const missing=matches.filter(p=>!currentNames.has(String(p.name||'').trim().toLowerCase()));if(!missing.length){window.alert('Nora and Mark are already present in this Studio room, or their original entries could not be found.');return;}for(const person of missing){const response=await fetch(`${cfg.apiBase}?room=${encodeURIComponent(cfg.room)}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({room:cfg.room,person})});const result=await response.json().catch(()=>({}));if(!response.ok)throw new Error(result.reason==='room-full'?'The current Studio room is full. Remove remaining test entries first, then restore Nora and Mark.':result.error||'Could not restore a student.');}await syncRemote();window.alert(`Restored ${missing.map(p=>p.name).join(' and ')} to the current Studio room.`);}catch(error){window.alert(error?.message||'Could not restore Nora and Mark.');}finally{button.disabled=false;button.textContent=original;}});$('manageCopyJoinBtn')?.addEventListener('click',async()=>{const button=$('manageCopyJoinBtn');try{await navigator.clipboard.writeText(joinLink());const original=button.textContent;button.textContent='LINK COPIED';setTimeout(()=>button.textContent=original,1200);}catch{window.prompt('Copy this student join link:',joinLink());}});document.querySelectorAll('[data-back]').forEach(button=>button.addEventListener('click',()=>show(button.dataset.back)));
+$('manageRestoreCoreBtn')?.addEventListener('click',async()=>{const button=$('manageRestoreCoreBtn'),original=button.textContent;button.disabled=true;button.textContent='SEARCHING…';try{
+  const wantedFirstNames=new Set(['nora','mark']);
+  const candidates=[];
+  const addCandidate=(person,source)=>{if(!person||!person.id)return;const first=String(person.name||'').trim().toLowerCase().split(/\s+/)[0];if(!wantedFirstNames.has(first))return;if(!candidates.some(x=>x.person.id===person.id))candidates.push({person,source});};
+
+  // 1) Search every Studio room cached in this browser. This preserves profiles/photos
+  // from rooms that existed before roster cleanup or cloning.
+  for(let i=0;i<localStorage.length;i+=1){
+    const key=localStorage.key(i)||'';
+    if(!key.startsWith('ai-native-studio:fall-2026-launch')||key.endsWith(':participant-id'))continue;
+    try{
+      const cached=JSON.parse(localStorage.getItem(key)||'[]');
+      if(Array.isArray(cached))cached.forEach(person=>addCandidate(person,`browser cache: ${key}`));
+    }catch{}
+  }
+
+  // 2) Also search the original live room.
+  try{
+    const source=await fetch(`${cfg.apiBase}?room=fall-2026-launch&all=1`,{cache:'no-store'});
+    if(source.ok){
+      const data=await source.json();
+      if(Array.isArray(data.people))data.people.forEach(person=>addCandidate(person,'original live room'));
+    }
+  }catch{}
+
+  const currentPeople=state.managePeople.length?state.managePeople:state.people;
+  const currentFirstNames=new Set(currentPeople.map(p=>String(p.name||'').trim().toLowerCase().split(/\s+/)[0]));
+  const restored=[],notFound=[];
+
+  for(const first of ['nora','mark']){
+    if(currentFirstNames.has(first))continue;
+    const matches=candidates.filter(x=>String(x.person.name||'').trim().toLowerCase().split(/\s+/)[0]===first);
+    if(!matches.length){notFound.push(first[0].toUpperCase()+first.slice(1));continue;}
+    // Prefer a profile with a photo, then the most recent createdAt.
+    matches.sort((a,b)=>Number(Boolean(b.person.photo))-Number(Boolean(a.person.photo))||String(b.person.createdAt||'').localeCompare(String(a.person.createdAt||'')));
+    const chosen=matches[0].person;
+    const response=await fetch(`${cfg.apiBase}?room=${encodeURIComponent(cfg.room)}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({room:cfg.room,person:chosen})});
+    const result=await response.json().catch(()=>({}));
+    if(!response.ok)throw new Error(result.reason==='room-full'?'The current Studio room is full. Remove remaining test entries first, then click RESTORE NORA + MARK again.':result.error||`Could not restore ${chosen.name}.`);
+    restored.push(chosen.name);
+  }
+
+  await syncRemote();
+  if(restored.length&&notFound.length)window.alert(`Restored ${restored.join(' and ')}. I still could not locate a recoverable profile for ${notFound.join(' and ')} in this browser or the original room.`);
+  else if(restored.length)window.alert(`Restored ${restored.join(' and ')} to the current Studio room, including the saved photo/profile when available.`);
+  else if(notFound.length)window.alert(`I could not locate a recoverable profile for ${notFound.join(' and ')} in this browser or the original Studio room. They will need to rejoin once using the student link so we can preserve their new profile going forward.`);
+  else window.alert('Nora and Mark are already present in the current Studio data. Refresh the public roster to display them.');
+}catch(error){window.alert(error?.message||'Could not restore Nora and Mark.');}finally{button.disabled=false;button.textContent=original;}});$('manageCopyJoinBtn')?.addEventListener('click',async()=>{const button=$('manageCopyJoinBtn');try{await navigator.clipboard.writeText(joinLink());const original=button.textContent;button.textContent='LINK COPIED';setTimeout(()=>button.textContent=original,1200);}catch{window.prompt('Copy this student join link:',joinLink());}});document.querySelectorAll('[data-back]').forEach(button=>button.addEventListener('click',()=>show(button.dataset.back)));
 $('photoInput').addEventListener('change',async event=>{const file=event.target.files?.[0];if(!file)return;try{state.pendingPhoto=await resizePortrait(file);$('portraitPreview').src=state.pendingPhoto;$('portraitPreviewWrap').classList.remove('hidden');$('photoPickerText').textContent='CHANGE PHOTO';}catch(error){alert(error.message||'Could not prepare that photo.');event.target.value='';}});
 $('removePhotoBtn').addEventListener('click',()=>{state.pendingPhoto='';$('photoInput').value='';$('portraitPreviewWrap').classList.add('hidden');$('photoPickerText').textContent='TAKE OR CHOOSE PHOTO';});
 $('joinForm').addEventListener('submit',async event=>{event.preventDefault();const form=event.currentTarget,name=$('nameInput').value.trim(),answer=$('answerInput').value.trim();if(!name||!answer)return;let linkedin='';try{linkedin=validateLinkedIn($('linkedinInput').value);}catch(error){alert(error.message);return;}const existing=currentParticipant();const person={id:participantId(),name,answer,linkedin,photo:state.pendingPhoto||existing?.photo||'',createdAt:existing?.createdAt||new Date().toISOString()};try{await submitSignal(person);form.classList.add('hidden');$('joinSuccess').classList.remove('hidden');$('joinSuccess').querySelector('h3').textContent=existing?'Profile updated.':'Signal received.';$('joinSuccess').querySelector('p').textContent=existing?'Your Studio profile and photo are up to date.':'You’re part of the studio poster.';$('studentRosterLink').href=rosterLink();}catch(error){alert(error?.message||'Your signal could not be submitted. Please try again.');}});
