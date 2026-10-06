@@ -138,11 +138,47 @@ function setupJoin(){
   });
 }
 
+function renderAaronRecovery(oldPeople){
+  const host=$('aaronRecovery');
+  if(!host) return;
+  const aarons=oldPeople.filter(p=>firstName(p.name)==='aaron');
+  const exactKloss=aarons.find(p=>normalizeName(p.name)==='aaron kloss');
+  const exactMilner=aarons.find(p=>normalizeName(p.name)==='aaron milner');
+  const unresolved=aarons.filter(p=>p.id!==exactKloss?.id&&p.id!==exactMilner?.id);
+
+  if(exactKloss&&exactMilner){host.classList.add('hidden');return;}
+  if(!unresolved.length){host.classList.add('hidden');return;}
+
+  host.classList.remove('hidden');
+  host.innerHTML='<div class="recovery-head"><div><div class="kicker">RECOVERED FROM ORIGINAL LAUNCH</div><h3>Two Aaron profiles need names.</h3><p>I found the older Aaron profile data, but the original version stored both students simply as “Aaron.” Use the photo/response below to assign each profile without guessing.</p></div></div>'+
+    '<div class="recovery-grid">'+unresolved.map((p,i)=>{
+      const photo=p.photo?'<img src="'+p.photo+'" alt="Recovered Aaron profile '+(i+1)+'" />':'<div class="recovery-placeholder">A</div>';
+      const answer=p.answer?'<blockquote>“'+escapeHtml(p.answer)+'”</blockquote>':'<p>No response text saved.</p>';
+      const linkedin=p.linkedin?'<a href="'+escapeHtml(p.linkedin)+'" target="_blank" rel="noopener">Open LinkedIn ↗</a>':'';
+      return '<article class="recovery-card" data-old-id="'+escapeHtml(p.id)+'"><div class="recovery-photo">'+photo+'</div><div><div class="team">RECOVERED AARON '+(i+1)+'</div>'+answer+linkedin+'<div class="recovery-actions"><button class="secondary assign-aaron" data-old-id="'+escapeHtml(p.id)+'" data-name="Aaron Kloss">THIS IS AARON KLOSS</button><button class="secondary assign-aaron" data-old-id="'+escapeHtml(p.id)+'" data-name="Aaron Milner">THIS IS AARON MILNER</button></div></div></article>';
+    }).join('')+'</div>';
+
+  host.querySelectorAll('.assign-aaron').forEach(btn=>btn.addEventListener('click',async()=>{
+    const person=oldPeople.find(p=>p.id===btn.dataset.oldId);
+    if(!person) return;
+    const targetName=btn.dataset.name;
+    const current=currentMap();
+    if(current.has(targetName)&&!confirm(targetName+' already has a profile in Studio v2. Replace it with this recovered profile?')) return;
+    const original=btn.textContent;btn.disabled=true;btn.textContent='IMPORTING…';
+    try{
+      await savePerson({...person,name:targetName,createdAt:new Date().toISOString()});
+      await refresh();
+      renderAaronRecovery(oldPeople);
+    }catch(err){alert(err.message);}
+    finally{btn.disabled=false;btn.textContent=original;}
+  }));
+}
+
 async function migrateOldRoom(){
   const button=$('migrateBtn'),status=$('migrationStatus'),oldText=button.textContent;
   button.disabled=true;button.textContent='IMPORTING…';
   try{
-    const oldPeople=await fetchRoom(OLD_ROOM),current=currentMap();
+    const oldPeople=await fetchRoom(OLD_ROOM),current=currentMap();renderAaronRecovery(oldPeople);
     let imported=0;
     const messages=[];
     for(const student of COHORT){
@@ -170,5 +206,5 @@ async function migrateOldRoom(){
   const params=new URLSearchParams(location.search);
   await refresh().catch(err=>{$('publicStatus').textContent=err.message;});
   if(params.get('join')==='1'){$('publicView').classList.add('hidden');$('joinView').classList.remove('hidden');setupJoin();}
-  else if(params.get('manage')==='1'){$('publicView').classList.add('hidden');$('manageView').classList.remove('hidden');$('migrateBtn').addEventListener('click',migrateOldRoom);$('copyStudentLink').addEventListener('click',async()=>{await navigator.clipboard.writeText(studentJoinLink());const b=$('copyStudentLink'),t=b.textContent;b.textContent='COPIED';setTimeout(()=>b.textContent=t,1200);});}
+  else if(params.get('manage')==='1'){$('publicView').classList.add('hidden');$('manageView').classList.remove('hidden');fetchRoom(OLD_ROOM).then(renderAaronRecovery).catch(()=>{});$('migrateBtn').addEventListener('click',migrateOldRoom);$('copyStudentLink').addEventListener('click',async()=>{await navigator.clipboard.writeText(studentJoinLink());const b=$('copyStudentLink'),t=b.textContent;b.textContent='COPIED';setTimeout(()=>b.textContent=t,1200);});}
 })();
