@@ -26,3 +26,10 @@
 .manage-remove:disabled{opacity:.5;cursor:wait}
 .manage-empty{padding:40px 0;color:#777}
 @media(max-width:760px){.manage-topbar,.manage-link-card,.manage-summary{display:block}.manage-topbar .secondary{margin-top:18px}.manage-link-actions{justify-content:flex-start;margin-top:18px}.manage-summary span{display:block;margin-top:8px}.manage-person{grid-template-columns:64px minmax(0,1fr)}.manage-photo{width:64px;height:64px}.manage-remove{grid-column:1/-1;width:100%}}
+
+/* Profile photo editing v28 */
+.join-mode-note{width:min(720px,100%);margin:0 0 18px;color:#c9c2b3;font-size:14px;line-height:1.5}
+.manage-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.manage-photo-button{appearance:none;border:1px solid #5e5428;background:#1b180b;color:#f7d96d;border-radius:999px;padding:11px 14px;font-size:11px;font-weight:900;letter-spacing:.04em;cursor:pointer;white-space:nowrap}
+.manage-photo-button:hover{background:#27210c;border-color:#8c7931}
+@media(max-width:760px){.manage-actions{grid-column:1/-1;display:grid;grid-template-columns:1fr}.manage-photo-button,.manage-remove{width:100%}}
