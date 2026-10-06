@@ -1,5 +1,5 @@
 (() => {
-  const cfg = window.AI_STUDIO_LAUNCH_CONFIG || { apiBase: '', maxSignals: 6, room: 'fall-2026-launch' };
+  const cfg = window.AI_STUDIO_LAUNCH_CONFIG || { apiBase: '', maxSignals: 7, room: 'fall-2026-launch' };
   const escapeHtml = (value = '') => String(value).replace(/[&<>'\"]/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#039;', '\"': '&quot;' }[ch]));
 
   const style = document.createElement('link');
@@ -8,7 +8,7 @@
   document.head.appendChild(style);
 
   const footerStrong = document.querySelector('.poster-footer-copy strong');
-  if (footerStrong) footerStrong.innerHTML = '<span id="posterCount">6</span> HUMANS · 2 TEAMS · 1 AI STUDIO';
+  if (footerStrong) footerStrong.innerHTML = '<span id="posterCount">7</span> HUMANS · 2 TEAMS · 1 AI STUDIO';
   const posterMissionEl = document.getElementById('posterMission');
   if (posterMissionEl) posterMissionEl.textContent = 'Students turning curiosity into useful AI work through real-world studio challenges.';
 
@@ -26,7 +26,7 @@
       <header class="showcase-hero">
         <div>
           <div class="showcase-kicker">Meet the Studio</div>
-          <h1>6 humans.<br><span>1 semester.</span><br>A different way to learn AI.</h1>
+          <h1>7 humans.<br><span>1 semester.</span><br>A different way to learn AI.</h1>
         </div>
         <div>
           <p class="showcase-intro">We’re not studying AI from the sidelines. We’re learning by building, testing, questioning, and solving real problems.</p>
@@ -38,7 +38,7 @@
       </header>
 
       <div class="showcase-rule" aria-label="Studio at a glance">
-        <div class="showcase-stat"><strong>6</strong><span>Emerging technologists</span></div>
+        <div class="showcase-stat"><strong>7</strong><span>Emerging technologists</span></div>
         <div class="showcase-stat"><strong>2</strong><span>Studio teams</span></div>
         <div class="showcase-stat"><strong>1</strong><span>AI-native learning experience</span></div>
       </div>
@@ -90,7 +90,7 @@
     try {
       const storageKey = `ai-native-studio:${cfg.room}`;
       const parsed = JSON.parse(localStorage.getItem(storageKey) || '[]');
-      return Array.isArray(parsed) ? parsed.slice(0, cfg.maxSignals || 6) : [];
+      return Array.isArray(parsed) ? parsed.filter(p => !['ashok','ashok gaire'].includes(String(p?.name || '').trim().toLowerCase())).slice(0, cfg.maxSignals || 7) : [];
     } catch {
       return [];
     }
@@ -128,7 +128,7 @@
         if (response.ok) {
           const data = await response.json();
           if (Array.isArray(data.people) && data.people.length) {
-            people = data.people.slice(0, cfg.maxSignals || 6);
+            people = data.people.filter(p => !['ashok','ashok gaire'].includes(String(p?.name || '').trim().toLowerCase())).slice(0, cfg.maxSignals || 7);
             renderCohort(people);
           }
         }
@@ -151,7 +151,7 @@
   copyCaptionButton?.addEventListener('click', async event => {
     event.preventDefault();
     event.stopImmediatePropagation();
-    const count = document.querySelectorAll('.showcase-person').length || 6;
+    const count = document.querySelectorAll('.showcase-person').length || 7;
     const url = new URL(window.location.href);
     url.search = '';
     url.hash = '';
@@ -184,7 +184,7 @@
     }
     const footer = document.querySelector('.poster-footer-copy strong');
     if (footer && /client/i.test(footer.textContent || '')) {
-      footer.innerHTML = '<span id="posterCount">6</span> HUMANS · 2 TEAMS · 1 AI STUDIO';
+      footer.innerHTML = '<span id="posterCount">7</span> HUMANS · 2 TEAMS · 1 AI STUDIO';
     }
   });
   const poster = document.getElementById('linkedinPoster');
