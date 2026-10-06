@@ -10,7 +10,7 @@
   <meta property="og:description" content="7 humans. 1 semester. A different way to learn AI. Meet NKU's inaugural AI Native Studio cohort." />
   <meta property="og:url" content="https://brandinealnku.github.io/aistudio/launch/" />
   <meta property="og:type" content="website" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css?v=27" />
   <link rel="stylesheet" href="sharing.css" />
   <link rel="stylesheet" href="poster.css?v=23" />
   <link rel="stylesheet" href="poster-v24.css?v=24" />
@@ -45,9 +45,35 @@
     </section>
 
     <section id="host" class="screen host-screen" aria-labelledby="host-title">
-      <div class="host-topbar"><div><div class="eyebrow">INF 396 · AI NATIVE STUDIO · LIVE</div><h2 id="host-title">Build the studio.</h2><div class="status-row"><span id="connectionStatus" class="status-pill">CONNECTING</span><span id="readinessStatus" class="status-copy">Waiting for the first signal.</span></div></div><div class="host-actions"><button class="secondary small" id="copyJoinBtn">COPY JOIN LINK</button><button class="secondary small" id="openRosterBtn">MEET THE STUDIO</button><button class="secondary small" id="demoBtn">LOAD DEMO</button><button class="secondary small" id="resetBtn">RESET</button></div></div>
+      <div class="host-topbar"><div><div class="eyebrow">INF 396 · AI NATIVE STUDIO · LIVE</div><h2 id="host-title">Build the studio.</h2><div class="status-row"><span id="connectionStatus" class="status-pill">CONNECTING</span><span id="readinessStatus" class="status-copy">Waiting for the first signal.</span></div></div><div class="host-actions"><button class="secondary small" id="copyJoinBtn">COPY JOIN LINK</button><button class="secondary small" id="openRosterBtn">MEET THE STUDIO</button><button class="secondary small" id="manageRosterBtn">MANAGE ROSTER</button><button class="secondary small" id="demoBtn">LOAD DEMO</button><button class="secondary small" id="resetBtn">RESET</button></div></div>
       <div class="host-grid"><div class="join-panel"><div class="join-url-label">STUDENTS OPEN</div><div id="joinUrl" class="join-url"></div><img id="qrImage" class="qr" alt="QR code to join the AI Native Studio" /><p class="micro">One question. One sentence. Optional portrait. Optional LinkedIn.</p></div><div class="wall-panel"><div class="counter"><span id="count">0</span>/7 SIGNALS</div><div id="peopleGrid" class="people-grid" aria-live="polite"></div></div></div>
       <div class="poster-launch"><div><div class="poster-launch-label">PRIMARY OUTPUT</div><h3>Turn this room into a LinkedIn-ready class poster.</h3><p id="posterHint">Add at least one student to create the poster.</p></div><button class="primary poster-cta" id="createPosterBtn" disabled>CREATE LINKEDIN POSTER →</button></div>
+    </section>
+
+    <section id="manage" class="screen manage-screen" aria-labelledby="manage-title">
+      <div class="manage-topbar">
+        <div>
+          <div class="eyebrow">INF 396 · AI NATIVE STUDIO · ADMIN</div>
+          <h2 id="manage-title">Manage Studio Roster.</h2>
+          <p class="manage-intro">Review the current cohort, remove test or outdated entries, and copy the live student join link.</p>
+        </div>
+        <button class="secondary small" id="manageBackBtn">BACK TO HOST</button>
+      </div>
+
+      <div class="manage-link-card">
+        <div>
+          <div class="join-url-label">CURRENT STUDENT JOIN LINK</div>
+          <div id="manageJoinUrl" class="join-url"></div>
+          <p class="micro">After removing an entry, this page moves you to the updated room automatically. Copy the new link before sharing it with students.</p>
+        </div>
+        <div class="manage-link-actions">
+          <button class="primary" id="manageCopyJoinBtn">COPY STUDENT LINK</button>
+          <button class="secondary" id="manageOpenRosterBtn">VIEW PUBLIC ROSTER</button>
+        </div>
+      </div>
+
+      <div class="manage-summary"><strong><span id="manageCount">0</span> current entries</strong><span>Remove test users before sharing the join link with Sean and Phillip.</span></div>
+      <div id="manageGrid" class="manage-grid" aria-live="polite"></div>
     </section>
 
     <section id="thinking" class="screen thinking-screen" aria-labelledby="thinking-title"><div class="thinking-orbit" aria-hidden="true"><span></span><span></span><span></span></div><div class="eyebrow">AI IS READING THE ROOM</div><h2 id="thinking-title">Building the studio poster.</h2><p id="thinkingCopy" class="lede">Turning student signals into one shared mission.</p></section>
@@ -71,8 +97,8 @@
     </section>
   </main>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-  <script src="config.js?v=26"></script>
-  <script src="app.js?v=26"></script>
+  <script src="config.js?v=27"></script>
+  <script src="app.js?v=27"></script>
   <script src="poster-copy.js?v=26"></script>
 </body>
 </html>
