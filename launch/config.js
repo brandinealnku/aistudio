@@ -47,7 +47,7 @@
 
   async function cloneRoomWithoutPeople(personIds) {
     const ids = new Set(Array.isArray(personIds) ? personIds : [personIds]);
-    const response = await fetch(`${window.AI_STUDIO_LAUNCH_CONFIG.apiBase}?room=${encodeURIComponent(room)}`, { cache: "no-store" });
+    const response = await fetch(`${window.AI_STUDIO_LAUNCH_CONFIG.apiBase}?room=${encodeURIComponent(room)}&all=1`, { cache: "no-store" });
     if (!response.ok) throw new Error("Could not read the current studio room.");
     const data = await response.json();
     const remaining = Array.isArray(data.people) ? data.people.filter((person) => !ids.has(person.id)) : [];
