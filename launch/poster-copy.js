@@ -130,12 +130,26 @@
     }
 
     function mergeUnique(...groups) {
-      const seen = new Set();
       const merged = [];
+      const seenIds = new Set();
+      const seenNames = new Set();
+      let bareAaronCount = 0;
+
       for (const group of groups) {
         for (const person of (group || [])) {
-          if (!allowed(person) || seen.has(person.id)) continue;
-          seen.add(person.id);
+          if (!allowed(person) || seenIds.has(person.id)) continue;
+
+          const normalizedName = String(person?.name || '').trim().toLowerCase();
+
+          if (normalizedName === 'aaron') {
+            if (bareAaronCount >= 2) continue;
+            bareAaronCount += 1;
+          } else {
+            if (seenNames.has(normalizedName)) continue;
+            seenNames.add(normalizedName);
+          }
+
+          seenIds.add(person.id);
           merged.push(person);
         }
       }
