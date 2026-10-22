@@ -1,5 +1,6 @@
 (() => {
-  const cfg = window.AI_STUDIO_LAUNCH_CONFIG || { apiBase: '', maxSignals: 7, room: 'fall-2026-launch' };
+  const cfg = window.AI_STUDIO_LAUNCH_CONFIG || { apiBase: '', maxSignals: 7, room: 'fall-2026-cohort' };
+  const CURRENT_STUDENTS = new Set(['aaron kloss','aaron milner','sean cancel','phillip bierley','mark greene','elaina hall','nora ernst']);
   const escapeHtml = (value = '') => String(value).replace(/[&<>'\"]/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#039;', '\"': '&quot;' }[ch]));
 
   const style = document.createElement('link');
@@ -90,7 +91,7 @@
     try {
       const storageKey = `ai-native-studio:${cfg.room}`;
       const parsed = JSON.parse(localStorage.getItem(storageKey) || '[]');
-      return Array.isArray(parsed) ? parsed.filter(p => !['ashok','ashok gaire'].includes(String(p?.name || '').trim().toLowerCase())).slice(0, cfg.maxSignals || 7) : [];
+      return Array.isArray(parsed) ? parsed.filter(p => CURRENT_STUDENTS.has(String(p?.name || '').trim().toLowerCase())).slice(0, cfg.maxSignals || 7) : [];
     } catch {
       return [];
     }
@@ -122,21 +123,27 @@
   async function loadCohort() {
     let people = readLocalPeople();
     if (people.length) renderCohort(people);
+
     if (cfg.apiBase) {
       try {
-        const response = await fetch(`${cfg.apiBase}?room=${encodeURIComponent(cfg.room)}`, { cache: 'no-store' });
-        if (response.ok) {
-          const data = await response.json();
-          if (Array.isArray(data.people) && data.people.length) {
-            people = data.people.filter(p => !['ashok','ashok gaire'].includes(String(p?.name || '').trim().toLowerCase())).slice(0, cfg.maxSignals || 7);
-            renderCohort(people);
-          }
-        }
+        const response = await fetch(`${cfg.apiBase}?room=${encodeURIComponent(cfg.room)}&all=1`, { cache: 'no-store' });
+        if (!response.ok) throw new Error('Studio API unavailable');
+        const data = await response.json();
+        people = Array.isArray(data.people)
+          ? data.people.filter(p => CURRENT_STUDENTS.has(String(p?.name || '').trim().toLowerCase())).slice(0, cfg.maxSignals || 7)
+          : [];
+        renderCohort(people);
       } catch (error) {
         console.warn('Cohort showcase could not refresh remotely', error);
+        if (!people.length && grid) {
+          grid.innerHTML = '<div class="showcase-loading">The cohort profiles have not been imported into the clean Studio yet.</div>';
+        }
       }
+    } else if (!people.length) {
+      renderCohort([]);
     }
-    if (posterButton && people.length) posterButton.disabled = false;
+
+    if (posterButton) posterButton.disabled = people.length === 0;
   }
 
   document.getElementById('showcaseMeetBtn')?.addEventListener('click', () => {
