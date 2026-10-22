@@ -1,10 +1,9 @@
 (() => {
-  const DEFAULT_ROOM = "fall-2026-launch";
+  const DEFAULT_ROOM = "fall-2026-cohort";
   const ROOM_KEY = "ai-native-studio:active-room";
   const params = new URLSearchParams(window.location.search);
   const roomFromUrl = params.get("room");
-  const savedRoom = localStorage.getItem(ROOM_KEY);
-  const room = roomFromUrl || savedRoom || DEFAULT_ROOM;
+  const room = roomFromUrl || DEFAULT_ROOM;
 
   localStorage.setItem(ROOM_KEY, room);
 
