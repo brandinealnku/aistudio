@@ -82,6 +82,7 @@
   const grid = document.getElementById('showcaseGrid');
   const posterButton = document.getElementById('showcasePosterBtn');
   const underlyingPosterButton = document.getElementById('createPosterBtn');
+  let showcasePeople = [];
 
   function showScreen(id) {
     document.querySelectorAll('.screen').forEach(screen => screen.classList.toggle('active', screen.id === id));
@@ -189,6 +190,7 @@
       people = mergeUnique(historical, people);
     }
 
+    showcasePeople = people;
     renderCohort(people);
     if (posterButton) posterButton.disabled = people.length === 0;
   }
@@ -197,8 +199,16 @@
     document.getElementById('meetTheStudio')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 
-  posterButton?.addEventListener('click', () => {
-    if (underlyingPosterButton && !underlyingPosterButton.disabled) underlyingPosterButton.click();
+  posterButton?.addEventListener('click', async () => {
+    if (typeof window.AI_STUDIO_CREATE_POSTER_FROM_PEOPLE === 'function') {
+      await window.AI_STUDIO_CREATE_POSTER_FROM_PEOPLE(showcasePeople);
+      return;
+    }
+    if (underlyingPosterButton && !underlyingPosterButton.disabled) {
+      underlyingPosterButton.click();
+      return;
+    }
+    window.alert('The LinkedIn poster is still loading. Refresh the page and try again.');
   });
 
   const copyCaptionButton = document.getElementById('copyCaptionBtn');
