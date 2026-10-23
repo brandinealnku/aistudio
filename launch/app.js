@@ -113,14 +113,14 @@ function renderPoster(rawPeople=state.people){
   if(status.ready){
     if(titleEl)titleEl.textContent='Poster ready to publish';
     if(statusEl)statusEl.textContent='All seven student profiles and photos are present.';
-    if(saveBtn)saveBtn.disabled=false;
+    if(saveBtn){saveBtn.disabled=false;saveBtn.textContent='SAVE FINAL POSTER PNG';}
   }else{
     const parts=[];
     if(status.missingProfiles.length)parts.push(`Awaiting profiles: ${status.missingProfiles.map(p=>p.name).join(', ')}`);
     if(status.missingPhotos.length)parts.push(`Photo needed: ${status.missingPhotos.map(p=>p.name).join(', ')}`);
     if(titleEl)titleEl.textContent='Poster preview';
     if(statusEl)statusEl.textContent=parts.join(' · ');
-    if(saveBtn)saveBtn.disabled=true;
+    if(saveBtn){saveBtn.disabled=false;saveBtn.textContent='SAVE PREVIEW PNG';}
   }
 
   window.AI_STUDIO_POSTER_PEOPLE=people;
@@ -167,10 +167,6 @@ async function savePosterPng(){
   const poster=$('linkedinPoster'),button=$('savePosterBtn');
   const people=window.AI_STUDIO_POSTER_PEOPLE||normalizePosterPeople(state.people);
   const status=posterProfileStatus(people);
-  if(!status.ready){
-    window.alert('The final poster is locked until all seven student profiles include photos.');
-    return;
-  }
   if(!poster||typeof html2canvas!=='function'){alert('Poster export is still loading. Try again in a moment.');return;}
   const original=button.textContent;
   button.disabled=true;
@@ -190,7 +186,8 @@ async function savePosterPng(){
     });
     const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png',1));
     if(!blob)throw new Error('Could not create image');
-    const file=new File([blob],'nku-ai-native-studio-inaugural-cohort.png',{type:'image/png'});
+    const filename=status.ready?'nku-ai-native-studio-inaugural-cohort.png':'nku-ai-native-studio-cohort-preview.png';
+    const file=new File([blob],filename,{type:'image/png'});
     if(navigator.share&&navigator.canShare?.({files:[file]})){
       try{await navigator.share({files:[file],title:'NKU AI Native Studio · Inaugural Cohort'});return;}
       catch(error){if(error?.name==='AbortError')return;}
@@ -203,7 +200,7 @@ async function savePosterPng(){
     alert('The image could not be saved automatically. Please refresh and try again.');
   }finally{
     button.disabled=false;
-    button.textContent=original;
+    button.textContent=status.ready?'SAVE FINAL POSTER PNG':'SAVE PREVIEW PNG';
   }
 }
 function openRoster(){window.open(rosterLink(),'_blank','noopener');}
