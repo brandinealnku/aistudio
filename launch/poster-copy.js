@@ -33,7 +33,7 @@
         <div>
           <p class="showcase-intro">We’re not studying AI from the sidelines. We’re learning by building, testing, questioning, and solving real problems.</p>
           <div class="showcase-actions">
-            <button class="showcase-primary" id="showcasePosterBtn" disabled>View LinkedIn Poster</button>
+            <button class="showcase-primary" id="showcasePosterBtn" disabled>Preview LinkedIn Poster</button>
             <button class="showcase-secondary" id="showcaseMeetBtn">Meet the Cohort ↓</button>
           </div>
         </div>
@@ -211,24 +211,7 @@
     window.alert('The LinkedIn poster is still loading. Refresh the page and try again.');
   });
 
-  const copyCaptionButton = document.getElementById('copyCaptionBtn');
-  copyCaptionButton?.addEventListener('click', async event => {
-    event.preventDefault();
-    event.stopImmediatePropagation();
-    const count = document.querySelectorAll('.showcase-person').length || 7;
-    const url = new URL(window.location.href);
-    url.search = '';
-    url.hash = '';
-    const caption = `What happens when students stop studying AI from the sidelines and start learning by building?\n\nMeet the inaugural Fall 2026 AI Native Studio cohort at Northern Kentucky University.\n\n${count} students. Two studio teams. One semester built around curiosity, evidence, experimentation, and human judgment.\n\nWe’re not revealing the work just yet. That comes next.\n\nMeet the Studio: ${url.toString()}`;
-    try {
-      await navigator.clipboard.writeText(caption);
-      const original = copyCaptionButton.textContent;
-      copyCaptionButton.textContent = 'CAPTION COPIED';
-      setTimeout(() => { copyCaptionButton.textContent = original; }, 1400);
-    } catch {
-      window.prompt('Copy your LinkedIn caption:', caption);
-    }
-  }, true);
+
 
   document.getElementById('backToHostBtn')?.addEventListener('click', event => {
     event.preventDefault();
@@ -241,16 +224,5 @@
 
   loadCohort();
 
-  const posterObserver = new MutationObserver(() => {
-    const mission = document.getElementById('posterMission');
-    if (mission && /client/i.test(mission.textContent || '')) {
-      mission.textContent = 'Students turning curiosity into useful AI work through real-world studio challenges.';
-    }
-    const footer = document.querySelector('.poster-footer-copy strong');
-    if (footer && /client/i.test(footer.textContent || '')) {
-      footer.innerHTML = '<span id="posterCount">7</span> HUMANS · 2 TEAMS · 1 AI STUDIO';
-    }
-  });
-  const poster = document.getElementById('linkedinPoster');
-  if (poster) posterObserver.observe(poster, { childList: true, subtree: true, characterData: true });
+
 })();
