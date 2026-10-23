@@ -190,3 +190,44 @@
   .poster-controls{display:none!important}
   .linkedin-poster.cohort-poster{box-shadow:none}
 }
+/* V42 · spacing correction */
+.cohort-poster-inner{
+  grid-template-rows:auto auto auto;
+  align-content:start;
+}
+.cohort-poster-grid-wrap{
+  display:flex;
+  flex-direction:column;
+  gap:32px;
+  align-content:initial;
+  min-height:0;
+}
+.cohort-poster-row{
+  display:grid;
+  gap:22px;
+  min-height:0;
+  align-items:start;
+}
+.cohort-card{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  min-width:0;
+}
+.cohort-card-photo{
+  width:100%;
+  height:auto;
+  aspect-ratio:1/1;
+  flex:none;
+}
+.cohort-card-name{
+  margin:0;
+  min-height:0;
+}
+.cohort-poster-footer{
+  margin-top:2px;
+}
+@media(max-width:760px){
+  .cohort-poster-grid-wrap{gap:2.5%}
+  .cohort-card{gap:5px}
+}
