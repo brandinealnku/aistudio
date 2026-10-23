@@ -1,0 +1,192 @@
+/* V40 · LinkedIn 4:5 cohort poster */
+.poster-screen{padding:18px 12px 28px;align-items:flex-start;background:#050505}
+.poster-shell{width:min(100%,920px);margin:0 auto}
+.linkedin-poster.cohort-poster{
+  width:1200px;
+  height:1500px;
+  max-width:100%;
+  aspect-ratio:4/5;
+  display:block;
+  overflow:hidden;
+  position:relative;
+  background:
+    radial-gradient(circle at 86% 8%,rgba(247,201,72,.10),transparent 24%),
+    linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px),
+    #0b0d10;
+  background-size:auto,48px 48px,48px 48px,auto;
+  color:#fff;
+  box-shadow:0 22px 70px rgba(0,0,0,.42);
+  font-family:Inter,Arial,Helvetica,sans-serif;
+}
+.cohort-poster-inner{
+  box-sizing:border-box;
+  width:100%;height:100%;
+  padding:78px 78px 62px;
+  display:grid;
+  grid-template-rows:auto 1fr auto;
+  gap:36px;
+}
+.cohort-poster-header{max-width:990px}
+.cohort-poster-eyebrow{
+  margin:0 0 16px;
+  color:#f7c948;
+  font-size:20px;
+  line-height:1;
+  font-weight:900;
+  letter-spacing:.14em;
+}
+.cohort-poster-header h2{
+  margin:0;
+  max-width:1000px;
+  color:#fff;
+  font-size:68px;
+  line-height:.96;
+  letter-spacing:-.045em;
+  font-weight:950;
+  text-transform:none;
+}
+.cohort-poster-subtitle{
+  margin:20px 0 0;
+  color:#cfd3d8;
+  font-size:28px;
+  line-height:1.22;
+  font-weight:600;
+}
+.cohort-poster-subtitle strong{color:#fff;font-weight:850}
+.cohort-poster-grid-wrap{
+  min-height:0;
+  display:grid;
+  grid-template-rows:1fr 1fr;
+  gap:28px;
+  align-content:stretch;
+}
+.cohort-poster-row{display:grid;gap:22px;min-height:0}
+.cohort-poster-row-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.cohort-poster-row-3{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  width:75%;
+  margin:0 auto;
+}
+.cohort-card{
+  min-width:0;
+  display:grid;
+  grid-template-rows:minmax(0,1fr) auto;
+  gap:12px;
+}
+.cohort-card-photo{
+  min-height:0;
+  aspect-ratio:1/1;
+  overflow:hidden;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.22);
+  background:#171b21;
+}
+.cohort-card-photo img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center 30%;
+}
+.cohort-card-placeholder{
+  width:100%;height:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  padding:18px;
+  text-align:center;
+  background:linear-gradient(145deg,#171b21,#111419);
+  color:#737b85;
+}
+.cohort-card-placeholder span{
+  display:grid;place-items:center;
+  width:70px;height:70px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,.15);
+  font-size:26px;
+  font-weight:900;
+  color:#aeb5be;
+}
+.cohort-card-placeholder small{
+  font-size:12px;
+  line-height:1.2;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.cohort-card.is-missing .cohort-card-photo{
+  border-style:dashed;
+  border-color:rgba(247,201,72,.42);
+}
+.cohort-card-name{
+  margin:0;
+  color:#fff;
+  font-size:22px;
+  line-height:1.08;
+  font-weight:850;
+  letter-spacing:-.015em;
+}
+.cohort-poster-footer{
+  border-top:1px solid rgba(255,255,255,.18);
+  padding-top:20px;
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+}
+.cohort-poster-footer>div{display:flex;flex-direction:column;gap:7px}
+.cohort-poster-footer strong{
+  color:#fff;
+  font-size:22px;
+  line-height:1.1;
+  font-weight:850;
+}
+.cohort-poster-footer span{
+  color:#8e969f;
+  font-size:14px;
+  line-height:1.1;
+  font-weight:700;
+  letter-spacing:.05em;
+}
+.poster-controls{
+  margin-top:18px;
+  padding:18px 0 6px;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:24px;
+}
+.poster-control-copy{display:flex;flex-direction:column;gap:6px;max-width:470px}
+.poster-control-copy strong{font-size:17px}
+.poster-control-copy span{font-size:13px;line-height:1.45;color:#9ea4ab}
+.poster-control-actions{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:9px}
+#savePosterBtn:disabled{opacity:.4;cursor:not-allowed}
+@media(max-width:760px){
+  .poster-screen{padding:8px 4px 18px}
+  .poster-shell{width:100%}
+  .cohort-poster-inner{padding:6.5% 6.5% 5.2%;gap:2.6%}
+  .cohort-poster-eyebrow{font-size:clamp(8px,2vw,14px);margin-bottom:1.3%}
+  .cohort-poster-header h2{font-size:clamp(27px,7.2vw,54px)}
+  .cohort-poster-subtitle{font-size:clamp(12px,3vw,22px);margin-top:1.6%}
+  .cohort-poster-grid-wrap{gap:2.1%}
+  .cohort-poster-row{gap:1.8%}
+  .cohort-card{gap:4px}
+  .cohort-card-photo{border-radius:6px}
+  .cohort-card-name{font-size:clamp(8px,2.1vw,16px)}
+  .cohort-card-placeholder{gap:4px;padding:4px}
+  .cohort-card-placeholder span{width:28px;height:28px;font-size:10px}
+  .cohort-card-placeholder small{font-size:5px}
+  .cohort-poster-footer{padding-top:1.5%}
+  .cohort-poster-footer strong{font-size:clamp(9px,2.2vw,16px)}
+  .cohort-poster-footer span{font-size:clamp(6px,1.5vw,11px)}
+  .poster-controls{flex-direction:column}
+  .poster-control-actions{width:100%;justify-content:stretch}
+  .poster-control-actions button{flex:1 1 100%}
+}
+@media print{
+  body{background:#fff!important}
+  .poster-controls{display:none!important}
+  .linkedin-poster.cohort-poster{box-shadow:none}
+}
