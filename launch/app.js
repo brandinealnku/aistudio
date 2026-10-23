@@ -28,11 +28,184 @@ function renderPeople(){const grid=$('peopleGrid');if(!grid)return;grid.innerHTM
 async function resizePortrait(file){if(!file||!file.type.startsWith('image/'))throw new Error('Please choose an image.');if(file.size>12*1024*1024)throw new Error('That photo is too large. Choose one under 12 MB.');const bitmap=await createImageBitmap(file),side=Math.min(bitmap.width,bitmap.height),sx=(bitmap.width-side)/2,sy=(bitmap.height-side)/2,canvas=document.createElement('canvas');canvas.width=420;canvas.height=420;canvas.getContext('2d').drawImage(bitmap,sx,sy,side,side,0,0,420,420);bitmap.close?.();return canvas.toDataURL('image/jpeg',0.68);}
 function fallbackSynthesis(){const count=state.people.length;return{themes:['curiosity','experimentation','human-centered','useful'],signal:'CURIOUS × EXPERIMENTAL × HUMAN-CENTERED × USEFUL',mission:posterMission(count),linkedin:`What happens when a classroom starts operating like an AI product studio?\n\nToday, ${count} students in NKU’s INF 396: AI Native Studio shared what they want to make possible with AI this semester.\n\nThose individual ambitions became our first studio signal.\n\nWe’re not studying AI. We’re building with it.\n\n7 humans. 2 clients. 1 AI studio.`,source:'fallback'};}
 async function getSynthesis(){if(cfg.apiBase&&!state.demoMode){try{const response=await fetch(`${cfg.apiBase}/synthesize?room=${encodeURIComponent(cfg.room)}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({room:cfg.room})});if(response.ok){const result=await response.json();if(result?.mission)return result;}}catch(error){console.warn('AI synthesis unavailable',error);}}return fallbackSynthesis();}
-function renderPoster(){const people=state.people.slice(0,cfg.maxSignals),posterPeople=$('posterPeople');posterPeople.innerHTML='';posterPeople.dataset.count=String(people.length);people.forEach((person,index)=>{const item=document.createElement('article');item.className='poster-person-card';const photo=person.photo?`<img src="${person.photo}" alt="Portrait of ${escapeHtml(person.name)}" />`:`<div class="poster-initial">${escapeHtml(String(person.name||'?').charAt(0).toUpperCase())}</div>`;item.innerHTML=`<div class="poster-person-photo">${photo}<span class="poster-person-number">${String(index+1).padStart(2,'0')}</span></div><div class="poster-person-name">${escapeHtml(person.name)}</div>`;posterPeople.appendChild(item);});const synthesis=state.synthesis||fallbackSynthesis();$('posterSignal').textContent=conciseSignal(synthesis.signal,synthesis.themes||[]);$('posterMission').textContent=posterMission(people.length);$('posterCount').textContent=people.length;const rosterUrl=rosterLink();$('rosterQr').src=`https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(rosterUrl)}`;}
-async function createPoster(){if(!state.people.length)return;show('thinking');state.synthesis=await getSynthesis();renderPoster();await new Promise(resolve=>setTimeout(resolve,500));show('poster');}
-window.AI_STUDIO_CREATE_POSTER_FROM_PEOPLE=async function(people){const valid=visiblePeople(Array.isArray(people)?people:[]).slice(0,cfg.maxSignals);if(!valid.length){window.alert('No cohort profiles are available for the poster yet.');return;}state.people=valid;state.synthesis=null;saveLocal();renderPeople();await createPoster();};
-async function copyCaption(){const synthesis=state.synthesis||fallbackSynthesis(),text=`${synthesis.linkedin}\n\nMeet the studio: ${rosterLink()}`;try{await navigator.clipboard.writeText(text);const button=$('copyCaptionBtn'),original=button.textContent;button.textContent='CAPTION COPIED';setTimeout(()=>button.textContent=original,1400);}catch{window.prompt('Copy your LinkedIn caption:',text);}}
-async function savePosterPng(){const poster=$('linkedinPoster'),button=$('savePosterBtn');if(!poster||typeof html2canvas!=='function'){alert('Poster export is still loading. Try again in a moment.');return;}const original=button.textContent;button.disabled=true;button.textContent='PREPARING IMAGE…';try{await document.fonts?.ready;const canvas=await html2canvas(poster,{scale:Math.max(2,Math.min(3,window.devicePixelRatio||2)),backgroundColor:'#050505',useCORS:true,allowTaint:false,logging:false});const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png',1));if(!blob)throw new Error('Could not create image');const file=new File([blob],`inf396-ai-native-studio-${cfg.room}.png`,{type:'image/png'});if(navigator.share&&navigator.canShare?.({files:[file]})){try{await navigator.share({files:[file],title:'INF 396 · AI Native Studio'});return;}catch(error){if(error?.name==='AbortError')return;}}const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=file.name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);}catch(error){console.error('Poster export failed',error);alert('The image could not be saved automatically. You can still screenshot the poster cleanly.');}finally{button.disabled=false;button.textContent=original;}}
+function normalizePosterPeople(rawPeople=[]){
+  const byName=new Map();
+  const aliases=new Map([
+    ['sean','Sean Cancel'],['phillip','Phillip Bierley'],['philip','Phillip Bierley'],
+    ['mark','Mark Greene'],['elaina','Elaina Hall'],['nora','Nora Ernst']
+  ]);
+
+  for(const raw of Array.isArray(rawPeople)?rawPeople:[]){
+    const original=String(raw?.name||'').trim();
+    const lower=original.toLowerCase();
+    let canonical=CURRENT_STUDENTS.find(name=>name.toLowerCase()===lower)||aliases.get(lower)||null;
+    if(!canonical)continue;
+
+    const candidate={...raw,name:canonical,missing:false};
+    const existing=byName.get(canonical);
+    if(!existing){
+      byName.set(canonical,candidate);
+      continue;
+    }
+
+    const candidateScore=(candidate.photo?4:0)+(candidate.answer?2:0)+(candidate.linkedin?1:0);
+    const existingScore=(existing.photo?4:0)+(existing.answer?2:0)+(existing.linkedin?1:0);
+    if(candidateScore>existingScore)byName.set(canonical,candidate);
+  }
+
+  return CURRENT_STUDENTS.map(name=>byName.get(name)||{
+    id:`missing-${name.toLowerCase().replace(/[^a-z0-9]+/g,'-')}`,
+    name,
+    answer:'',
+    linkedin:'',
+    photo:'',
+    missing:true
+  });
+}
+
+function posterProfileStatus(people){
+  const missingProfiles=people.filter(person=>person.missing);
+  const missingPhotos=people.filter(person=>!person.missing&&!person.photo);
+  return{
+    ready:missingProfiles.length===0&&missingPhotos.length===0,
+    missingProfiles,
+    missingPhotos
+  };
+}
+
+function posterCard(person){
+  const item=document.createElement('article');
+  item.className=`cohort-card ${person.missing?'is-missing':''}`;
+
+  const photo=person.photo
+    ? `<img src="${person.photo}" alt="Portrait of ${escapeHtml(person.name)}" />`
+    : `<div class="cohort-card-placeholder" aria-hidden="true"><span>${escapeHtml(person.name.split(' ').map(part=>part[0]).join('').slice(0,2))}</span><small>${person.missing?'Awaiting profile':'Photo needed'}</small></div>`;
+
+  item.innerHTML=`
+    <div class="cohort-card-photo">${photo}</div>
+    <h3 class="cohort-card-name">${escapeHtml(person.name)}</h3>
+  `;
+  return item;
+}
+
+function buildPosterAltText(people){
+  const available=people.filter(person=>!person.missing);
+  const names=available.map(person=>person.name).join(', ');
+  const missing=people.filter(person=>person.missing).map(person=>person.name);
+  let text=`LinkedIn poster for Northern Kentucky University’s Fall 2026 AI Native Studio inaugural cohort. The poster headline reads “Meet the inaugural AI Native Studio cohort.” It features student portraits for ${names||'the cohort'} and the line “We’re not just studying AI. We’re building with it.”`;
+  if(missing.length)text+=` Profiles still awaiting submission: ${missing.join(', ')}.`;
+  return text;
+}
+
+function renderPoster(rawPeople=state.people){
+  const people=normalizePosterPeople(rawPeople);
+  const row1=$('posterRow1'),row2=$('posterRow2');
+  if(!row1||!row2)return people;
+
+  row1.innerHTML='';
+  row2.innerHTML='';
+  people.slice(0,4).forEach(person=>row1.appendChild(posterCard(person)));
+  people.slice(4,7).forEach(person=>row2.appendChild(posterCard(person)));
+
+  const status=posterProfileStatus(people);
+  const statusEl=$('posterStatus'),titleEl=$('posterReadyTitle'),saveBtn=$('savePosterBtn');
+
+  if(status.ready){
+    if(titleEl)titleEl.textContent='Poster ready to publish';
+    if(statusEl)statusEl.textContent='All seven student profiles and photos are present.';
+    if(saveBtn)saveBtn.disabled=false;
+  }else{
+    const parts=[];
+    if(status.missingProfiles.length)parts.push(`Awaiting profiles: ${status.missingProfiles.map(p=>p.name).join(', ')}`);
+    if(status.missingPhotos.length)parts.push(`Photo needed: ${status.missingPhotos.map(p=>p.name).join(', ')}`);
+    if(titleEl)titleEl.textContent='Poster preview';
+    if(statusEl)statusEl.textContent=parts.join(' · ');
+    if(saveBtn)saveBtn.disabled=true;
+  }
+
+  window.AI_STUDIO_POSTER_PEOPLE=people;
+  window.AI_STUDIO_POSTER_ALT_TEXT=buildPosterAltText(people);
+  return people;
+}
+
+async function createPoster(rawPeople=state.people){
+  const source=Array.isArray(rawPeople)?rawPeople:state.people;
+  if(!source.length){window.alert('No cohort profiles are available for the poster yet.');return;}
+  renderPoster(source);
+  show('poster');
+}
+
+window.AI_STUDIO_CREATE_POSTER_FROM_PEOPLE=async function(people){
+  const source=Array.isArray(people)?people:[];
+  if(!source.length){window.alert('No cohort profiles are available for the poster yet.');return;}
+  await createPoster(source);
+};
+
+async function copyCaption(){
+  const people=window.AI_STUDIO_POSTER_PEOPLE||normalizePosterPeople(state.people);
+  const completed=people.filter(person=>!person.missing).length;
+  const text=`Meet the inaugural Fall 2026 AI Native Studio cohort at Northern Kentucky University.\n\nThis semester, our students are learning AI by building, testing, questioning, and working through real-world problems—not just studying the technology from the sidelines.\n\n${completed} of 7 student profiles are currently live.\n\nMeet the Studio: ${rosterLink()}`;
+  try{
+    await navigator.clipboard.writeText(text);
+    const button=$('copyCaptionBtn'),original=button.textContent;
+    button.textContent='CAPTION COPIED';
+    setTimeout(()=>button.textContent=original,1400);
+  }catch{window.prompt('Copy your LinkedIn caption:',text);}
+}
+
+async function copyAltText(){
+  const text=window.AI_STUDIO_POSTER_ALT_TEXT||buildPosterAltText(normalizePosterPeople(state.people));
+  try{
+    await navigator.clipboard.writeText(text);
+    const button=$('copyAltTextBtn'),original=button.textContent;
+    button.textContent='ALT TEXT COPIED';
+    setTimeout(()=>button.textContent=original,1400);
+  }catch{window.prompt('Copy the image alt text:',text);}
+}
+
+async function savePosterPng(){
+  const poster=$('linkedinPoster'),button=$('savePosterBtn');
+  const people=window.AI_STUDIO_POSTER_PEOPLE||normalizePosterPeople(state.people);
+  const status=posterProfileStatus(people);
+  if(!status.ready){
+    window.alert('The final poster is locked until all seven student profiles include photos.');
+    return;
+  }
+  if(!poster||typeof html2canvas!=='function'){alert('Poster export is still loading. Try again in a moment.');return;}
+  const original=button.textContent;
+  button.disabled=true;
+  button.textContent='PREPARING IMAGE…';
+  try{
+    await document.fonts?.ready;
+    const canvas=await html2canvas(poster,{
+      scale:2,
+      backgroundColor:'#0b0d10',
+      useCORS:true,
+      allowTaint:false,
+      logging:false,
+      width:1200,
+      height:1500,
+      windowWidth:1200,
+      windowHeight:1500
+    });
+    const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png',1));
+    if(!blob)throw new Error('Could not create image');
+    const file=new File([blob],'nku-ai-native-studio-inaugural-cohort.png',{type:'image/png'});
+    if(navigator.share&&navigator.canShare?.({files:[file]})){
+      try{await navigator.share({files:[file],title:'NKU AI Native Studio · Inaugural Cohort'});return;}
+      catch(error){if(error?.name==='AbortError')return;}
+    }
+    const url=URL.createObjectURL(blob),a=document.createElement('a');
+    a.href=url;a.download=file.name;document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1500);
+  }catch(error){
+    console.error('Poster export failed',error);
+    alert('The image could not be saved automatically. Please refresh and try again.');
+  }finally{
+    button.disabled=false;
+    button.textContent=original;
+  }
+}
 function openRoster(){window.open(rosterLink(),'_blank','noopener');}
 function loadDemo(){state.demoMode=true;state.synthesis=null;state.people=[{id:crypto.randomUUID(),name:'Aaron Kloss',answer:'Build intelligent agents that can make better decisions with people.',linkedin:'',photo:'',createdAt:new Date().toISOString()},{id:crypto.randomUUID(),name:'Aaron Milner',answer:'Learn how real AI teams move from uncertainty to working products.',linkedin:'',photo:'',createdAt:new Date().toISOString()},{id:crypto.randomUUID(),name:'Sean Cancel',answer:'Explore how AI systems can collaborate, learn, and support better decisions.',linkedin:'',photo:'',createdAt:new Date().toISOString()},{id:crypto.randomUUID(),name:'Phillip Bierley',answer:'Turn emerging AI capabilities into useful, testable experiences.',linkedin:'',photo:'',createdAt:new Date().toISOString()},{id:crypto.randomUUID(),name:'Mark Greene',answer:'Use computer vision to help people discover stories in museum collections.',linkedin:'',photo:'',createdAt:new Date().toISOString()},{id:crypto.randomUUID(),name:'Elaina Hall',answer:'Create human-centered AI experiences that make information easier to explore.',linkedin:'',photo:'',createdAt:new Date().toISOString()},{id:crypto.randomUUID(),name:'Nora Ernst',answer:'Experiment boldly while keeping the technology responsible and useful.',linkedin:'',photo:'',createdAt:new Date().toISOString()}];saveLocal();renderPeople();renderManageRoster();setConnection('demo');}
 function canonicalLegacyPerson(person){
@@ -89,6 +262,6 @@ $('manageRemoveSelectedBtn')?.addEventListener('click',async()=>{const ids=[...s
 document.addEventListener('click',event=>{const button=event.target.closest?.('[data-manage-photo-id]');if(!button)return;state.managePhotoPersonId=button.dataset.managePhotoId||'';$('managePhotoInput')?.click();});
 $('managePhotoInput')?.addEventListener('change',async event=>{const file=event.target.files?.[0],person=(state.managePeople.length?state.managePeople:state.people).find(p=>p.id===state.managePhotoPersonId);if(!file||!person)return;try{const photo=await resizePortrait(file);const updated={...person,photo};await submitSignal(updated);renderManageRoster();}catch(error){alert(error?.message||'Could not update that photo.');}finally{event.target.value='';state.managePhotoPersonId='';}});
 $('copyJoinBtn').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(joinLink());const button=$('copyJoinBtn'),original=button.textContent;button.textContent='COPIED';setTimeout(()=>button.textContent=original,1200);}catch{window.prompt('Copy this join link:',joinLink());}});
-$('createPosterBtn').addEventListener('click',createPoster);$('savePosterBtn').addEventListener('click',savePosterPng);$('copyCaptionBtn').addEventListener('click',copyCaption);$('openRosterBtn').addEventListener('click',openRoster);$('posterRosterBtn').addEventListener('click',openRoster);$('backToHostBtn').addEventListener('click',()=>show('host'));
+$('createPosterBtn').addEventListener('click',()=>createPoster(state.people));$('savePosterBtn').addEventListener('click',savePosterPng);$('copyCaptionBtn').addEventListener('click',copyCaption);$('copyAltTextBtn')?.addEventListener('click',copyAltText);$('openRosterBtn').addEventListener('click',openRoster);$('posterRosterBtn').addEventListener('click',openRoster);$('backToHostBtn').addEventListener('click',()=>show('host'));
 window.addEventListener('storage',event=>{if(event.key===storageKey){loadLocal();renderPeople();}});
 const joinUrl=joinLink();$('joinUrl').textContent=joinUrl;$('qrImage').src=`https://api.qrserver.com/v1/create-qr-code/?size=420x420&data=${encodeURIComponent(joinUrl)}`;$('studentRosterLink').href=rosterLink();const params=new URLSearchParams(window.location.search);loadLocal();renderPeople();renderManageRoster();if(params.get('manage')==='1')show('manage');else if(params.get('join')==='1'){prepareJoinForm();show('join');}syncRemote();setInterval(syncRemote,1000);
