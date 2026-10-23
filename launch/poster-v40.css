@@ -349,3 +349,89 @@
   .cohort-poster-footer::after{font-size:clamp(5px,1.15vw,9px)}
   .cohort-poster::after{left:6%;bottom:2.5%;font-size:clamp(18px,5.2vw,38px)}
 }
+
+/* V44 · fill the 4:5 canvas and separate footer lines */
+.cohort-poster-inner{
+  padding:58px 68px 48px;
+  gap:24px;
+  grid-template-rows:auto auto 1fr;
+}
+.cohort-poster-header h2{
+  font-size:66px;
+  line-height:.93;
+}
+.cohort-poster-subtitle{
+  font-size:26px;
+  margin-top:14px;
+}
+.cohort-poster-grid-wrap{
+  gap:22px;
+  margin-top:4px;
+}
+.cohort-poster-row{
+  gap:18px;
+}
+.cohort-poster-row-3{
+  width:82%;
+}
+.cohort-card-name{
+  font-size:21px;
+  margin-top:1px;
+}
+.cohort-poster-footer{
+  align-self:stretch;
+  margin-top:0;
+  padding-top:20px;
+  padding-bottom:34px;
+  border-top:1px solid rgba(255,255,255,.22);
+  display:grid;
+  grid-template-columns:1fr;
+  gap:18px;
+  align-content:start;
+}
+.cohort-poster-footer>div{
+  display:grid;
+  gap:8px;
+}
+.cohort-poster-footer strong{
+  display:block;
+  font-size:22px;
+  line-height:1.15;
+  max-width:720px;
+}
+.cohort-poster-footer span{
+  display:block;
+  font-size:14px;
+  line-height:1.2;
+}
+.cohort-poster-footer::after{
+  content:"DISCOVER · DESIGN · PROTOTYPE · TEST · LEARN";
+  display:block;
+  margin:0;
+  color:#f7c948;
+  font-size:13px;
+  line-height:1.2;
+  font-weight:900;
+  letter-spacing:.12em;
+  white-space:normal;
+}
+.cohort-poster::after{
+  left:68px;
+  right:68px;
+  bottom:52px;
+  font-size:74px;
+  line-height:.9;
+  letter-spacing:-.05em;
+  text-align:left;
+}
+@media(max-width:760px){
+  .cohort-poster-inner{padding:5% 5.7% 4.2%;gap:1.8%}
+  .cohort-poster-header h2{font-size:clamp(25px,7.1vw,52px)}
+  .cohort-poster-subtitle{font-size:clamp(11px,2.8vw,20px)}
+  .cohort-poster-row-3{width:84%}
+  .cohort-poster-footer{gap:1.2%;padding-top:1.8%;padding-bottom:5%}
+  .cohort-poster-footer strong{font-size:clamp(9px,2.3vw,17px)}
+  .cohort-poster-footer span{font-size:clamp(6px,1.55vw,11px)}
+  .cohort-poster-footer::after{font-size:clamp(6px,1.35vw,10px)}
+  .cohort-poster::after{left:5.7%;right:5.7%;bottom:3.6%;font-size:clamp(22px,6vw,42px)}
+}
