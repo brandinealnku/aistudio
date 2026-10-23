@@ -231,3 +231,121 @@
   .cohort-poster-grid-wrap{gap:2.5%}
   .cohort-card{gap:5px}
 }
+
+/* V43 · editorial balance and denser cohort composition */
+.linkedin-poster.cohort-poster{
+  background:
+    radial-gradient(circle at 82% 7%,rgba(247,201,72,.11),transparent 22%),
+    linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px),
+    #0b0d10;
+  background-size:auto,54px 54px,54px 54px,auto;
+}
+.cohort-poster-inner{
+  padding:64px 72px 58px;
+  gap:28px;
+}
+.cohort-poster-header{
+  max-width:100%;
+}
+.cohort-poster-eyebrow{
+  font-size:18px;
+  margin-bottom:14px;
+  letter-spacing:.15em;
+}
+.cohort-poster-header h2{
+  font-size:64px;
+  line-height:.94;
+  max-width:960px;
+}
+.cohort-poster-subtitle{
+  margin-top:16px;
+  font-size:25px;
+}
+.cohort-poster-grid-wrap{
+  gap:24px;
+}
+.cohort-poster-row{
+  gap:18px;
+}
+.cohort-poster-row-3{
+  width:78%;
+}
+.cohort-card{
+  gap:9px;
+}
+.cohort-card-photo{
+  border-radius:12px;
+}
+.cohort-card-name{
+  font-size:20px;
+  line-height:1.05;
+}
+.cohort-card-placeholder span{
+  width:62px;
+  height:62px;
+  font-size:23px;
+}
+.cohort-card-placeholder small{
+  font-size:11px;
+}
+.cohort-poster-footer{
+  margin-top:8px;
+  padding-top:16px;
+  border-top:1px solid rgba(255,255,255,.22);
+}
+.cohort-poster-footer strong{
+  font-size:20px;
+}
+.cohort-poster-footer span{
+  font-size:13px;
+}
+
+/* Fill the lower canvas intentionally instead of leaving an empty field. */
+.cohort-poster-footer::after{
+  content:"DISCOVER · DESIGN · PROTOTYPE · TEST · LEARN";
+  display:block;
+  margin-left:auto;
+  color:#f7c948;
+  font-size:12px;
+  line-height:1;
+  font-weight:900;
+  letter-spacing:.13em;
+  white-space:nowrap;
+}
+.cohort-poster-footer{
+  align-items:center;
+}
+
+/* Stronger bottom anchor */
+.cohort-poster::after{
+  content:"AI NATIVE STUDIO";
+  position:absolute;
+  left:72px;
+  bottom:34px;
+  color:rgba(255,255,255,.05);
+  font-size:58px;
+  line-height:1;
+  font-weight:950;
+  letter-spacing:-.045em;
+  pointer-events:none;
+}
+
+/* Scale the entire composition slightly taller and more centered */
+.cohort-poster-grid-wrap{
+  margin-top:2px;
+}
+.cohort-poster-row-4 .cohort-card-photo,
+.cohort-poster-row-3 .cohort-card-photo{
+  aspect-ratio:1/1;
+}
+@media(max-width:760px){
+  .cohort-poster-inner{padding:5.6% 6% 5%;gap:2%}
+  .cohort-poster-header h2{font-size:clamp(25px,7vw,50px)}
+  .cohort-poster-subtitle{font-size:clamp(11px,2.8vw,20px);margin-top:1.2%}
+  .cohort-poster-row{gap:1.5%}
+  .cohort-poster-row-3{width:80%}
+  .cohort-card-name{font-size:clamp(7px,2vw,15px)}
+  .cohort-poster-footer::after{font-size:clamp(5px,1.15vw,9px)}
+  .cohort-poster::after{left:6%;bottom:2.5%;font-size:clamp(18px,5.2vw,38px)}
+}
