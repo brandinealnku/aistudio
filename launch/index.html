@@ -15,6 +15,7 @@
   <link rel="stylesheet" href="poster.css?v=23" />
   <link rel="stylesheet" href="poster-v24.css?v=24" />
   <link rel="stylesheet" href="poster-v25.css?v=25" />
+  <link rel="stylesheet" href="poster-v40.css?v=40" />
 </head>
 <body>
   <main id="app" class="shell">
@@ -89,25 +90,47 @@
 
     <section id="poster" class="screen poster-screen" aria-labelledby="posterTitle">
       <div class="poster-shell">
-        <article id="linkedinPoster" class="linkedin-poster">
-          <header class="poster-top"><div><div class="poster-school">NORTHERN KENTUCKY UNIVERSITY</div><div class="poster-course">INF 396 · AI NATIVE STUDIO</div></div><div class="poster-term">FALL 2026</div></header>
-          <div class="poster-message"><div class="poster-series">INAUGURAL COHORT</div><h2 id="posterTitle">WE'RE NOT<br>STUDYING AI.<br><span class="poster-gold poster-build-line">WE'RE BUILDING WITH IT.</span></h2></div>
-          <div class="poster-signal-row"><div id="posterSignal" class="poster-signal">CURIOUS × EXPERIMENTAL × HUMAN-CENTERED</div></div>
-          <div id="posterPeople" class="poster-people" aria-label="AI Native Studio students"></div>
-          <div class="poster-mission-block"><div class="poster-label">CURRENT STUDIO SIGNAL</div><p id="posterMission">Students turning curiosity into useful AI work through real-world studio challenges.</p></div>
-          <footer class="poster-footer"><div class="poster-footer-copy"><strong><span id="posterCount">7</span> HUMANS · 2 TEAMS · 1 AI STUDIO</strong><span>NKU · FALL 2026</span></div><img id="rosterQr" hidden alt="" crossorigin="anonymous" /></footer>
+        <article id="linkedinPoster" class="linkedin-poster cohort-poster" aria-label="AI Native Studio inaugural cohort poster">
+          <div class="cohort-poster-inner">
+            <header class="cohort-poster-header">
+              <div class="cohort-poster-eyebrow">NKU AI NATIVE STUDIO · FALL 2026</div>
+              <h2 id="posterTitle">Meet the inaugural<br>AI Native Studio cohort.</h2>
+              <p class="cohort-poster-subtitle">We’re not just studying AI. <strong>We’re building with it.</strong></p>
+            </header>
+
+            <section class="cohort-poster-grid-wrap" aria-label="Seven AI Native Studio students">
+              <div id="posterRow1" class="cohort-poster-row cohort-poster-row-4"></div>
+              <div id="posterRow2" class="cohort-poster-row cohort-poster-row-3"></div>
+            </section>
+
+            <footer class="cohort-poster-footer">
+              <div>
+                <strong>7 students · 2 project teams · real AI work</strong>
+                <span>Northern Kentucky University · INF 396</span>
+              </div>
+            </footer>
+          </div>
         </article>
 
         <div class="poster-controls">
-          <div class="poster-control-copy"><strong>Your LinkedIn image is ready.</strong><span>Save the 4:5 poster as a PNG, then publish it from your own LinkedIn account.</span></div>
-          <div class="poster-control-actions"><button class="primary" id="savePosterBtn">SAVE POSTER PNG</button><button class="secondary" id="copyCaptionBtn">COPY POST CAPTION</button><button class="secondary" id="posterRosterBtn">OPEN STUDIO ROSTER</button><button class="ghost-control" id="backToHostBtn">BACK TO HOST</button></div>
+          <div class="poster-control-copy">
+            <strong id="posterReadyTitle">Poster preview</strong>
+            <span id="posterStatus">Checking cohort profiles…</span>
+          </div>
+          <div class="poster-control-actions">
+            <button class="primary" id="savePosterBtn" disabled>SAVE FINAL POSTER PNG</button>
+            <button class="secondary" id="copyCaptionBtn">COPY POST CAPTION</button>
+            <button class="secondary" id="copyAltTextBtn">COPY ALT TEXT</button>
+            <button class="secondary" id="posterRosterBtn">OPEN STUDIO ROSTER</button>
+            <button class="ghost-control" id="backToHostBtn">BACK TO HOST</button>
+          </div>
         </div>
       </div>
     </section>
   </main>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script src="config.js?v=34"></script>
-  <script src="app.js?v=39"></script>
-  <script src="poster-copy.js?v=39"></script>
+  <script src="app.js?v=40"></script>
+  <script src="poster-copy.js?v=40"></script>
 </body>
 </html>
