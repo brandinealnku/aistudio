@@ -79,7 +79,7 @@ function posterCard(person){
 
   const photo=person.photo
     ? `<img src="${person.photo}" alt="Portrait of ${escapeHtml(person.name)}" />`
-    : `<div class="cohort-card-placeholder" aria-hidden="true"><span>${escapeHtml(person.name.split(' ').map(part=>part[0]).join('').slice(0,2))}</span><small>${person.missing?'Awaiting profile':'Photo needed'}</small></div>`;
+    : `<div class="cohort-card-placeholder" aria-hidden="true"><span>${escapeHtml(person.name.split(' ').map(part=>part[0]).join('').slice(0,2))}</span><small>${person.missing?'IMAGE COMING SOON':'PHOTO NEEDED'}</small></div>`;
 
   item.innerHTML=`
     <div class="cohort-card-photo">${photo}</div>
@@ -92,7 +92,7 @@ function buildPosterAltText(people){
   const available=people.filter(person=>!person.missing);
   const names=available.map(person=>person.name).join(', ');
   const missing=people.filter(person=>person.missing).map(person=>person.name);
-  let text=`LinkedIn poster for Northern Kentucky University’s Fall 2026 AI Native Studio inaugural cohort. The poster headline reads “Meet the inaugural AI Native Studio cohort.” It features student portraits for ${names||'the cohort'} and the line “We’re not just studying AI. We’re building with it.”`;
+  let text=`LinkedIn poster for Northern Kentucky University College of Informatics’ INF 396 Fall 2026 inaugural AI Native Studio cohort. A photograph of Griffin Hall appears behind the title “NKU COI AI Native Studio.” The poster features seven student portraits and the message “Real projects. Real clients. Real AI work.”`;
   if(missing.length)text+=` Profiles still awaiting submission: ${missing.join(', ')}.`;
   return text;
 }
@@ -175,7 +175,7 @@ async function savePosterPng(){
     await document.fonts?.ready;
     const canvas=await html2canvas(poster,{
       scale:1,
-      backgroundColor:'#f4f0e8',
+      backgroundColor:'#ffffff',
       useCORS:true,
       allowTaint:false,
       logging:false,
