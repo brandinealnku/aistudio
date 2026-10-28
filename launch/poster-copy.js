@@ -184,7 +184,7 @@
     const historical = readHistoricalBrowserRooms();
     if (cfg.apiBase) {
       const clean = await fetchRoom(cfg.room);
-      const legacy = clean.length ? [] : await fetchRoom('fall-2026-launch');
+      const legacy = await fetchRoom('fall-2026-launch');
       people = mergeUnique(clean, legacy, historical, people);
     } else {
       people = mergeUnique(historical, people);
