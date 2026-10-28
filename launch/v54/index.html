@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#f7f3ea" />
+  <title>AI Native Studio · Fall 2026 Cohort · V54</title>
+  <meta name="description" content="Meet the Fall 2026 AI Native Studio cohort at Northern Kentucky University — seven emerging technologists learning AI by tackling real-world challenges." />
+  <meta property="og:title" content="Meet the AI Native Studio · Fall 2026" />
+  <meta property="og:description" content="7 humans. 1 semester. A different way to learn AI. Meet NKU's inaugural AI Native Studio cohort." />
+  <meta property="og:url" content="https://brandinealnku.github.io/aistudio/launch/" />
+  <meta property="og:type" content="website" />
+  <link rel="stylesheet" href="../styles.css?v=34" />
+  <link rel="stylesheet" href="../sharing.css" />
+  <link rel="stylesheet" href="../poster-approved-v50.css?v=54" />
+</head>
+<body>
+  <main id="app" class="shell">
+    <section id="landing" class="screen active" aria-labelledby="landing-title">
+      <div class="eyebrow">INF 396 · AI NATIVE STUDIO · FALL 2026</div>
+      <h1 id="landing-title">7 HUMANS.<br><span>2 CLIENTS.</span><br>1 AI STUDIO.</h1>
+      <p class="lede">What do you want to make possible with AI this semester?</p>
+      <div class="action-row"><button class="primary" id="hostBtn">HOST THE STUDIO</button><button class="secondary" id="joinBtn">JOIN THE STUDIO</button></div>
+      <p class="micro">We’re not studying AI. We’re building with it.</p>
+    </section>
+
+    <section id="join" class="screen" aria-labelledby="join-title">
+      <button class="back" data-back="landing" aria-label="Back">←</button>
+      <div class="eyebrow">JOIN THE STUDIO</div>
+      <h2 id="join-title">Add your signal.</h2><p id="joinModeNote" class="join-mode-note hidden">We found your existing Studio profile on this device. Update anything below, including your photo.</p>
+      <form id="joinForm" class="join-card">
+        <label>Student name<select id="nameInput" required>
+    <option value="">Choose your name</option>
+    <option>Aaron Kloss</option>
+    <option>Aaron Milner</option>
+    <option>Sean Cancel</option>
+    <option>Phillip Bierley</option>
+    <option>Mark Greene</option>
+    <option>Elaina Hall</option>
+    <option>Nora Ernst</option>
+  </select></label>
+        <label>What do you want to make possible with AI this semester?<textarea id="answerInput" maxlength="160" required rows="4" placeholder="Keep it short. Aim for 10–15 words."></textarea></label>
+        <label>LinkedIn profile<input id="linkedinInput" type="url" maxlength="220" inputmode="url" autocomplete="url" placeholder="https://www.linkedin.com/in/your-name" /><span class="field-help">Optional · If you include it, your name will link to your public profile on the Meet the Studio page.</span></label>
+        <div class="portrait-field">
+          <div><strong>Add yourself to the studio</strong><p>Optional · Take a selfie or choose a photo. Your portrait may appear in the class LinkedIn poster and studio roster.</p></div>
+          <label class="photo-picker" for="photoInput"><span id="photoPickerText">TAKE OR CHOOSE PHOTO</span><input id="photoInput" type="file" accept="image/*" capture="user" /></label>
+          <div id="portraitPreviewWrap" class="portrait-preview-wrap hidden"><img id="portraitPreview" alt="Your selected portrait preview" /><button type="button" class="secondary small" id="removePhotoBtn">REMOVE PHOTO</button></div>
+        </div>
+        <button class="primary" type="submit">ADD ME TO THE STUDIO</button>
+      </form>
+      <div id="joinSuccess" class="success hidden" role="status"><div class="pulse-dot"></div><h3>Signal received.</h3><p>You’re part of the studio poster.</p><a id="studentRosterLink" class="primary button-link" href="#" target="_blank" rel="noopener">MEET THE STUDIO</a></div>
+    </section>
+
+    <section id="host" class="screen host-screen" aria-labelledby="host-title">
+      <div class="host-topbar"><div><div class="eyebrow">INF 396 · AI NATIVE STUDIO · LIVE</div><h2 id="host-title">Build the studio.</h2><div class="status-row"><span id="connectionStatus" class="status-pill">CONNECTING</span><span id="readinessStatus" class="status-copy">Waiting for the first signal.</span></div></div><div class="host-actions"><button class="secondary small" id="copyJoinBtn">COPY JOIN LINK</button><button class="secondary small" id="openRosterBtn">MEET THE STUDIO</button><button class="secondary small" id="manageRosterBtn">MANAGE ROSTER</button></div></div>
+      <div class="host-grid"><div class="join-panel"><div class="join-url-label">STUDENTS OPEN</div><div id="joinUrl" class="join-url"></div><img id="qrImage" class="qr" alt="QR code to join the AI Native Studio" /><p class="micro">One question. One sentence. Optional portrait. Optional LinkedIn.</p></div><div class="wall-panel"><div class="counter"><span id="count">0</span>/7 SIGNALS</div><div id="peopleGrid" class="people-grid" aria-live="polite"></div></div></div>
+      <div class="poster-launch"><div><div class="poster-launch-label">PRIMARY OUTPUT</div><h3>Turn this room into a LinkedIn-ready class poster.</h3><p id="posterHint">Add at least one student to create the poster.</p></div><button class="primary poster-cta" id="createPosterBtn" disabled>CREATE LINKEDIN POSTER →</button></div>
+    </section>
+
+    <section id="manage" class="screen manage-screen" aria-labelledby="manage-title">
+      <div class="manage-topbar">
+        <div>
+          <div class="eyebrow">INF 396 · AI NATIVE STUDIO · ADMIN</div>
+          <h2 id="manage-title">Manage Studio Roster.</h2>
+          <p class="manage-intro">Review the current cohort, remove test or outdated entries, and copy the live student join link.</p>
+        </div>
+        <button class="secondary small" id="manageBackBtn">BACK TO HOST</button>
+      </div>
+
+      <div class="manage-link-card">
+        <div>
+          <div class="join-url-label">CURRENT STUDENT JOIN LINK</div>
+          <div id="manageJoinUrl" class="join-url"></div>
+          <p class="micro">After removing an entry, this page moves you to the updated room automatically. Copy the new link before sharing it with students.</p>
+        </div>
+        <div class="manage-link-actions">
+          <button class="primary" id="manageCopyJoinBtn">COPY STUDENT LINK</button>
+          <button class="secondary" id="manageOpenRosterBtn">VIEW PUBLIC ROSTER</button><button class="secondary" id="manageImportLegacyBtn">IMPORT REAL PROFILES FROM OLD ROOM</button>
+        </div>
+      </div>
+
+      <div class="manage-summary"><strong><span id="manageCount">0</span> current entries</strong><span>Select any test or outdated entries, then remove them together.</span></div><div class="manage-selection-bar"><div><strong><span id="manageSelectedCount">0</span> selected</strong><span>Choose the exact entries you want removed.</span></div><button class="manage-remove-selected" id="manageRemoveSelectedBtn" type="button" disabled>REMOVE SELECTED</button></div>
+      <input id="managePhotoInput" class="hidden" type="file" accept="image/*" /><div id="legacyRecovery" class="legacy-recovery hidden" aria-live="polite"></div><div id="manageGrid" class="manage-grid" aria-live="polite"></div>
+    </section>
+
+    <section id="thinking" class="screen thinking-screen" aria-labelledby="thinking-title"><div class="thinking-orbit" aria-hidden="true"><span></span><span></span><span></span></div><div class="eyebrow">AI IS READING THE ROOM</div><h2 id="thinking-title">Building the studio poster.</h2><p id="thinkingCopy" class="lede">Turning student signals into one shared mission.</p></section>
+
+    <section id="poster" class="screen poster-screen" aria-labelledby="posterTitle">
+      <div class="poster-shell">
+        <article id="linkedinPoster" class="linkedin-poster approved-poster" aria-label="NKU College of Informatics AI Native Studio inaugural cohort poster">
+          <section class="approved-hero">
+            <img class="approved-hero-photo" crossorigin="anonymous" src="https://raw.githubusercontent.com/brandinealnku/coi-webai/main/griffin-hall.jpg" alt="" />
+            <div class="approved-hero-wash" aria-hidden="true"></div>
+
+            <div class="approved-brand">
+              <div class="approved-nku">NKU</div>
+              <div class="approved-brand-rule"></div>
+              <div class="approved-coi">COLLEGE OF<br><strong>INFORMATICS</strong></div>
+            </div>
+
+            <div class="approved-title">
+              <div class="approved-title-black">AI NATIVE STUDIO</div>
+              <div class="approved-meta">INF 396 <span>•</span> FALL 2026 <span>•</span> INAUGURAL COHORT</div>
+              <div class="approved-accent-line"></div>
+              <div class="approved-promise">
+                <span>Real projects.</span>
+                <span>Real clients.</span>
+                <strong>Real AI work.</strong>
+              </div>
+            </div>
+          </section>
+
+          <section class="approved-students" aria-label="Seven AI Native Studio students">
+            <div id="posterRow1" class="approved-row approved-row-4"></div>
+            <div id="posterRow2" class="approved-row approved-row-3"></div>
+          </section>
+
+          <footer class="approved-footer">
+            <div class="approved-stats">
+              <div class="approved-stat">
+                <span class="approved-icon" aria-hidden="true">
+                  <svg viewBox="0 0 48 48"><circle cx="16" cy="14" r="5"/><circle cx="32" cy="14" r="5"/><circle cx="24" cy="10" r="5"/><path d="M8 34c0-6 4-10 8-10s8 4 8 10M24 34c0-6 4-10 8-10s8 4 8 10M14 37c0-8 4-13 10-13s10 5 10 13"/></svg>
+                </span>
+                <strong>7 STUDENTS</strong>
+              </div>
+              <div class="approved-stat">
+                <span class="approved-icon" aria-hidden="true">
+                  <svg viewBox="0 0 48 48"><circle cx="24" cy="12" r="5"/><circle cx="14" cy="34" r="5"/><circle cx="34" cy="34" r="5"/><path d="M24 17v7M24 24l-10 5M24 24l10 5"/></svg>
+                </span>
+                <strong>2 PROJECT TEAMS</strong>
+              </div>
+              <div class="approved-stat">
+                <span class="approved-icon" aria-hidden="true">
+                  <svg viewBox="0 0 48 48"><rect x="9" y="16" width="30" height="22" rx="3"/><path d="M18 16v-4h12v4M9 24h30M20 28h8"/></svg>
+                </span>
+                <strong>REAL CLIENTS</strong>
+              </div>
+              <div class="approved-stat">
+                <span class="approved-icon" aria-hidden="true">
+                  <svg viewBox="0 0 48 48"><path d="M24 6v7M24 35v7M6 24h7M35 24h7M11 11l5 5M32 32l5 5M37 11l-5 5M16 32l-5 5"/><circle cx="24" cy="24" r="8"/><path d="M21 24h6M24 21v6"/></svg>
+                </span>
+                <strong>REAL AI WORK</strong>
+              </div>
+            </div>
+            <div class="approved-method">DISCOVER <span>•</span> DESIGN <span>•</span> PROTOTYPE <span>•</span> TEST <span>•</span> LEARN</div>
+          </footer>
+        </article>
+
+        <div class="poster-controls">
+          <div class="poster-control-copy">
+            <strong id="posterReadyTitle">Poster preview</strong>
+            <span id="posterStatus">Checking cohort profiles…</span>
+          </div>
+          <div class="poster-control-actions">
+            <button class="primary" id="savePosterBtn">SAVE PREVIEW PNG</button>
+            <button class="secondary" id="copyCaptionBtn">COPY POST CAPTION</button>
+            <button class="secondary" id="copyAltTextBtn">COPY ALT TEXT</button>
+            <button class="secondary" id="posterRosterBtn">OPEN STUDIO ROSTER</button>
+            <button class="ghost-control" id="backToHostBtn">BACK TO HOST</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="../config.js?v=34"></script>
+  <script src="../app.js?v=54"></script>
+  <script src="../poster-copy.js?v=54"></script>
+</body>
+</html>
