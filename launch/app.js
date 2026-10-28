@@ -163,6 +163,102 @@ async function copyAltText(){
   }catch{window.prompt('Copy the image alt text:',text);}
 }
 
+async function saveStudentGridPng(){
+  const button=$('saveStudentGridBtn');
+  const people=window.AI_STUDIO_POSTER_PEOPLE||normalizePosterPeople(state.people);
+  const original=button?.textContent||'DOWNLOAD STUDENT GRID PNG';
+  if(button){button.disabled=true;button.textContent='BUILDING GRID…';}
+
+  const width=1200,height=720;
+  const canvas=document.createElement('canvas');
+  canvas.width=width;canvas.height=height;
+  const ctx=canvas.getContext('2d');
+
+  // Transparent background for Canva flexibility.
+  ctx.clearRect(0,0,width,height);
+
+  const topY=20,bottomY=380;
+  const cardW=250,photoH=250,nameH=52,gap=28;
+  const topTotal=4*cardW+3*gap;
+  const topX=(width-topTotal)/2;
+  const bottomTotal=3*cardW+2*gap;
+  const bottomX=(width-bottomTotal)/2;
+
+  const loadImage=src=>new Promise((resolve,reject)=>{
+    const img=new Image();
+    img.crossOrigin='anonymous';
+    img.onload=()=>resolve(img);
+    img.onerror=reject;
+    img.src=src;
+  });
+
+  async function drawCard(person,x,y){
+    const radius=18;
+    ctx.save();
+    ctx.beginPath();
+    ctx.roundRect(x,y,cardW,photoH,radius);
+    ctx.clip();
+
+    if(person.photo){
+      try{
+        const img=await loadImage(person.photo);
+        const scale=Math.max(cardW/img.width,photoH/img.height);
+        const sw=cardW/scale,sh=photoH/scale;
+        const sx=(img.width-sw)/2;
+        const sy=Math.max(0,(img.height-sh)*0.30);
+        ctx.drawImage(img,sx,sy,sw,sh,x,y,cardW,photoH);
+      }catch{
+        ctx.fillStyle='#F1EEE8';
+        ctx.fillRect(x,y,cardW,photoH);
+      }
+    }else{
+      ctx.fillStyle='#F7F5F0';
+      ctx.fillRect(x,y,cardW,photoH);
+      ctx.strokeStyle='#FFC72C';
+      ctx.lineWidth=3;
+      ctx.setLineDash([10,8]);
+      ctx.strokeRect(x+2,y+2,cardW-4,photoH-4);
+      ctx.setLineDash([]);
+
+      ctx.fillStyle='#6B7280';
+      ctx.font='700 40px Arial';
+      ctx.textAlign='center';
+      ctx.textBaseline='middle';
+      const initials=person.name.split(' ').map(p=>p[0]).join('').slice(0,2);
+      ctx.fillText(initials,x+cardW/2,y+photoH/2-14);
+      ctx.font='700 16px Arial';
+      ctx.fillText(person.missing?'IMAGE COMING SOON':'PHOTO NEEDED',x+cardW/2,y+photoH/2+32);
+    }
+    ctx.restore();
+
+    ctx.fillStyle='#111111';
+    ctx.font='700 24px Arial';
+    ctx.textAlign='center';
+    ctx.textBaseline='top';
+    ctx.fillText(person.name,x+cardW/2,y+photoH+14);
+  }
+
+  try{
+    for(let i=0;i<4;i++)await drawCard(people[i],topX+i*(cardW+gap),topY);
+    for(let i=0;i<3;i++)await drawCard(people[i+4],bottomX+i*(cardW+gap),bottomY);
+
+    const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png',1));
+    if(!blob)throw new Error('Could not create student grid');
+
+    const status=posterProfileStatus(people);
+    const filename=status.ready?'ai-native-studio-student-grid-final.png':'ai-native-studio-student-grid-preview.png';
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1500);
+  }catch(error){
+    console.error('Student grid export failed',error);
+    alert('The student grid could not be saved. Please refresh and try again.');
+  }finally{
+    if(button){button.disabled=false;button.textContent=original;}
+  }
+}
+
 async function savePosterPng(){
   const poster=$('linkedinPoster'),button=$('savePosterBtn');
   const people=window.AI_STUDIO_POSTER_PEOPLE||normalizePosterPeople(state.people);
@@ -303,6 +399,7 @@ $('manageRemoveSelectedBtn')?.addEventListener('click',async()=>{const ids=[...s
 document.addEventListener('click',event=>{const button=event.target.closest?.('[data-manage-photo-id]');if(!button)return;state.managePhotoPersonId=button.dataset.managePhotoId||'';$('managePhotoInput')?.click();});
 $('managePhotoInput')?.addEventListener('change',async event=>{const file=event.target.files?.[0],person=(state.managePeople.length?state.managePeople:state.people).find(p=>p.id===state.managePhotoPersonId);if(!file||!person)return;try{const photo=await resizePortrait(file);const updated={...person,photo};await submitSignal(updated);renderManageRoster();}catch(error){alert(error?.message||'Could not update that photo.');}finally{event.target.value='';state.managePhotoPersonId='';}});
 $('copyJoinBtn').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(joinLink());const button=$('copyJoinBtn'),original=button.textContent;button.textContent='COPIED';setTimeout(()=>button.textContent=original,1200);}catch{window.prompt('Copy this join link:',joinLink());}});
-$('createPosterBtn').addEventListener('click',()=>createPoster(state.people));$('savePosterBtn').addEventListener('click',savePosterPng);$('copyCaptionBtn').addEventListener('click',copyCaption);$('copyAltTextBtn')?.addEventListener('click',copyAltText);$('openRosterBtn').addEventListener('click',openRoster);$('posterRosterBtn').addEventListener('click',openRoster);$('backToHostBtn').addEventListener('click',()=>show('host'));
+$('createPosterBtn').addEventListener('click',()=>createPoster(state.people));$('savePosterBtn').addEventListener('click',savePosterPng);$('copyCaptionBtn').addEventListener('click',copyCaption);$('copyAltTextBtn')?.addEventListener('click',copyAltText);
+$('saveStudentGridBtn')?.addEventListener('click',saveStudentGridPng);$('openRosterBtn').addEventListener('click',openRoster);$('posterRosterBtn').addEventListener('click',openRoster);$('backToHostBtn').addEventListener('click',()=>show('host'));
 window.addEventListener('storage',event=>{if(event.key===storageKey){loadLocal();renderPeople();}});
 const joinUrl=joinLink();$('joinUrl').textContent=joinUrl;$('qrImage').src=`https://api.qrserver.com/v1/create-qr-code/?size=420x420&data=${encodeURIComponent(joinUrl)}`;$('studentRosterLink').href=rosterLink();const params=new URLSearchParams(window.location.search);loadLocal();renderPeople();renderManageRoster();if(params.get('manage')==='1')show('manage');else if(params.get('join')==='1'){prepareJoinForm();show('join');}syncRemote();setInterval(syncRemote,1000);
