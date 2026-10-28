@@ -1,4 +1,5 @@
-/* Approved LinkedIn poster · authoritative V52 */
+/* FINAL LinkedIn poster patch · V55
+   One proportional composition. All sizing is relative to the poster itself, not the browser viewport. */
 #poster.poster-screen{
   padding:18px 12px 32px!important;
   align-items:flex-start!important;
@@ -9,22 +10,23 @@
   margin:0 auto!important;
 }
 #linkedinPoster.approved-poster{
+  container-type:inline-size!important;
   position:relative!important;
   width:100%!important;
   max-width:1200px!important;
   aspect-ratio:4/5!important;
   overflow:hidden!important;
-  background:#f6f2e8!important;
+  background:#f3efe6!important;
   color:#111317!important;
   font-family:Inter,Arial,Helvetica,sans-serif!important;
   box-shadow:0 24px 70px rgba(0,0,0,.28)!important;
 }
 
-/* HERO: intentionally wide, not vertically stretched */
+/* HERO */
 #linkedinPoster .approved-hero{
   position:absolute!important;
   inset:0 0 auto 0!important;
-  height:42%!important;
+  height:44%!important;
   overflow:hidden!important;
   background:#dbe7ee!important;
 }
@@ -34,127 +36,125 @@
   width:100%!important;
   height:100%!important;
   object-fit:cover!important;
-  object-position:center 48%!important;
+  object-position:center 49%!important;
   display:block!important;
 }
 #linkedinPoster .approved-hero-wash{
   position:absolute!important;
   inset:0!important;
   background:
-    linear-gradient(180deg,rgba(255,255,255,.93) 0%,rgba(255,255,255,.76) 24%,rgba(255,255,255,.27) 55%,rgba(255,255,255,.00) 100%),
-    linear-gradient(90deg,rgba(255,255,255,.94) 0%,rgba(255,255,255,.58) 44%,rgba(255,255,255,.08) 76%,rgba(255,255,255,0) 100%)!important;
+    linear-gradient(180deg,rgba(255,255,255,.95) 0%,rgba(255,255,255,.80) 22%,rgba(255,255,255,.35) 48%,rgba(255,255,255,.05) 78%,rgba(255,255,255,0) 100%),
+    linear-gradient(90deg,rgba(255,255,255,.95) 0%,rgba(255,255,255,.66) 38%,rgba(255,255,255,.14) 72%,rgba(255,255,255,0) 100%)!important;
   pointer-events:none!important;
 }
 
-/* Brand */
+/* NKU / College of Informatics lockup */
 #linkedinPoster .approved-brand{
   position:absolute!important;
-  z-index:2!important;
+  z-index:3!important;
   top:2.7%!important;
   left:5.7%!important;
   display:flex!important;
   align-items:center!important;
-  gap:1.5%!important;
+  gap:1.35cqw!important;
   color:#111317!important;
 }
 #linkedinPoster .approved-nku{
   font-family:Georgia,"Times New Roman",serif!important;
-  font-size:3.9vw!important;
+  font-size:4.7cqw!important;
   line-height:1!important;
   letter-spacing:-.05em!important;
 }
 #linkedinPoster .approved-brand-rule{
   width:2px!important;
-  height:3.6vw!important;
+  height:5.0cqw!important;
   background:#d3a10d!important;
 }
 #linkedinPoster .approved-coi{
-  font-size:1.15vw!important;
-  line-height:1.15!important;
-  letter-spacing:.20em!important;
-  font-weight:600!important;
+  font-size:1.25cqw!important;
+  line-height:1.12!important;
+  letter-spacing:.19em!important;
+  font-weight:650!important;
 }
 #linkedinPoster .approved-coi strong{
-  font-size:2.05vw!important;
-  letter-spacing:-.02em!important;
+  display:block!important;
+  margin-top:.2cqw!important;
+  font-size:2.4cqw!important;
+  line-height:1!important;
+  letter-spacing:-.025em!important;
   font-weight:950!important;
 }
 
-/* Title */
+/* Main title — no redundant NKU COI line */
 #linkedinPoster .approved-title{
   position:absolute!important;
-  z-index:2!important;
+  z-index:3!important;
   left:5.7%!important;
-  top:8.5%!important;
-  width:80%!important;
+  top:9.1%!important;
+  width:86%!important;
 }
-#linkedinPoster .approved-title-gold{
-  color:#d6a20a!important;
-  font-size:6.5vw!important;
-  line-height:.94!important;
-  font-weight:950!important;
-  letter-spacing:-.055em!important;
-}
+#linkedinPoster .approved-title-gold{display:none!important;}
 #linkedinPoster .approved-title-black{
-  margin-top:.2%!important;
+  margin:0!important;
   color:#090a0c!important;
-  font-size:6.35vw!important;
-  line-height:.94!important;
+  font-size:7.0cqw!important;
+  line-height:.95!important;
   font-weight:950!important;
-  letter-spacing:-.058em!important;
+  letter-spacing:-.06em!important;
   white-space:nowrap!important;
 }
 #linkedinPoster .approved-meta{
-  margin-top:1.5%!important;
+  margin-top:1.7cqw!important;
   color:#17191c!important;
-  font-size:1.85vw!important;
-  line-height:1!important;
-  font-weight:800!important;
-  letter-spacing:.18em!important;
+  font-size:1.9cqw!important;
+  line-height:1.05!important;
+  font-weight:850!important;
+  letter-spacing:.17em!important;
 }
-#linkedinPoster .approved-meta span{padding:0 .5%!important;}
+#linkedinPoster .approved-meta span{padding:0 .45cqw!important;}
 #linkedinPoster .approved-accent-line{
-  width:8%!important;
-  height:4px!important;
-  margin-top:2.2%!important;
+  width:8.4cqw!important;
+  height:.38cqw!important;
+  min-height:3px!important;
+  margin-top:2.2cqw!important;
   background:#d6a20a!important;
 }
 #linkedinPoster .approved-promise{
   display:grid!important;
-  gap:.1%!important;
-  margin-top:1.5%!important;
+  gap:.12cqw!important;
+  margin-top:1.45cqw!important;
   color:#17191c!important;
-  font-size:2.85vw!important;
+  font-size:2.9cqw!important;
   line-height:1.08!important;
-  font-weight:450!important;
+  font-weight:480!important;
 }
 #linkedinPoster .approved-promise strong{
   color:#c99400!important;
   font-weight:900!important;
 }
 
-/* STUDENT PANEL: true overlap on top of hero */
+/* STUDENT PANEL — overlap the building, but leave intentional breathing room */
 #linkedinPoster .approved-students{
   position:absolute!important;
-  z-index:4!important;
-  top:36.5%!important;
+  z-index:5!important;
+  top:38.0%!important;
   left:4.5%!important;
   right:4.5%!important;
-  height:45.5%!important;
-  padding:1.8% 1.9% 1.7%!important;
+  height:43.0%!important;
+  padding:1.7cqw 1.8cqw 1.55cqw!important;
   border:1px solid rgba(17,19,23,.14)!important;
-  border-radius:2.2vw!important;
-  background:rgba(250,247,240,.86)!important;
-  backdrop-filter:blur(10px)!important;
-  -webkit-backdrop-filter:blur(10px)!important;
-  box-shadow:0 1.3vw 3.5vw rgba(0,0,0,.14)!important;
+  border-radius:2.0cqw!important;
+  background:rgba(250,247,240,.91)!important;
+  backdrop-filter:blur(8px)!important;
+  -webkit-backdrop-filter:blur(8px)!important;
+  box-shadow:0 1.25cqw 3.2cqw rgba(0,0,0,.13)!important;
   display:grid!important;
   grid-template-rows:1fr 1fr!important;
-  gap:2.2%!important;
+  gap:1.7cqw!important;
 }
 #linkedinPoster .approved-row{
   display:grid!important;
-  gap:2.0%!important;
+  gap:1.9cqw!important;
   align-items:start!important;
 }
 #linkedinPoster .approved-row-4{
@@ -162,23 +162,23 @@
 }
 #linkedinPoster .approved-row-3{
   grid-template-columns:repeat(3,minmax(0,1fr))!important;
-  width:76%!important;
+  width:75%!important;
   margin:0 auto!important;
 }
 #linkedinPoster .cohort-card{
   min-width:0!important;
   display:grid!important;
   grid-template-rows:auto auto!important;
-  gap:.65vw!important;
+  gap:.65cqw!important;
 }
 #linkedinPoster .cohort-card-photo{
   width:100%!important;
   aspect-ratio:1/1!important;
   overflow:hidden!important;
-  border-radius:1.2vw!important;
+  border-radius:1.1cqw!important;
   border:1px solid rgba(17,19,23,.14)!important;
   background:#eeeae2!important;
-  box-shadow:0 .4vw 1.2vw rgba(17,19,23,.08)!important;
+  box-shadow:0 .35cqw 1.0cqw rgba(17,19,23,.07)!important;
 }
 #linkedinPoster .cohort-card-photo img{
   display:block!important;
@@ -194,28 +194,28 @@
   flex-direction:column!important;
   align-items:center!important;
   justify-content:center!important;
-  gap:.8vw!important;
-  background:linear-gradient(145deg,#f8f7f4,#ece9e2)!important;
+  gap:.7cqw!important;
+  background:linear-gradient(145deg,#faf9f6,#ece9e2)!important;
   color:#747b82!important;
   border:2px dashed rgba(214,162,10,.55)!important;
-  border-radius:1.2vw!important;
+  border-radius:1.1cqw!important;
 }
 #linkedinPoster .cohort-card-placeholder span{
   display:grid!important;
   place-items:center!important;
-  width:6.1vw!important;
-  height:6.1vw!important;
+  width:6.0cqw!important;
+  height:6.0cqw!important;
   border-radius:50%!important;
   border:1px solid rgba(17,19,23,.15)!important;
   color:#6f767e!important;
-  font-size:2.2vw!important;
+  font-size:2.15cqw!important;
   font-weight:900!important;
 }
 #linkedinPoster .cohort-card-placeholder small{
-  max-width:10vw!important;
+  max-width:10cqw!important;
   text-align:center!important;
   color:#80868d!important;
-  font-size:.78vw!important;
+  font-size:.78cqw!important;
   line-height:1.2!important;
   letter-spacing:.08em!important;
   font-weight:900!important;
@@ -223,23 +223,23 @@
 #linkedinPoster .cohort-card-name{
   margin:0!important;
   color:#101114!important;
-  font-size:1.65vw!important;
+  font-size:1.72cqw!important;
   line-height:1.08!important;
   font-weight:950!important;
   letter-spacing:-.03em!important;
   text-align:center!important;
 }
 
-/* FOOTER: fixed to bottom, intentional iconography */
+/* FOOTER */
 #linkedinPoster .approved-footer{
   position:absolute!important;
-  z-index:5!important;
+  z-index:6!important;
   left:1.5%!important;
   right:1.5%!important;
-  bottom:1.5%!important;
-  height:12.2%!important;
-  padding:2.0% 3.3% 1.6%!important;
-  border-radius:2vw!important;
+  bottom:1.55%!important;
+  height:12.6%!important;
+  padding:1.85cqw 3.0cqw 1.45cqw!important;
+  border-radius:1.8cqw!important;
   background:#111417!important;
   color:#fff!important;
   display:grid!important;
@@ -252,20 +252,20 @@
   align-items:center!important;
 }
 #linkedinPoster .approved-stat{
-  min-height:3.8vw!important;
-  padding:0 1.6vw!important;
+  min-height:3.9cqw!important;
+  padding:0 1.45cqw!important;
   display:flex!important;
   align-items:center!important;
   justify-content:center!important;
-  gap:.9vw!important;
-  border-right:1px solid rgba(255,255,255,.24)!important;
+  gap:.85cqw!important;
+  border-right:1px solid rgba(255,255,255,.23)!important;
 }
 #linkedinPoster .approved-stat:first-child{padding-left:0!important;}
 #linkedinPoster .approved-stat:last-child{border-right:0!important;padding-right:0!important;}
 #linkedinPoster .approved-icon{
   flex:0 0 auto!important;
-  width:2.8vw!important;
-  height:2.8vw!important;
+  width:2.9cqw!important;
+  height:2.9cqw!important;
   color:#e0ae17!important;
 }
 #linkedinPoster .approved-icon svg{
@@ -279,57 +279,26 @@
 }
 #linkedinPoster .approved-stat strong{
   color:#fff!important;
-  font-size:1.0vw!important;
+  font-size:1.02cqw!important;
   line-height:1.15!important;
-  letter-spacing:.09em!important;
+  letter-spacing:.08em!important;
   font-weight:900!important;
   text-align:left!important;
 }
 #linkedinPoster .approved-method{
-  margin-top:1.4%!important;
-  padding-top:1.2%!important;
+  margin-top:1.25cqw!important;
+  padding-top:1.1cqw!important;
   border-top:2px solid #d8a616!important;
   color:#e0ae17!important;
-  font-size:1.0vw!important;
+  font-size:1.02cqw!important;
   line-height:1!important;
-  letter-spacing:.18em!important;
+  letter-spacing:.17em!important;
   font-weight:900!important;
   text-align:center!important;
 }
-#linkedinPoster .approved-method span{padding:0 .6%!important;}
+#linkedinPoster .approved-method span{padding:0 .55cqw!important;}
 
 #poster .poster-controls{
   margin-top:18px!important;
   padding:18px 0 6px!important;
-}
-
-/* V53 · simplify header and restore breathing room */
-#linkedinPoster .approved-title{
-  top:9.2%!important;
-  width:84%!important;
-}
-#linkedinPoster .approved-title-black{
-  margin-top:0!important;
-  font-size:6.7vw!important;
-  line-height:.96!important;
-  white-space:nowrap!important;
-}
-#linkedinPoster .approved-meta{
-  margin-top:2.0%!important;
-  font-size:1.9vw!important;
-}
-#linkedinPoster .approved-accent-line{
-  margin-top:2.6%!important;
-}
-#linkedinPoster .approved-promise{
-  margin-top:1.8%!important;
-  font-size:2.95vw!important;
-  line-height:1.12!important;
-}
-#linkedinPoster .approved-hero{
-  height:43%!important;
-}
-#linkedinPoster .approved-students{
-  top:38.2%!important;
-  height:44.2%!important;
 }
