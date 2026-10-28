@@ -174,7 +174,7 @@ async function savePosterPng(){
   try{
     await document.fonts?.ready;
     const canvas=await html2canvas(poster,{
-      scale:2,
+      scale:1,
       backgroundColor:'#0b0d10',
       useCORS:true,
       allowTaint:false,
