@@ -144,7 +144,7 @@ window.AI_STUDIO_CREATE_POSTER_FROM_PEOPLE=async function(people){
 async function copyCaption(){
   const people=window.AI_STUDIO_POSTER_PEOPLE||normalizePosterPeople(state.people);
   const completed=people.filter(person=>!person.missing).length;
-  const text=`Meet the inaugural Fall 2026 AI Native Studio cohort at Northern Kentucky University.\n\nThis semester, our students are learning AI by building, testing, questioning, and working through real-world problems—not just studying the technology from the sidelines.\n\n${completed} of 7 student profiles are currently live.\n\nMeet the Studio: ${rosterLink()}`;
+  const text=`Meet the inaugural Fall 2026 AI Native Studio cohort in Northern Kentucky University’s College of Informatics.\n\nThis semester, our students are learning AI by building, testing, questioning, and working through real-world problems—not just studying the technology from the sidelines.\n\n${completed} of 7 student profiles are currently live.\n\nMeet the Studio: ${rosterLink()}`;
   try{
     await navigator.clipboard.writeText(text);
     const button=$('copyCaptionBtn'),original=button.textContent;
@@ -173,6 +173,16 @@ async function savePosterPng(){
   button.textContent='PREPARING IMAGE…';
   try{
     await document.fonts?.ready;
+    const heroImage=poster.querySelector('.approved-hero-photo');
+    if(heroImage&&!heroImage.complete){
+      await new Promise((resolve,reject)=>{
+        heroImage.addEventListener('load',resolve,{once:true});
+        heroImage.addEventListener('error',()=>reject(new Error('Griffin Hall image did not load')),{once:true});
+      });
+    }
+    if(heroImage?.decode){
+      try{await heroImage.decode();}catch{}
+    }
     const canvas=await html2canvas(poster,{
       scale:1,
       backgroundColor:'#ffffff',
@@ -189,7 +199,7 @@ async function savePosterPng(){
     const filename=status.ready?'nku-ai-native-studio-inaugural-cohort.png':'nku-ai-native-studio-cohort-preview.png';
     const file=new File([blob],filename,{type:'image/png'});
     if(navigator.share&&navigator.canShare?.({files:[file]})){
-      try{await navigator.share({files:[file],title:'NKU AI Native Studio · Inaugural Cohort'});return;}
+      try{await navigator.share({files:[file],title:'NKU COI AI Native Studio · INF 396 · Inaugural Cohort'});return;}
       catch(error){if(error?.name==='AbortError')return;}
     }
     const url=URL.createObjectURL(blob),a=document.createElement('a');
