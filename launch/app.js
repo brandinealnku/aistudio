@@ -92,7 +92,7 @@ function buildPosterAltText(people){
   const available=people.filter(person=>!person.missing);
   const names=available.map(person=>person.name).join(', ');
   const missing=people.filter(person=>person.missing).map(person=>person.name);
-  let text=`LinkedIn poster for Northern Kentucky University College of Informatics’ INF 396 Fall 2026 inaugural AI Native Studio cohort. A photograph of Griffin Hall appears behind the title “NKU COI AI Native Studio.” The poster features seven student portraits and the message “Real projects. Real clients. Real AI work.”`;
+  let text=`LinkedIn poster introducing the Northern Kentucky University College of Informatics INF 396 Fall 2026 inaugural AI Native Studio cohort. A photograph of Griffin Hall appears behind the title “NKU COI AI Native Studio.” The poster features seven student portraits and the message “Real projects. Real clients. Real AI work.”`;
   if(missing.length)text+=` Profiles still awaiting submission: ${missing.join(', ')}.`;
   return text;
 }
@@ -183,6 +183,12 @@ async function savePosterPng(){
       }
       if(image.decode){try{await image.decode();}catch{}}
     }
+    const priorStyle=poster.getAttribute('style');
+    poster.style.width='1200px';
+    poster.style.maxWidth='none';
+    poster.style.height='1500px';
+    poster.style.aspectRatio='auto';
+    await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
     const canvas=await html2canvas(poster,{
       scale:1,
       backgroundColor:'#ffffff',
@@ -194,6 +200,8 @@ async function savePosterPng(){
       windowWidth:1200,
       windowHeight:1500
     });
+    if(priorStyle===null)poster.removeAttribute('style');
+    else poster.setAttribute('style',priorStyle);
     const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png',1));
     if(!blob)throw new Error('Could not create image');
     const filename=status.ready?'nku-ai-native-studio-inaugural-cohort.png':'nku-ai-native-studio-cohort-preview.png';
@@ -206,6 +214,13 @@ async function savePosterPng(){
     a.href=url;a.download=file.name;document.body.appendChild(a);a.click();a.remove();
     setTimeout(()=>URL.revokeObjectURL(url),1500);
   }catch(error){
+    const posterEl=$('linkedinPoster');
+    if(posterEl&&posterEl.style.width==='1200px'){
+      posterEl.style.removeProperty('width');
+      posterEl.style.removeProperty('max-width');
+      posterEl.style.removeProperty('height');
+      posterEl.style.removeProperty('aspect-ratio');
+    }
     console.error('Poster export failed',error);
     alert('The image could not be saved automatically. Please refresh and try again.');
   }finally{
