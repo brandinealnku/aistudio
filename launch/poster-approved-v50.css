@@ -302,3 +302,27 @@
   margin-top:18px!important;
   padding:18px 0 6px!important;
 }
+
+/* V56 · final header spacing correction */
+#linkedinPoster .approved-brand{
+  top:2.55%!important;
+}
+#linkedinPoster .approved-nku{
+  line-height:.94!important;
+}
+#linkedinPoster .approved-coi{
+  line-height:1.18!important;
+}
+#linkedinPoster .approved-coi strong{
+  margin-top:.38cqw!important;
+  line-height:1.06!important;
+}
+#linkedinPoster .approved-title{
+  top:10.35%!important;
+}
+#linkedinPoster .approved-title-black{
+  line-height:.98!important;
+}
+#linkedinPoster .approved-meta{
+  margin-top:2.05cqw!important;
+}
