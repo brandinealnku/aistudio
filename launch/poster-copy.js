@@ -1,7 +1,17 @@
 (() => {
   const cfg = window.AI_STUDIO_LAUNCH_CONFIG || { apiBase: '', maxSignals: 7, room: 'fall-2026-cohort' };
-  const CURRENT_STUDENTS = new Set(['aaron kloss','aaron milner','sean cancel','phillip bierley','mark greene','elaina hall','nora ernst']);
+  const CURRENT_STUDENT_ORDER = ['Aaron Kloss','Aaron Milner','Sean Cancel','Phillip Bierley','Mark Greene','Elaina Hall','Nora Ernst'];
+  const CURRENT_STUDENTS = new Set(CURRENT_STUDENT_ORDER.map(name => name.toLowerCase()));
   const LEGACY_FIRST_NAMES = new Set(['aaron','sean','phillip','philip','mark','elaina','nora']);
+  const CANONICAL_NAME = new Map([
+    ['sean','Sean Cancel'],
+    ['phillip','Phillip Bierley'],
+    ['philip','Phillip Bierley'],
+    ['mark','Mark Greene'],
+    ['elaina','Elaina Hall'],
+    ['nora','Nora Ernst'],
+    ...CURRENT_STUDENT_ORDER.map(name => [name.toLowerCase(), name])
+  ]);
   const escapeHtml = (value = '') => String(value).replace(/[&<>'\"]/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#039;', '\"': '&quot;' }[ch]));
 
   const style = document.createElement('link');
@@ -131,30 +141,41 @@
     }
 
     function mergeUnique(...groups) {
-      const merged = [];
-      const seenIds = new Set();
-      const seenNames = new Set();
-      let bareAaronCount = 0;
+      const byCanonical = new Map();
 
-      for (const group of groups) {
-        for (const person of (group || [])) {
-          if (!allowed(person) || seenIds.has(person.id)) continue;
-
-          const normalizedName = String(person?.name || '').trim().toLowerCase();
-
-          if (normalizedName === 'aaron') {
-            if (bareAaronCount >= 2) continue;
-            bareAaronCount += 1;
-          } else {
-            if (seenNames.has(normalizedName)) continue;
-            seenNames.add(normalizedName);
-          }
-
-          seenIds.add(person.id);
-          merged.push(person);
-        }
+      function score(person, groupIndex) {
+        const completeness =
+          (person?.photo ? 8 : 0) +
+          (person?.answer ? 4 : 0) +
+          (person?.linkedin ? 2 : 0);
+        // Earlier groups are more current: clean room > legacy > browser cache.
+        return completeness * 10 + Math.max(0, 9 - groupIndex);
       }
-      return merged.slice(0, cfg.maxSignals || 7);
+
+      groups.forEach((group, groupIndex) => {
+        for (const person of (group || [])) {
+          if (!allowed(person)) continue;
+          const normalized = String(person?.name || '').trim().toLowerCase();
+
+          // Historical bare "Aaron" records cannot safely be assigned to Kloss vs Milner.
+          // Canonical Aaron profiles already exist in the current room, so ignore ambiguous ones.
+          if (normalized === 'aaron') continue;
+
+          const canonical = CANONICAL_NAME.get(normalized);
+          if (!canonical) continue;
+
+          const candidate = { ...person, name: canonical };
+          const existing = byCanonical.get(canonical);
+          if (!existing || score(candidate, groupIndex) > score(existing.person, existing.groupIndex)) {
+            byCanonical.set(canonical, { person: candidate, groupIndex });
+          }
+        }
+      });
+
+      return CURRENT_STUDENT_ORDER
+        .map(name => byCanonical.get(name)?.person)
+        .filter(Boolean)
+        .slice(0, cfg.maxSignals || 7);
     }
 
     function readHistoricalBrowserRooms() {
