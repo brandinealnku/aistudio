@@ -228,6 +228,25 @@ function renderLegacyAarons(candidates=[]){
     finally{button.disabled=false;button.textContent=original;}
   }));
 }
+async function discoverLegacyAarons(){
+  try{
+    if(!cfg.apiBase)return;
+    const currentNames=new Set(state.people.map(p=>String(p?.name||'').trim().toLowerCase()));
+    if(currentNames.has('aaron kloss')&&currentNames.has('aaron milner')){
+      renderLegacyAarons([]);
+      return;
+    }
+    const response=await fetch(`${cfg.apiBase}?room=fall-2026-launch&all=1`,{cache:'no-store'});
+    if(!response.ok)return;
+    const data=await response.json();
+    const legacy=Array.isArray(data.people)?data.people:[];
+    const bare=legacy.filter(p=>String(p?.name||'').trim().toLowerCase()==='aaron'&&p?.photo);
+    if(bare.length)renderLegacyAarons(bare);
+  }catch(error){
+    console.warn('Legacy Aaron recovery unavailable',error);
+  }
+}
+
 async function importLegacyProfiles(){
   const button=$('manageImportLegacyBtn'),original=button?.textContent||'IMPORT';if(button){button.disabled=true;button.textContent='SEARCHING OLD ROOM…';}
   try{
@@ -249,7 +268,7 @@ async function importLegacyProfiles(){
   }catch(error){alert(error?.message||'Could not import the legacy profiles.');}
   finally{if(button){button.disabled=false;button.textContent=original;}}
 }
-$('hostBtn').addEventListener('click',()=>show('host'));$('joinBtn').addEventListener('click',()=>{prepareJoinForm();show('join');});$('manageRosterBtn')?.addEventListener('click',()=>{renderManageRoster();show('manage');});$('manageBackBtn')?.addEventListener('click',()=>show('host'));$('manageOpenRosterBtn')?.addEventListener('click',openRoster);$('manageImportLegacyBtn')?.addEventListener('click',importLegacyProfiles);
+$('hostBtn').addEventListener('click',()=>show('host'));$('joinBtn').addEventListener('click',()=>{prepareJoinForm();show('join');});$('manageRosterBtn')?.addEventListener('click',()=>{renderManageRoster();show('manage');discoverLegacyAarons();});$('manageBackBtn')?.addEventListener('click',()=>show('host'));$('manageOpenRosterBtn')?.addEventListener('click',openRoster);$('manageImportLegacyBtn')?.addEventListener('click',importLegacyProfiles);
 $('manageCopyJoinBtn')?.addEventListener('click',async()=>{const button=$('manageCopyJoinBtn');try{await navigator.clipboard.writeText(joinLink());const original=button.textContent;button.textContent='LINK COPIED';setTimeout(()=>button.textContent=original,1200);}catch{window.prompt('Copy this student join link:',joinLink());}});document.querySelectorAll('[data-back]').forEach(button=>button.addEventListener('click',()=>show(button.dataset.back)));
 $('photoInput').addEventListener('change',async event=>{const file=event.target.files?.[0];if(!file)return;try{state.pendingPhoto=await resizePortrait(file);$('portraitPreview').src=state.pendingPhoto;$('portraitPreviewWrap').classList.remove('hidden');$('photoPickerText').textContent='CHANGE PHOTO';}catch(error){alert(error.message||'Could not prepare that photo.');event.target.value='';}});
 $('removePhotoBtn').addEventListener('click',()=>{state.pendingPhoto='';$('photoInput').value='';$('portraitPreviewWrap').classList.add('hidden');$('photoPickerText').textContent='TAKE OR CHOOSE PHOTO';});
