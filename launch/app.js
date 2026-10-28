@@ -173,15 +173,15 @@ async function savePosterPng(){
   button.textContent='PREPARING IMAGE…';
   try{
     await document.fonts?.ready;
-    const heroImage=poster.querySelector('.approved-hero-photo');
-    if(heroImage&&!heroImage.complete){
-      await new Promise((resolve,reject)=>{
-        heroImage.addEventListener('load',resolve,{once:true});
-        heroImage.addEventListener('error',()=>reject(new Error('Griffin Hall image did not load')),{once:true});
-      });
-    }
-    if(heroImage?.decode){
-      try{await heroImage.decode();}catch{}
+    const exportImages=[...poster.querySelectorAll('img')];
+    for(const image of exportImages){
+      if(!image.complete){
+        await new Promise(resolve=>{
+          image.addEventListener('load',resolve,{once:true});
+          image.addEventListener('error',resolve,{once:true});
+        });
+      }
+      if(image.decode){try{await image.decode();}catch{}}
     }
     const canvas=await html2canvas(poster,{
       scale:1,
