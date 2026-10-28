@@ -1,0 +1,264 @@
+/* AI Native Studio LinkedIn Poster · single authoritative stylesheet · V48 */
+#poster.poster-screen{
+  padding:18px 12px 32px!important;
+  align-items:flex-start!important;
+  background:#111!important;
+}
+#poster .poster-shell{
+  width:min(100%,960px)!important;
+  margin:0 auto!important;
+}
+#linkedinPoster.cohort-poster{
+  box-sizing:border-box!important;
+  width:1200px!important;
+  height:1500px!important;
+  max-width:100%!important;
+  aspect-ratio:4/5!important;
+  position:relative!important;
+  overflow:hidden!important;
+  display:block!important;
+  color:#111317!important;
+  background:
+    radial-gradient(circle at 88% 8%,rgba(247,183,24,.22),transparent 22%),
+    linear-gradient(rgba(17,19,23,.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(17,19,23,.035) 1px,transparent 1px),
+    #f4f0e8!important;
+  background-size:auto,64px 64px,64px 64px,auto!important;
+  font-family:Inter,Arial,Helvetica,sans-serif!important;
+  box-shadow:0 24px 70px rgba(0,0,0,.24)!important;
+}
+#linkedinPoster .cohort-poster-inner{
+  box-sizing:border-box!important;
+  width:100%!important;
+  height:100%!important;
+  padding:72px 76px 56px!important;
+  display:grid!important;
+  grid-template-rows:300px 760px 1fr!important;
+  gap:34px!important;
+}
+#linkedinPoster .cohort-poster-header{
+  display:block!important;
+  max-width:100%!important;
+}
+#linkedinPoster .cohort-poster-eyebrow{
+  margin:0 0 24px!important;
+  color:#9b6a00!important;
+  font-size:18px!important;
+  line-height:1.15!important;
+  font-weight:900!important;
+  letter-spacing:.15em!important;
+}
+#linkedinPoster .cohort-poster-header h2{
+  margin:0!important;
+  max-width:1000px!important;
+  color:#111317!important;
+  font-size:62px!important;
+  line-height:1.08!important;
+  letter-spacing:-.04em!important;
+  font-weight:950!important;
+  text-transform:none!important;
+}
+#linkedinPoster .cohort-poster-subtitle{
+  margin:30px 0 0!important;
+  max-width:900px!important;
+  color:#4f5660!important;
+  font-size:24px!important;
+  line-height:1.42!important;
+  font-weight:520!important;
+}
+#linkedinPoster .cohort-poster-subtitle strong{
+  color:#111317!important;
+  font-weight:850!important;
+}
+#linkedinPoster .cohort-poster-grid-wrap{
+  display:grid!important;
+  grid-template-rows:1fr 1fr!important;
+  gap:34px!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:22px!important;
+  border-radius:26px!important;
+  background:rgba(255,255,255,.58)!important;
+  border:1px solid rgba(17,19,23,.08)!important;
+  box-shadow:0 14px 38px rgba(17,19,23,.06)!important;
+}
+#linkedinPoster .cohort-poster-row{
+  display:grid!important;
+  gap:22px!important;
+  min-height:0!important;
+  align-items:start!important;
+}
+#linkedinPoster .cohort-poster-row-4{
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  width:100%!important;
+  margin:0!important;
+}
+#linkedinPoster .cohort-poster-row-3{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  width:80%!important;
+  margin:0 auto!important;
+}
+#linkedinPoster .cohort-card{
+  min-width:0!important;
+  display:grid!important;
+  grid-template-rows:auto auto!important;
+  gap:13px!important;
+}
+#linkedinPoster .cohort-card-photo{
+  box-sizing:border-box!important;
+  width:100%!important;
+  height:auto!important;
+  aspect-ratio:1/1!important;
+  overflow:hidden!important;
+  border-radius:18px!important;
+  border:1px solid rgba(17,19,23,.13)!important;
+  background:#e8e4dc!important;
+  box-shadow:0 8px 22px rgba(17,19,23,.08)!important;
+}
+#linkedinPoster .cohort-card.is-missing .cohort-card-photo{
+  border:2px dashed rgba(155,106,0,.48)!important;
+  box-shadow:none!important;
+}
+#linkedinPoster .cohort-card-photo img{
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+  object-position:center 32%!important;
+}
+#linkedinPoster .cohort-card-placeholder{
+  box-sizing:border-box!important;
+  width:100%!important;
+  height:100%!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:12px!important;
+  padding:18px!important;
+  background:linear-gradient(145deg,#ece8df,#ded8cc)!important;
+  color:#6d747c!important;
+  text-align:center!important;
+}
+#linkedinPoster .cohort-card-placeholder span{
+  display:grid!important;
+  place-items:center!important;
+  width:68px!important;
+  height:68px!important;
+  border-radius:50%!important;
+  border:1px solid rgba(17,19,23,.18)!important;
+  font-size:26px!important;
+  font-weight:900!important;
+  color:#525960!important;
+}
+#linkedinPoster .cohort-card-placeholder small{
+  font-size:11px!important;
+  line-height:1.3!important;
+  font-weight:850!important;
+  letter-spacing:.08em!important;
+  text-transform:uppercase!important;
+  color:#6d747c!important;
+}
+#linkedinPoster .cohort-card-name{
+  margin:0!important;
+  color:#111317!important;
+  font-size:21px!important;
+  line-height:1.2!important;
+  font-weight:900!important;
+  letter-spacing:-.015em!important;
+}
+#linkedinPoster .cohort-poster-footer{
+  box-sizing:border-box!important;
+  margin:0!important;
+  padding:24px 0 0!important;
+  border-top:1px solid rgba(17,19,23,.20)!important;
+  display:grid!important;
+  grid-template-columns:1fr!important;
+  gap:14px!important;
+  align-content:start!important;
+}
+#linkedinPoster .cohort-poster-footer>div{
+  display:grid!important;
+  gap:10px!important;
+}
+#linkedinPoster .cohort-poster-footer strong{
+  display:block!important;
+  margin:0!important;
+  color:#111317!important;
+  font-size:22px!important;
+  line-height:1.3!important;
+  font-weight:900!important;
+}
+#linkedinPoster .cohort-poster-footer span{
+  display:block!important;
+  color:#626970!important;
+  font-size:14px!important;
+  line-height:1.4!important;
+  font-weight:700!important;
+  letter-spacing:.04em!important;
+}
+#linkedinPoster .cohort-poster-footer::after{
+  content:"DISCOVER · DESIGN · PROTOTYPE · TEST · LEARN"!important;
+  display:block!important;
+  margin:2px 0 0!important;
+  color:#9b6a00!important;
+  font-size:13px!important;
+  line-height:1.4!important;
+  font-weight:900!important;
+  letter-spacing:.11em!important;
+  white-space:normal!important;
+}
+#linkedinPoster::after{
+  content:"AI NATIVE STUDIO"!important;
+  position:absolute!important;
+  right:76px!important;
+  top:42px!important;
+  color:rgba(17,19,23,.045)!important;
+  font-size:48px!important;
+  line-height:1!important;
+  font-weight:950!important;
+  letter-spacing:-.045em!important;
+  pointer-events:none!important;
+}
+#poster .poster-controls{
+  margin-top:18px!important;
+  padding:18px 0 6px!important;
+}
+@media(max-width:760px){
+  #linkedinPoster .cohort-poster-inner{
+    padding:5.8% 6.2% 4.7%!important;
+    grid-template-rows:20% 50% 1fr!important;
+    gap:2.3%!important;
+  }
+  #linkedinPoster .cohort-poster-eyebrow{
+    margin-bottom:1.8%!important;
+    font-size:clamp(8px,2vw,14px)!important;
+  }
+  #linkedinPoster .cohort-poster-header h2{
+    font-size:clamp(24px,6.6vw,49px)!important;
+    line-height:1.07!important;
+  }
+  #linkedinPoster .cohort-poster-subtitle{
+    margin-top:2.2%!important;
+    font-size:clamp(10px,2.55vw,19px)!important;
+    line-height:1.38!important;
+  }
+  #linkedinPoster .cohort-poster-grid-wrap{
+    gap:2.4%!important;
+    padding:1.8%!important;
+    border-radius:12px!important;
+  }
+  #linkedinPoster .cohort-poster-row{gap:1.7%!important}
+  #linkedinPoster .cohort-poster-row-3{width:82%!important}
+  #linkedinPoster .cohort-card{gap:6px!important}
+  #linkedinPoster .cohort-card-photo{border-radius:7px!important}
+  #linkedinPoster .cohort-card-name{font-size:clamp(8px,2vw,15px)!important;line-height:1.18!important}
+  #linkedinPoster .cohort-card-placeholder{gap:4px!important;padding:4px!important}
+  #linkedinPoster .cohort-card-placeholder span{width:28px!important;height:28px!important;font-size:10px!important}
+  #linkedinPoster .cohort-card-placeholder small{font-size:5px!important}
+  #linkedinPoster .cohort-poster-footer{gap:1.1%!important;padding-top:2%!important}
+  #linkedinPoster .cohort-poster-footer strong{font-size:clamp(9px,2.25vw,17px)!important}
+  #linkedinPoster .cohort-poster-footer span{font-size:clamp(6px,1.5vw,11px)!important}
+  #linkedinPoster .cohort-poster-footer::after{font-size:clamp(6px,1.3vw,10px)!important}
+  #linkedinPoster::after{right:6.2%!important;top:2.8%!important;font-size:clamp(18px,4.2vw,31px)!important}
+}
